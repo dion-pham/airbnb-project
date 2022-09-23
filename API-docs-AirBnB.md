@@ -5,7 +5,6 @@
 ![airbnb-dbdiagram](./assets/images/airbnb-schemav2.png)
 
 
-
 ## API Documentation
 
 ## USER AUTHENTICATION/AUTHORIZATION
