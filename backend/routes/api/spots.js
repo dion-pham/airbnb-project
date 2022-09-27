@@ -82,6 +82,16 @@ router.get(
             ]
         })
 
+        if (!targetSpot) {
+            res.statusCode = 404
+            res.json(
+                {
+                    "message": "Spot couldn't be found",
+                    "statusCode": 404
+                }
+            )
+        }
+
         const targetReviews = await Review.findAll({
             where: { spotId: targetSpot.id },
             attributes: [
