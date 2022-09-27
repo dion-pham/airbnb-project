@@ -113,6 +113,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         loginExcludingTimes: {
           attributes: { exclude: ["hashedPassword", "createdAt", "updatedAt"] }
+        },
+        aliasOwner: {
+          attributes: { exclude: ["username'"] }
         }
       }
     }
