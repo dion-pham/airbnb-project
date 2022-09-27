@@ -6,18 +6,33 @@ module.exports = {
     return queryInterface.bulkInsert('SpotImages', [
       {
         spotId: 1,
-        url: 'google.com',
+        url: 'nfl.com',
+        preview: true,
+      },
+      {
+        spotId: 1,
+        url: 'nba.com',
+        preview: true,
+      },
+      {
+        spotId: 2,
+        url: 'yahoo.com',
         preview: true,
       },
       {
         spotId: 2,
         url: 'google.com',
-        preview: true,
+        preview: false,
       },
       {
         spotId: 3,
-        url: 'google.com',
-        preview: true,
+        url: 'mozilla.com',
+        preview: false,
+      },
+      {
+        spotId: 3,
+        url: 'chrome.com',
+        preview: false,
       }
 
     ], {});

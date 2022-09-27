@@ -2,7 +2,7 @@ const express = require('express');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot, Review, Sequelize, SpotImage } = require('../../db/models');
-
+const { Op } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { response } = require('express');
@@ -49,24 +49,24 @@ router.post(
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
-        } else if (req.user.id !== spot.ownerId) {
+        } else if (req.user.id !== targetSpot.ownerId) {
             res.json("This spot does not belong to the current user")
         }
         const { url, preview } = req.body
-
         const newImage = await SpotImage.create({
             spotId: targetSpot.id,
             url,
             preview,
         })
-        const response = await SpotImage.findByPk(newImage.spotId);
+
+        const response = await SpotImage.findByPk(newImage.id);
         res.json(
             response
         )
     }
 );
 
-
+// Get all Spots
 router.get(
     '/',
     async (req, res, next) => {
@@ -76,7 +76,6 @@ router.get(
             include: [],
             raw: true
         })
-        console.log(resBody.Spots)
 
         for (let i = 0; i < resBody.Spots.length; i++) {
             let currentSpot = resBody.Spots[i]
@@ -92,24 +91,24 @@ router.get(
 
             currentSpot.avgRating = avgRating[0].avgRating
 
-            const previewImage = await SpotImage.findAll({
+            const previewImages = await SpotImage.findAll({
                 where: {
-                    spotId: currentSpot.id
+                    // [Op.and]: [{ spotId: currentSpot.id }, { preview: true }]
+                    spotId: currentSpot.id,
+                    // preview: true
                 },
-                attributes: ['url'],
+                attributes: ['url', 'preview'],
                 raw: true
             })
 
-            currentSpot.previewImage = previewImage[0].url
-
-            // console.log(previewImage[0])
-            // let { id, ownerId, address, city, state, country, lat, lng, name, description, price } = currentSpot
-            // resBody.push({
-            //     id, ownerId, address, city, state, country, lat, lng, name, description, price,
-            //     avgRating: avgRating[0].avgRating,
-            //     previewImage: previewImage[0].url
-
-            // })
+            const newArr = []
+            for (let i = 0; i < previewImages.length; i++) {
+                if (previewImages[i].preview) {
+                    newArr.push(previewImages[i].url)
+                    // currentSpot.previewImage = previewImages[i].url
+                }
+                newArr.length ? currentSpot.previewImage = newArr : null
+            }
         }
         res.json(
             resBody
