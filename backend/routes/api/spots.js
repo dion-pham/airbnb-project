@@ -49,7 +49,7 @@ router.post(
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
-        } else if (req.user.id !== spot.ownerId) {
+        } else if (req.user.id !== targetSpot.ownerId) {
             res.json("This spot does not belong to the current user")
         }
         const { url, preview } = req.body
