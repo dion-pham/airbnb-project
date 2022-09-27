@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot, Review, Sequelize, SpotImage } = require('../../db/models');
+const { Spot, Review, Sequelize, SpotImage, User } = require('../../db/models');
 const { Op } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -65,6 +65,50 @@ router.post(
         )
     }
 );
+
+// Get details of a Spot from an id
+router.get(
+    '/:spotId',
+    async (req, res, next) => {
+        const targetSpot = await Spot.findByPk(req.params.spotId, {
+            include: [{
+                model: SpotImage
+            },
+            {
+                model: User,
+                as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName']
+            }
+            ]
+        })
+
+        const targetReviews = await Review.findAll({
+            where: { spotId: targetSpot.id },
+            attributes: [
+                [
+                    Sequelize.fn('COUNT', Sequelize.col('id')),
+                    'numReviews'
+                ],
+                [
+                    Sequelize.fn('AVG', Sequelize.col('stars')),
+                    'avgStarRating'
+                ]
+            ],
+            raw: true,
+        })
+
+        const targetSpotJSON = targetSpot.toJSON()
+
+        targetSpotJSON.numReviews = targetReviews[0].numReviews
+        targetSpotJSON.avgStarRating = targetReviews[0].avgStarRating
+
+        res.json(
+            targetSpotJSON
+        )
+    }
+
+);
+
 
 // Get all Spots owned by the Current User
 router.get(
