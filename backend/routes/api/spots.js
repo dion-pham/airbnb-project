@@ -9,6 +9,41 @@ const { response } = require('express');
 
 const router = express.Router();
 
+router.post(
+    '/',
+    requireAuth,
+    // validateSignup,
+    async (req, res, next) => {
+        const { address, city, state, country, lat, lng, name, description, price } = req.body
+        const newUser = await Spot.create({
+            ownerId: req.user.id,
+            address,
+            city,
+            state,
+            country,
+            lat,
+            lng,
+            name,
+            description,
+            price
+        })
+        res.json(
+            newUser
+        )
+    }
+);
+
+// const user = await User.create({
+//     firstName,
+//     lastName,
+//     username,
+//     email,
+//     hashedPassword
+// });
+// return await User.scope('loginExcludingTimes').findByPk(user.id);
+// }
+
+
 router.get(
     '/',
     async (req, res, next) => {
@@ -53,12 +88,9 @@ router.get(
 
             // })
         }
-
-
         res.json(
             resBody
         )
-
     }
 );
 
