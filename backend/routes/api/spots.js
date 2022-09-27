@@ -12,14 +12,16 @@ const router = express.Router();
 router.get(
     '/',
     async (req, res, next) => {
-        const allSpots = await Spot.findAll({
-            include: [],
 
+        let resBody = {}
+        resBody.Spots = await Spot.findAll({
+            include: [],
+            raw: true
         })
 
-        let resBody = []
-        for (let i = 0; i < allSpots.length; i++) {
-            let currentSpot = allSpots[i]
+
+        for (let i = 0; i < resBody.Spots.length; i++) {
+            let currentSpot = resBody.Spots[i]
             const avgRating = await Review.findAll({
                 where: { spotId: currentSpot.id },
                 attributes:
@@ -30,6 +32,8 @@ router.get(
                 raw: true
             })
 
+            currentSpot.avgRating = avgRating[0].avgRating
+
             const previewImage = await SpotImage.findAll({
                 where: {
                     spotId: currentSpot.id
@@ -38,23 +42,23 @@ router.get(
                 raw: true
             })
 
-            console.log(previewImage[0])
-            let { id, ownerId, address, city, state, country, lat, lng, name, description, price } = currentSpot
-            resBody.push({
-                id, ownerId, address, city, state, country, lat, lng, name, description, price,
-                avgRating: avgRating[0].avgRating,
-                previewImage: previewImage[0].url
+            currentSpot.previewImage = previewImage[0].url
 
-            })
+            // console.log(previewImage[0])
+            // let { id, ownerId, address, city, state, country, lat, lng, name, description, price } = currentSpot
+            // resBody.push({
+            //     id, ownerId, address, city, state, country, lat, lng, name, description, price,
+            //     avgRating: avgRating[0].avgRating,
+            //     previewImage: previewImage[0].url
+
+            // })
         }
 
 
-        res.json({
-            Spots: resBody
-            // previewImage:
-        }
+        res.json(
+            resBody
         )
-        // res.json(allSpotsReviews)
+
     }
 );
 
