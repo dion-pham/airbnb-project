@@ -21,26 +21,14 @@ module.exports = {
         userId: 3,
         startDate: new Date('March 1, 2023'),
         endDate: new Date('March 2, 2023'),
-      },
-      {
-        spotId: 4,
-        userId: 4,
-        startDate: new Date('April 1, 2023'),
-        endDate: new Date('April 2, 2023'),
-      },
-      {
-        spotId: 5,
-        userId: 5,
-        startDate: new Date('May 1, 2023'),
-        endDate: new Date('May 2, 2023'),
-      },
+      }
     ], {});
   },
 
   down: async (queryInterface, Sequelize) => {
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete('Bookings', {
-      id: { [Op.in]: [1, 2, 3, 4, 5] }
+      id: { [Op.in]: [1, 2, 3] }
     }, {});
   }
 };
