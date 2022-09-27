@@ -6,9 +6,11 @@ const { Spot, Review, Sequelize, SpotImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { response } = require('express');
+const spot = require('../../db/models/spot');
 
 const router = express.Router();
 
+// Get all Spots owned by the Current User
 router.post(
     '/',
     requireAuth,
@@ -33,15 +35,36 @@ router.post(
     }
 );
 
-// const user = await User.create({
-//     firstName,
-//     lastName,
-//     username,
-//     email,
-//     hashedPassword
-// });
-// return await User.scope('loginExcludingTimes').findByPk(user.id);
-// }
+// Add an Image to a Spot based on the Spot's id
+router.post(
+    '/:spotId/images',
+    requireAuth,
+
+    async (req, res, next) => {
+        const targetSpot = await Spot.findByPk(req.params.spotId)
+
+        if (!targetSpot) {
+            res.statusCode = 404
+            res.json({
+                "message": "Spot couldn't be found",
+                "statusCode": 404
+            })
+        } else if (req.user.id !== spot.ownerId) {
+            res.json("This spot does not belong to the current user")
+        }
+        const { url, preview } = req.body
+
+        const newImage = await SpotImage.create({
+            spotId: targetSpot.id,
+            url,
+            preview,
+        })
+        const response = await SpotImage.findByPk(newImage.spotId);
+        res.json(
+            response
+        )
+    }
+);
 
 
 router.get(
