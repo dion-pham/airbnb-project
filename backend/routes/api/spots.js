@@ -35,6 +35,37 @@ router.post(
     }
 );
 
+//delete a spot
+router.delete(
+    '/:spotId',
+    requireAuth,
+
+    async (req, res, next) => {
+        const targetSpot = await Spot.findByPk(req.params.spotId)
+
+        if (!targetSpot) {
+            res.statusCode = 404
+            res.json({
+                "message": "Spot couldn't be found",
+                "statusCode": 404
+            })
+        }
+
+        if (req.user.id !== targetSpot.ownerId) {
+            res.statusCode = 404
+            res.json("This spot does not belong to the current user")
+        }
+
+        await targetSpot.destroy()
+        res.json(
+            {
+                "message": "Successfully deleted",
+                "statusCode": 200
+            }
+        )
+    }
+);
+
 // Edit a Spot
 router.put(
     '/:spotId',
@@ -42,6 +73,15 @@ router.put(
 
     async (req, res, next) => {
         const targetSpot = await Spot.findByPk(req.params.spotId)
+
+
+        if (!targetSpot) {
+            res.statusCode = 404
+            res.json({
+                "message": "Spot couldn't be found",
+                "statusCode": 404
+            })
+        }
 
         if (req.user.id !== targetSpot.ownerId) {
             res.statusCode = 404
