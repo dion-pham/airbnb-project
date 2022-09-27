@@ -9,7 +9,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       ownerId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          models: 'Users'
+        }
       },
       address: {
         type: Sequelize.TEXT

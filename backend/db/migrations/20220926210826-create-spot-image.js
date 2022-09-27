@@ -9,7 +9,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       spotId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          models: 'Spots'
+        }
       },
       url: {
         type: Sequelize.STRING
