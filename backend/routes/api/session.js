@@ -39,11 +39,13 @@ router.post(
             return next(err);
         }
 
-        await setTokenCookie(res, user);
+        const token = await setTokenCookie(res, user);
+        user.dataValues.token = token
+        console.log(user.dataValues)
 
-        return res.json({
-            user
-        });
+        return res.json(
+            user.dataValues
+        );
     }
 );
 

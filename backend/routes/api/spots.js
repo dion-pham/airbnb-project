@@ -18,7 +18,7 @@ router.get(
             include: [],
             raw: true
         })
-
+        console.log(resBody.Spots)
 
         for (let i = 0; i < resBody.Spots.length; i++) {
             let currentSpot = resBody.Spots[i]
