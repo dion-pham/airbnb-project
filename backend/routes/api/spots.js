@@ -35,6 +35,38 @@ router.post(
     }
 );
 
+// Edit a Spot
+router.put(
+    '/:spotId',
+    requireAuth,
+
+    async (req, res, next) => {
+        const targetSpot = await Spot.findByPk(req.params.spotId)
+
+        if (req.user.id !== targetSpot.ownerId) {
+            res.statusCode = 404
+            res.json("This spot does not belong to the current user")
+        }
+        const { address, city, state, country, lat, lng, name, description, price } = req.body
+        await targetSpot.update({
+            ownerId: req.user.id,
+            address,
+            city,
+            state,
+            country,
+            lat,
+            lng,
+            name,
+            description,
+            price
+        })
+        res.json(
+            targetSpot
+        )
+    }
+);
+
+
 // Add an Image to a Spot based on the Spot's id
 router.post(
     '/:spotId/images',
