@@ -9,10 +9,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       reviewId: {
-        type: Sequelize.INTEGER,
-        references: {
-          models: 'Reviews'
-        }
+        type: Sequelize.INTEGER
+        // references: {
+        //   model: 'Reviews'
+        // }
       },
       url: {
         type: Sequelize.STRING
