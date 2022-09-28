@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       ReviewImage.belongsTo(models.Review, {
-        foreignKey: 'spotId'
+        foreignKey: 'reviewId'
       })
     }
   }
@@ -22,6 +22,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'ReviewImage',
+    scopes: {
+      removeReviewId: {
+        attributes: { exclude: ["reviewId", "createdAt", "updatedAt"] }
+      }
+    }
   });
   return ReviewImage;
 };

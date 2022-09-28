@@ -152,6 +152,57 @@ router.put(
 );
 
 
+// Get all Spots owned by the Current User
+router.get(
+    '/current',
+    requireAuth,
+    async (req, res, next) => {
+
+        let resBody = {}
+        resBody.Spots = await Spot.findAll({
+            include: [],
+            where: { ownerId: req.user.id },
+            raw: true
+        })
+
+        for (let i = 0; i < resBody.Spots.length; i++) {
+            let currentSpot = resBody.Spots[i]
+            const avgRating = await Review.findAll({
+                where: { spotId: currentSpot.id },
+                attributes:
+                    [
+                        [Sequelize.fn('AVG', Sequelize.col('stars')), 'avgRating'],
+                    ]
+                ,
+                raw: true
+            })
+
+            currentSpot.avgRating = avgRating[0].avgRating
+            const previewImages = await SpotImage.findAll({
+                where: {
+                    spotId: currentSpot.id,
+                },
+                attributes: ['url', 'preview'],
+                raw: true
+            })
+
+            const newArr = []
+            for (let i = 0; i < previewImages.length; i++) {
+                if (previewImages[i].preview) {
+                    newArr.push(previewImages[i].url)
+                    // currentSpot.previewImage = previewImages[i].url
+                }
+                newArr.length ? currentSpot.previewImage = newArr : null
+            }
+        }
+        res.json(
+            resBody
+        )
+
+    }
+);
+
+
 // Add an Image to a Spot based on the Spot's id
 router.post(
     '/:spotId/images',
@@ -200,7 +251,7 @@ router.get(
             )
         }
 
-        const targetReview = await Review.findAll({ //currentprob
+        const targetReview = await Review.findAll({
             where: {
                 spotId: targetSpot.id
             },
@@ -275,55 +326,6 @@ router.get(
 );
 
 
-// Get all Spots owned by the Current User
-router.get(
-    '/current',
-    requireAuth,
-    async (req, res, next) => {
-
-        let resBody = {}
-        resBody.Spots = await Spot.findAll({
-            include: [],
-            where: { ownerId: req.user.id },
-            raw: true
-        })
-
-        for (let i = 0; i < resBody.Spots.length; i++) {
-            let currentSpot = resBody.Spots[i]
-            const avgRating = await Review.findAll({
-                where: { spotId: currentSpot.id },
-                attributes:
-                    [
-                        [Sequelize.fn('AVG', Sequelize.col('stars')), 'avgRating'],
-                    ]
-                ,
-                raw: true
-            })
-
-            currentSpot.avgRating = avgRating[0].avgRating
-            const previewImages = await SpotImage.findAll({
-                where: {
-                    spotId: currentSpot.id,
-                },
-                attributes: ['url', 'preview'],
-                raw: true
-            })
-
-            const newArr = []
-            for (let i = 0; i < previewImages.length; i++) {
-                if (previewImages[i].preview) {
-                    newArr.push(previewImages[i].url)
-                    // currentSpot.previewImage = previewImages[i].url
-                }
-                newArr.length ? currentSpot.previewImage = newArr : null
-            }
-        }
-        res.json(
-            resBody
-        )
-
-    }
-);
 
 // Get all Spots
 router.get(
