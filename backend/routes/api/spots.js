@@ -246,7 +246,7 @@ router.get(
                 raw: true
             })
 
-            currentSpot.avgRating = avgRating[0].avgRating
+            currentSpot.avgRating = Number(avgRating[0].avgRating)
             //findAll is the alternative multiple previewImage urls
             const previewImage = await SpotImage.findOne({
                 where: {

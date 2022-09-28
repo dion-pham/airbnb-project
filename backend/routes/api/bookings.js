@@ -82,7 +82,7 @@ router.put(
             })
         }
 
-        if (req.user.id === targetBooking.userId) {
+        if (req.user.id !== targetBooking.userId) {
             res.statusCode = 404
             res.json("Booking has to belong to the owner")
         }
