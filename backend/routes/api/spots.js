@@ -35,6 +35,51 @@ router.post(
     }
 );
 
+//create a review for a spot based on the spot's id
+router.post(
+    '/:spotId/reviews',
+    requireAuth,
+
+    async (req, res, next) => {
+        const targetSpot = await Spot.findByPk(req.params.spotId)
+
+        if (!targetSpot) {
+            res.statusCode = 404
+            return res.json({
+                "message": "Spot couldn't be found",
+                "statusCode": 404
+            })
+        }
+
+        const targetReview = await Review.findAll({
+            where: {
+                userId: req.user.id,
+                spotId: targetSpot.id
+            }
+        })
+
+        console.log('this is targetReview', targetReview)
+        if (targetReview.length > 0) {
+            res.statusCode = 403
+            return res.json({
+                "message": "User already has a review for this spot",
+                "statusCode": 403
+            })
+        }
+        const { review, stars } = req.body
+        const newReview = await Review.create({
+            userId: req.user.id,
+            spotId: targetSpot.id,
+            review,
+            stars
+        })
+
+        res.json(
+            newReview
+        )
+    }
+);
+
 //delete a spot
 router.delete(
     '/:spotId',
