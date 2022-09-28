@@ -1,8 +1,8 @@
 const express = require('express');
 
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
 const { Spot, Review, Sequelize, SpotImage, User, ReviewImage, Booking } = require('../../db/models');
-const { Op } = require('sequelize');
+const { Op, Model } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { response } = require('express');
@@ -10,6 +10,123 @@ const spot = require('../../db/models/spot');
 const booking = require('../../db/models/booking');
 
 const router = express.Router();
+
+
+//delete a booking
+router.delete(
+    '/:bookingId',
+    requireAuth,
+
+    async (req, res, next) => {
+        const targetBooking = await Booking.findByPk(req.params.bookingId, {
+            include: { model: Spot }
+        })
+
+        if (!targetBooking) {
+            res.statusCode = 404
+            res.json({
+                "message": "Booking couldn't be found",
+                "statusCode": 404
+            })
+        }
+
+        const targetSpot = await Spot.findByPk(targetBooking.spotId)
+
+        // console.log('targetbooking', targetBooking)
+        // console.log('targetbookingspotid', targetBooking.Spot.ownerId)
+        // console.log('userid', req.user.id)
+        // console.log('targetspotownderid', targetSpot.ownerId)
+        const existingBookingsStart = new Date(targetBooking.startDate).getTime()
+        const currentDate = new Date().getTime()
+        if (currentDate >= existingBookingsStart) {
+            res.statusCode = 403
+            res.json({
+                "message": "Bookings that have been started can't be deleted",
+                "statusCode": 403
+            })
+        }
+
+        if ((req.user.id === targetBooking.userId) || (req.user.id === targetSpot.ownerId)) {
+            await targetBooking.destroy()
+            res.json(
+                {
+                    "message": "Successfully deleted",
+                    "statusCode": 200
+                }
+            )
+        } else {
+            res.statusCode = 404
+            res.json("This spot does not belong to the current user")
+        }
+
+
+    }
+);
+
+
+// Edit a Booking
+router.put(
+    '/:bookingId',
+    requireAuth,
+
+    async (req, res, next) => {
+        const targetBooking = await Booking.findByPk(req.params.bookingId)
+
+        //add validation for errors.
+
+        if (!targetBooking) {
+            res.statusCode = 404
+            res.json({
+                "message": "Booking couldn't be found",
+                "statusCode": 404
+            })
+        }
+
+        if (req.user.id === targetBooking.userId) {
+            res.statusCode = 404
+            res.json("Booking has to belong to the owner")
+        }
+
+
+        const { startDate, endDate } = req.body
+        let newStartDate = new Date(startDate).getTime()
+        let newEndDate = new Date(endDate).getTime()
+
+        let existingBookingsStart = new Date(targetBooking.startDate).getTime()
+        let existingBookingsEnd = new Date(targetBooking.endDate).getTime()
+
+        const currentDate = new Date().getTime()
+        if (currentDate > existingBookingsEnd) {
+            res.statusCode = 403
+            res.json({
+                "message": "Past bookings can't be modified",
+                "statusCode": 403
+            })
+        }
+
+        if ((newStartDate <= existingBookingsStart && newEndDate >= existingBookingsEnd) || (newStartDate >= existingBookingsStart && newEndDate <= existingBookingsEnd)) {
+            res.statusCode = 403
+            res.json({
+                "message": "Sorry, this spot is already booked for the specified dates",
+                "statusCode": 403,
+                "errors": {
+                    "startDate": "Start date conflicts with an existing booking",
+                    "endDate": "End date conflicts with an existing booking"
+                }
+            })
+        }
+
+        await targetBooking.update({
+            startDate,
+            endDate
+        })
+        res.json(
+            targetBooking
+        )
+    }
+);
+
+
 
 // Get all of the Current User's Bookings
 router.get(

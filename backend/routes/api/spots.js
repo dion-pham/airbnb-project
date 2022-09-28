@@ -72,7 +72,10 @@ router.post(
             let individualBooking = currentBookings[i]
             let existingBookingsStart = new Date(individualBooking.startDate).getTime()
             let existingBookingsEnd = new Date(individualBooking.endDate).getTime()
-            if ((existingBookingsStart >= newStartDate && existingBookingsEnd <= newEndDate) || (existingBookingsStart <= newStartDate && existingBookingsEnd >= newEndDate)) {
+            if ((newStartDate <= existingBookingsStart && newEndDate >= existingBookingsEnd) || (newStartDate >= existingBookingsStart && newEndDate <= existingBookingsEnd)) {
+
+
+
                 res.statusCode = 403
                 res.json({
                     "message": "Sorry, this spot is already booked for the specified dates",
