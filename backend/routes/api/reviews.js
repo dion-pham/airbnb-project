@@ -10,6 +10,38 @@ const spot = require('../../db/models/spot');
 
 const router = express.Router();
 
+
+//delete a review
+router.delete(
+    '/:reviewId',
+    requireAuth,
+
+    async (req, res, next) => {
+        const targetReview = await Review.findByPk(req.params.reviewId)
+
+        if (!targetReview) {
+            res.statusCode = 404
+            res.json({
+                "message": "Spot couldn't be found",
+                "statusCode": 404
+            })
+        }
+
+        if (req.user.id !== targetReview.userId) {
+            res.statusCode = 404
+            res.json("This review does not belong to the current user")
+        }
+
+        await targetReview.destroy()
+        res.json(
+            {
+                "message": "Successfully deleted",
+                "statusCode": 200
+            }
+        )
+    }
+);
+
 //Edit a Review
 router.put(
     '/:reviewId',
