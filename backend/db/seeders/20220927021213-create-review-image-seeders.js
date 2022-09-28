@@ -6,27 +6,27 @@ module.exports = {
     return queryInterface.bulkInsert('ReviewImages', [
       {
         reviewId: 1,
-        url: 'google.com',
+        url: 'mlb.com',
       },
       {
         reviewId: 1,
-        url: 'google.com',
+        url: 'mls.com',
       },
       {
         reviewId: 2,
-        url: 'google.com',
+        url: 'nba.com',
       },
       {
         reviewId: 2,
-        url: 'google.com',
+        url: 'wnba.com',
       },
       {
         reviewId: 3,
-        url: 'google.com',
+        url: 'nhl.com',
       },
       {
         reviewId: 3,
-        url: 'google.com',
+        url: 'nfl.com',
       },
 
     ], {});
