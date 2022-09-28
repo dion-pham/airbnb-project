@@ -227,11 +227,14 @@ router.get(
     requireAuth,
     async (req, res, next) => {
 
+
         let resBody = {}
         resBody.Spots = await Spot.findAll({
             include: [],
             where: { ownerId: req.user.id },
-            raw: true
+            raw: true,
+            limit: size,
+            offset: size * (page - 1)
         })
 
         for (let i = 0; i < resBody.Spots.length; i++) {
@@ -266,8 +269,9 @@ router.get(
             //     newArr.length ? currentSpot.previewImage = newArr : null
             // }
         }
-        res.json(
+        res.json({
             resBody
+        }
         )
     }
 );
@@ -444,14 +448,26 @@ router.get(
     '/',
     async (req, res, next) => {
 
-        let resBody = {}
-        resBody.Spots = await Spot.findAll({
+        let { page, size } = req.query
+        page = parseInt(page)
+        size = parseInt(size)
+
+        if (!Number.isInteger(page) || page > 10 || page < 1) {
+            page = 1
+        }
+        if (!Number.isInteger(size) || size > 20 || size < 1) {
+            size = 20
+        }
+
+        // let resBody = {}
+        // resBody.Spots
+        const Spots = await Spot.findAll({
             include: [],
             raw: true
         })
 
-        for (let i = 0; i < resBody.Spots.length; i++) {
-            let currentSpot = resBody.Spots[i]
+        for (let i = 0; i < Spots.length; i++) {
+            let currentSpot = Spots[i]
             const avgRating = await Review.findAll({
                 where: { spotId: currentSpot.id },
                 attributes:
@@ -462,7 +478,7 @@ router.get(
                 raw: true
             })
 
-            currentSpot.avgRating = avgRating[0].avgRating
+            currentSpot.avgRating = Number(avgRating[0].avgRating)
             //findAll is the alternative multiple previewImage urls
             const previewImage = await SpotImage.findOne({
                 where: {
@@ -482,9 +498,13 @@ router.get(
             //     newArr.length ? currentSpot.previewImage = newArr : null
             // }
         }
-        res.json(
-            resBody
-        )
+
+        // const spotsKey = resBody.Spots
+        res.json({
+            Spots,
+            page,
+            size
+        })
     }
 );
 
