@@ -351,22 +351,24 @@ router.get(
             })
 
             currentSpot.avgRating = avgRating[0].avgRating
-            const previewImages = await SpotImage.findAll({
+            //findAll is the alternative multiple previewImage urls
+            const previewImage = await SpotImage.findOne({
                 where: {
                     spotId: currentSpot.id,
                 },
                 attributes: ['url', 'preview'],
                 raw: true
             })
-
-            const newArr = []
-            for (let i = 0; i < previewImages.length; i++) {
-                if (previewImages[i].preview) {
-                    newArr.push(previewImages[i].url)
-                    // currentSpot.previewImage = previewImages[i].url
-                }
-                newArr.length ? currentSpot.previewImage = newArr : null
-            }
+            currentSpot.previewImage = previewImage.url
+            //alternative for multiple spots. an array of preview image urls
+            // const newArr = []
+            // for (let i = 0; i < previewImages.length; i++) {
+            //     if (previewImages[i].preview) {
+            //         newArr.push(previewImages[i].url)
+            //         // currentSpot.previewImage = previewImages[i].url
+            //     }
+            //     newArr.length ? currentSpot.previewImage = newArr : null
+            // }
         }
         res.json(
             resBody
