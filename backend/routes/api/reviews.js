@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot, Review, Sequelize, SpotImage, User, ReviewImage } = require('../../db/models');
+const { Spot, Review, Sequelize, SpotImage, User, ReviewImage, Booking } = require('../../db/models');
 const { Op } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -9,6 +9,38 @@ const { response } = require('express');
 const spot = require('../../db/models/spot');
 
 const router = express.Router();
+
+
+//delete a review
+router.delete(
+    '/:reviewId',
+    requireAuth,
+
+    async (req, res, next) => {
+        const targetReview = await Review.findByPk(req.params.reviewId)
+
+        if (!targetReview) {
+            res.statusCode = 404
+            res.json({
+                "message": "Spot couldn't be found",
+                "statusCode": 404
+            })
+        }
+
+        if (req.user.id !== targetReview.userId) {
+            res.statusCode = 404
+            res.json("This review does not belong to the current user")
+        }
+
+        await targetReview.destroy()
+        res.json(
+            {
+                "message": "Successfully deleted",
+                "statusCode": 200
+            }
+        )
+    }
+);
 
 //Edit a Review
 router.put(
@@ -80,7 +112,6 @@ router.get(
             // alternate: findAll
             const previewImages = await SpotImage.findOne({
                 where: {
-                    preview: true,
                     spotId: individualReview.Spot.dataValues.id
                 },
                 attributes: ['url'],
