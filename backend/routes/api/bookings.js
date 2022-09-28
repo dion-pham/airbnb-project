@@ -1,8 +1,8 @@
 const express = require('express');
 
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { setTokenCookie, requireAuth, restoreUser } = require('../../utils/auth');
 const { Spot, Review, Sequelize, SpotImage, User, ReviewImage, Booking } = require('../../db/models');
-const { Op } = require('sequelize');
+const { Op, Model } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { response } = require('express');
@@ -10,6 +10,53 @@ const spot = require('../../db/models/spot');
 const booking = require('../../db/models/booking');
 
 const router = express.Router();
+
+
+//delete a booking
+router.delete(
+    '/:bookingId',
+    requireAuth,
+
+    async (req, res, next) => {
+        const targetBooking = await Booking.findByPk(req.params.bookingId, {
+            include: { model: Spot },
+            raw: true
+        })
+
+        console.log(targetBooking)
+        if (!targetBooking) {
+            res.statusCode = 404
+            res.json({
+                "message": "Booking couldn't be found",
+                "statusCode": 404
+            })
+        }
+
+        if ((req.user.id !== targetBooking.userId || req.user.id !== Spot.ownerId)) {
+            res.statusCode = 404
+            res.json("This spot does not belong to the current user")
+        }
+
+        const existingBookingsStart = new Date(targetBooking.startDate).getTime()
+        const currentDate = new Date().getTime()
+        if (currentDate >= existingBookingsStart) {
+            res.statusCode = 403
+            res.json({
+                "message": "Bookings that have been started can't be deleted",
+                "statusCode": 403
+            })
+        }
+
+        await targetBooking.destroy()
+        res.json(
+            {
+                "message": "Successfully deleted",
+                "statusCode": 200
+            }
+        )
+    }
+);
+
 
 // Edit a Booking
 router.put(
