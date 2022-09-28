@@ -10,6 +10,61 @@ const spot = require('../../db/models/spot');
 
 const router = express.Router();
 
+// Get all Reviews of the Current User
+router.get(
+    '/current',
+    requireAuth,
+    async (req, res, next) => {
+
+        const _reviews = await Review.findAll({
+            include: [
+                {
+                    model: User,
+                    attributes: ['id', 'firstName', 'lastName']
+                },
+                {
+                    model: Spot,
+                    attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+                },
+                {
+                    model: ReviewImage,
+                    attributes: ['id', 'url'],
+                }
+            ],
+            where: { userId: req.user.id },
+        })
+
+        for (const individualReview of _reviews) {
+            // alternate: findAll
+            const previewImages = await SpotImage.findOne({
+                where: {
+                    preview: true,
+                    spotId: individualReview.Spot.dataValues.id
+                },
+                attributes: ['url'],
+                raw: true
+            })
+
+            //alternate: allows for an array of image url's with key previewImage
+            // const newArr = []
+            // for (let i = 0; i < previewImages.length; i++) {
+            //     {
+            //         newArr.push(previewImages[i].url)
+            //     }
+            //     newArr.length ? individualReview.Spot.dataValues.previewImage = newArr : null
+            // }
+            individualReview.Spot.dataValues.previewImage = previewImages.url
+        }
+
+        res.json({
+            Reviews: _reviews
+        })
+    }
+
+);
+
+
+
 // Add an Image to a Review based on the Review's id
 router.post(
     '/:reviewId/images',
@@ -23,6 +78,9 @@ router.post(
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
+        } else if (req.user.id !== targetReview.userId) {
+            res.statusCode = 403
+            res.json("This review does not belong to the current user")
         }
 
         const targetImages = await ReviewImage.findAll({

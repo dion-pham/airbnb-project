@@ -218,6 +218,7 @@ router.post(
                 "statusCode": 404
             })
         } else if (req.user.id !== targetSpot.ownerId) {
+            res.statusCode = 403
             res.json("This spot does not belong to the current user")
         }
         const { url, preview } = req.body
@@ -278,7 +279,8 @@ router.get(
     async (req, res, next) => {
         const targetSpot = await Spot.findByPk(req.params.spotId, {
             include: [{
-                model: SpotImage
+                model: SpotImage,
+                attributes: ['id', 'url', 'preview']
             },
             {
                 model: User,
@@ -324,8 +326,6 @@ router.get(
     }
 
 );
-
-
 
 // Get all Spots
 router.get(
