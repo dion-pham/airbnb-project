@@ -11,6 +11,70 @@ const booking = require('../../db/models/booking');
 
 const router = express.Router();
 
+// Edit a Booking
+router.put(
+    '/:bookingId',
+    requireAuth,
+
+    async (req, res, next) => {
+        const targetBooking = await Booking.findByPk(req.params.bookingId)
+
+        //add validation for errors.
+
+        if (!targetBooking) {
+            res.statusCode = 404
+            res.json({
+                "message": "Booking couldn't be found",
+                "statusCode": 404
+            })
+        }
+
+        if (req.user.id === targetBooking.userId) {
+            res.statusCode = 404
+            res.json("Booking has to belong to the owner")
+        }
+
+
+        const { startDate, endDate } = req.body
+        let newStartDate = new Date(startDate).getTime()
+        let newEndDate = new Date(endDate).getTime()
+
+        let existingBookingsStart = new Date(targetBooking.startDate).getTime()
+        let existingBookingsEnd = new Date(targetBooking.endDate).getTime()
+
+        const currentDate = new Date().getTime()
+        if (currentDate > existingBookingsEnd) {
+            res.statusCode = 403
+            res.json({
+                "message": "Past bookings can't be modified",
+                "statusCode": 403
+            })
+        }
+
+        if ((newStartDate <= existingBookingsStart && newEndDate >= existingBookingsEnd) || (newStartDate >= existingBookingsStart && newEndDate <= existingBookingsEnd)) {
+            res.statusCode = 403
+            res.json({
+                "message": "Sorry, this spot is already booked for the specified dates",
+                "statusCode": 403,
+                "errors": {
+                    "startDate": "Start date conflicts with an existing booking",
+                    "endDate": "End date conflicts with an existing booking"
+                }
+            })
+        }
+
+        await targetBooking.update({
+            startDate,
+            endDate
+        })
+        res.json(
+            targetBooking
+        )
+    }
+);
+
+
+
 // Get all of the Current User's Bookings
 router.get(
     '/current',
