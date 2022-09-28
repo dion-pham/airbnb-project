@@ -19,11 +19,9 @@ router.delete(
 
     async (req, res, next) => {
         const targetBooking = await Booking.findByPk(req.params.bookingId, {
-            include: { model: Spot },
-            raw: true
+            include: { model: Spot }
         })
 
-        console.log(targetBooking)
         if (!targetBooking) {
             res.statusCode = 404
             res.json({
@@ -32,11 +30,12 @@ router.delete(
             })
         }
 
-        if ((req.user.id !== targetBooking.userId || req.user.id !== Spot.ownerId)) {
-            res.statusCode = 404
-            res.json("This spot does not belong to the current user")
-        }
+        const targetSpot = await Spot.findByPk(targetBooking.spotId)
 
+        // console.log('targetbooking', targetBooking)
+        // console.log('targetbookingspotid', targetBooking.Spot.ownerId)
+        // console.log('userid', req.user.id)
+        // console.log('targetspotownderid', targetSpot.ownerId)
         const existingBookingsStart = new Date(targetBooking.startDate).getTime()
         const currentDate = new Date().getTime()
         if (currentDate >= existingBookingsStart) {
@@ -47,13 +46,20 @@ router.delete(
             })
         }
 
-        await targetBooking.destroy()
-        res.json(
-            {
-                "message": "Successfully deleted",
-                "statusCode": 200
-            }
-        )
+        if ((req.user.id === targetBooking.userId) || (req.user.id === targetSpot.ownerId)) {
+            await targetBooking.destroy()
+            res.json(
+                {
+                    "message": "Successfully deleted",
+                    "statusCode": 200
+                }
+            )
+        } else {
+            res.statusCode = 404
+            res.json("This spot does not belong to the current user")
+        }
+
+
     }
 );
 
