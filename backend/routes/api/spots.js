@@ -370,12 +370,13 @@ router.get(
         if (req.user.id === targetSpot.ownerId) {
             const ownerBookings = await Booking.findAll({
                 where: {
-                    spotId: targetSpot.id,
-                    include: { model: User }
-                }
+                    spotId: targetSpot.id
+                },
+                include: { model: User }
             })
-            return res.json(
-                ownerBookings
+            return res.json({
+                Bookings: ownerBookings
+            }
             )
         }
     }
