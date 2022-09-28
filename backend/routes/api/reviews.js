@@ -112,7 +112,6 @@ router.get(
             // alternate: findAll
             const previewImages = await SpotImage.findOne({
                 where: {
-                    preview: true,
                     spotId: individualReview.Spot.dataValues.id
                 },
                 attributes: ['url'],
