@@ -10,6 +10,48 @@ const spot = require('../../db/models/spot');
 
 const router = express.Router();
 
+//Edit a Review
+router.put(
+    '/:reviewId',
+    requireAuth,
+
+    async (req, res, next) => {
+        const targetReview = await Review.findByPk(req.params.reviewId)
+
+        if (!targetReview) {
+            res.statusCode = 404
+            return res.json({
+                "message": "Review couldn't be found",
+                "statusCode": 404
+            })
+        } else if (req.user.id !== targetReview.userId) {
+            res.statusCode = 403
+            res.json("This review does not belong to the current user")
+        }
+
+        const targetSpot = await Spot.findAll({
+            where: {
+                id: targetReview.spotId
+            },
+            raw: true
+        })
+        console.log('targetspot', targetSpot)
+
+        const { review, stars } = req.body
+        await targetReview.update({
+            userId: req.user.id,
+            spotId: targetSpot.id,
+            review,
+            stars
+        })
+
+        res.json(
+            targetReview
+        )
+    }
+);
+
+
 // Get all Reviews of the Current User
 router.get(
     '/current',
