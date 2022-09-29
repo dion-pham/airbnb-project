@@ -96,7 +96,7 @@ router.post(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
@@ -114,7 +114,7 @@ router.post(
 
         if (newEndDate <= newStartDate) {
             res.statusCode = 400
-            res.json({
+            return res.json({
                 "message": "Validation error",
                 "statusCode": 400,
                 "errors": {
@@ -136,7 +136,7 @@ router.post(
             if ((newStartDate <= existingBookingsStart && newEndDate >= existingBookingsEnd) || (newStartDate >= existingBookingsStart && newEndDate <= existingBookingsEnd)) {
 
                 res.statusCode = 403
-                res.json({
+                return res.json({
                     "message": "Sorry, this spot is already booked for the specified dates",
                     "statusCode": 403,
                     "errors": {
@@ -173,7 +173,7 @@ router.post(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
@@ -189,7 +189,7 @@ router.post(
         console.log('this is targetReview', targetReview)
         if (targetReview.length > 0) {
             res.statusCode = 403
-            res.json({
+            return res.json({
                 "message": "User already has a review for this spot",
                 "statusCode": 403
             })
@@ -218,7 +218,7 @@ router.delete(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
@@ -226,7 +226,7 @@ router.delete(
 
         if (req.user.id !== targetSpot.ownerId) {
             res.statusCode = 404
-            res.json("This spot does not belong to the current user")
+            return res.json("This spot does not belong to the current user")
         }
 
         await targetSpot.destroy()
@@ -250,7 +250,7 @@ router.put(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
@@ -258,7 +258,7 @@ router.put(
 
         if (req.user.id !== targetSpot.ownerId) {
             res.statusCode = 404
-            res.json("This spot does not belong to the current user")
+            return res.json("This spot does not belong to the current user")
         }
         const { address, city, state, country, lat, lng, name, description, price } = req.body
         await targetSpot.update({
@@ -290,13 +290,13 @@ router.post(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
         } else if (req.user.id !== targetSpot.ownerId) {
             res.statusCode = 403
-            res.json("This spot does not belong to the current user")
+            return res.json("This spot does not belong to the current user")
         }
         const { url, preview } = req.body
         const newImage = await SpotImage.create({
@@ -378,7 +378,7 @@ router.get(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json(
+            return res.json(
                 {
                     "message": "Spot couldn't be found",
                     "statusCode": 404
@@ -415,7 +415,7 @@ router.get(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
@@ -468,7 +468,7 @@ router.get(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json(
+            return res.json(
                 {
                     "message": "Spot couldn't be found",
                     "statusCode": 404
