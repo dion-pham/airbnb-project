@@ -10,11 +10,50 @@ const spot = require('../../db/models/spot');
 
 const router = express.Router();
 
+
+const validateSpotCreate = [
+    check('address')
+        .exists({ checkFalsy: true })
+        .withMessage('Street address is required.'),
+    check('city')
+        .exists({ checkFalsy: true })
+        .withMessage('City is required'),
+    check('state')
+        .exists({ checkFalsy: true })
+        .withMessage('State is required'),
+    check('country')
+        .exists({ checkFalsy: true })
+        .withMessage("Country is required"),
+    check('lat')
+        .exists({ checkFalsy: true })
+        .isFloat()
+        .withMessage('Latitude is not valid'),
+    check('lng')
+        .exists({ checkFalsy: true })
+        .isFloat()
+        .withMessage('Longitude is not valid'),
+    check('name')
+        .exists({ checkFalsy: true }),
+    check('name')
+        .isLength({ max: 50 })
+        .withMessage('Name must be less than 50 characters'),
+    check('description')
+        .exists({ checkFalsy: true })
+        .withMessage('Description is required'),
+    check('price')
+        .exists({ checkFalsy: true })
+        .isFloat()
+        .withMessage('Price per day is required'),
+    handleValidationErrors
+];
+
+
+
 //create a spot
 router.post(
     '/',
     requireAuth,
-    // validateSignup,
+    validateSpotCreate,
     async (req, res, next) => {
         const { address, city, state, country, lat, lng, name, description, price } = req.body
         const newUser = await Spot.create({
@@ -453,11 +492,30 @@ router.get(
         page = parseInt(page)
         size = parseInt(size)
 
-        if (!Number.isInteger(page) || page > 10 || page < 1) {
+        if (!Number.isInteger(page) || page > 10) {
             page = 1
+        } else if (page < 1) {
+            res.statusCode = 400
+            return res.json({
+                "message": "Validation Error",
+                "statusCode": 400,
+                "errors": {
+                    "page": "Page must be greater than or equal to 1"
+                }
+            })
         }
-        if (!Number.isInteger(size) || size > 20 || size < 1) {
+
+        if (!Number.isInteger(size) || size > 20) {
             size = 20
+        } else if (size < 1) {
+            res.statusCode = 400
+            return res.json({
+                "message": "Validation Error",
+                "statusCode": 400,
+                "errors": {
+                    "size": "Size must be greater than or equal to 1"
+                }
+            })
         }
 
         // let resBody = {}
