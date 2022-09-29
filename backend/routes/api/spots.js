@@ -221,62 +221,6 @@ router.put(
 );
 
 
-// Get all Spots owned by the Current User
-router.get(
-    '/current',
-    requireAuth,
-    async (req, res, next) => {
-
-
-        let resBody = {}
-        resBody.Spots = await Spot.findAll({
-            include: [],
-            where: { ownerId: req.user.id },
-            raw: true,
-            limit: size,
-            offset: size * (page - 1)
-        })
-
-        for (let i = 0; i < resBody.Spots.length; i++) {
-            let currentSpot = resBody.Spots[i]
-            const avgRating = await Review.findAll({
-                where: { spotId: currentSpot.id },
-                attributes:
-                    [
-                        [Sequelize.fn('AVG', Sequelize.col('stars')), 'avgRating'],
-                    ]
-                ,
-                raw: true
-            })
-
-            currentSpot.avgRating = Number(avgRating[0].avgRating)
-            //findAll is the alternative multiple previewImage urls
-            const previewImage = await SpotImage.findOne({
-                where: {
-                    spotId: currentSpot.id,
-                },
-                attributes: ['url', 'preview'],
-                raw: true
-            })
-            currentSpot.previewImage = previewImage.url
-            //alternative for multiple spots. an array of preview image urls
-            // const newArr = []
-            // for (let i = 0; i < previewImages.length; i++) {
-            //     if (previewImages[i].preview) {
-            //         newArr.push(previewImages[i].url)
-            //         // currentSpot.previewImage = previewImages[i].url
-            //     }
-            //     newArr.length ? currentSpot.previewImage = newArr : null
-            // }
-        }
-        res.json({
-            resBody
-        }
-        )
-    }
-);
-
-
 // Add an Image to a Spot based on the Spot's id
 router.post(
     '/:spotId/images',
@@ -308,6 +252,63 @@ router.post(
         )
     }
 );
+
+// Get all Spots owned by the Current User
+router.get(
+    '/current',
+    requireAuth,
+    async (req, res, next) => {
+
+        // let resBody = {}
+        const Spots = await Spot.findAll({
+            include: [],
+            where: { ownerId: req.user.id },
+            raw: true
+        })
+
+        for (let i = 0; i < Spots.length; i++) {
+            let currentSpot = Spots[i]
+            const avgRating = await Review.findAll({
+                where: { spotId: currentSpot.id },
+                attributes:
+                    [
+                        [Sequelize.fn('AVG', Sequelize.col('stars')), 'avgRating'],
+                    ]
+                ,
+                raw: true
+            })
+
+            if (avgRating[0].avgRating === null) {
+                currentSpot.avgRating = "There are no reviews"
+            } else if (avgRating) {
+                currentSpot.avgRating = Number(parseFloat(avgRating[0].avgRating).toFixed(1))
+            }
+            //findAll is the alternative multiple previewImage urls
+            const previewImage = await SpotImage.findOne({
+                where: {
+                    spotId: currentSpot.id
+                },
+                attributes: ['url', 'preview'],
+                raw: true
+            })
+            currentSpot.previewImage = previewImage.url
+            //alternative for multiple spots. an array of preview image urls
+            // const newArr = []
+            // for (let i = 0; i < previewImages.length; i++) {
+            //     if (previewImages[i].preview) {
+            //         newArr.push(previewImages[i].url)
+            //         // currentSpot.previewImage = previewImages[i].url
+            //     }
+            //     newArr.length ? currentSpot.previewImage = newArr : null
+            // }
+        }
+        res.json({
+            Spots
+        }
+        )
+    }
+);
+
 
 
 // Get all Reviews by a Spot's id
@@ -478,7 +479,12 @@ router.get(
                 raw: true
             })
 
-            currentSpot.avgRating = Number(avgRating[0].avgRating)
+
+            if (avgRating[0].avgRating === null) {
+                currentSpot.avgRating = "There are no reviews"
+            } else if (avgRating) {
+                currentSpot.avgRating = Number(parseFloat(avgRating[0].avgRating).toFixed(1))
+            }
             //findAll is the alternative multiple previewImage urls
             const previewImage = await SpotImage.findOne({
                 where: {
