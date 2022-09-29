@@ -11,6 +11,13 @@ const booking = require('../../db/models/booking');
 
 const router = express.Router();
 
+// const validateReviewCreate = [
+//     check('endDate')
+//         .exists({ checkFalsy: true })
+//         .isBefore()
+//         .withMessage('endDate cannot come before startDate'),
+//     handleValidationErrors]
+
 
 //delete a booking
 router.delete(
@@ -94,6 +101,17 @@ router.put(
 
         let existingBookingsStart = new Date(targetBooking.startDate).getTime()
         let existingBookingsEnd = new Date(targetBooking.endDate).getTime()
+
+        if (newEndDate < newStartDate) {
+            res.statusCode = 400
+            res.json({
+                "message": "Validation error",
+                "statusCode": 400,
+                "errors": {
+                    "endDate": "endDate cannot come before startDate"
+                }
+            })
+        }
 
         const currentDate = new Date().getTime()
         if (currentDate > existingBookingsEnd) {

@@ -33,7 +33,8 @@ const validateSpotCreate = [
         .isFloat()
         .withMessage('Longitude is not valid'),
     check('name')
-        .exists({ checkFalsy: true }),
+        .exists({ checkFalsy: true })
+        .withMessage('Please add a name'),
     check('name')
         .isLength({ max: 50 })
         .withMessage('Name must be less than 50 characters'),
@@ -46,6 +47,16 @@ const validateSpotCreate = [
         .withMessage('Price per day is required'),
     handleValidationErrors
 ];
+
+const validateReviewCreate = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .withMessage('Review text is required'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt({ gt: 1, lt: 6 })
+        .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors]
 
 
 
@@ -101,6 +112,17 @@ router.post(
         let newStartDate = new Date(startDate).getTime()
         let newEndDate = new Date(endDate).getTime()
 
+        if (newEndDate <= newStartDate) {
+            res.statusCode = 400
+            res.json({
+                "message": "Validation error",
+                "statusCode": 400,
+                "errors": {
+                    "endDate": "endDate cannot come before or on startDate"
+                }
+            })
+        }
+
         const currentBookings = await Booking.findAll({
             where: {
                 spotId: targetSpot.id
@@ -112,8 +134,6 @@ router.post(
             let existingBookingsStart = new Date(individualBooking.startDate).getTime()
             let existingBookingsEnd = new Date(individualBooking.endDate).getTime()
             if ((newStartDate <= existingBookingsStart && newEndDate >= existingBookingsEnd) || (newStartDate >= existingBookingsStart && newEndDate <= existingBookingsEnd)) {
-
-
 
                 res.statusCode = 403
                 res.json({
@@ -147,7 +167,7 @@ router.post(
 router.post(
     '/:spotId/reviews',
     requireAuth,
-
+    validateReviewCreate,
     async (req, res, next) => {
         const targetSpot = await Spot.findByPk(req.params.spotId)
 
@@ -223,7 +243,7 @@ router.delete(
 router.put(
     '/:spotId',
     requireAuth,
-
+    validateSpotCreate,
     async (req, res, next) => {
         const targetSpot = await Spot.findByPk(req.params.spotId)
 
@@ -474,7 +494,12 @@ router.get(
         const targetSpotJSON = targetSpot.toJSON()
 
         targetSpotJSON.numReviews = targetReviews[0].numReviews
-        targetSpotJSON.avgStarRating = targetReviews[0].avgStarRating
+
+        if (targetReviews[0].avgStarRating === null) {
+            targetSpotJSON.avgStarRating = "There are no reviews"
+        } else if (targetReviews[0].avgStarRating) {
+            targetSpotJSON.avgStarRating = targetReviews[0].avgStarRating
+        }
 
         res.json(
             targetSpotJSON

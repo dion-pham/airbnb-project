@@ -11,6 +11,17 @@ const spot = require('../../db/models/spot');
 const router = express.Router();
 
 
+const validateReviewCreate = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .withMessage('Review text is required'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt({ gt: 1, lt: 5 })
+        .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors]
+
+
 //delete a review
 router.delete(
     '/:reviewId',
@@ -46,7 +57,7 @@ router.delete(
 router.put(
     '/:reviewId',
     requireAuth,
-
+    validateReviewCreate,
     async (req, res, next) => {
         const targetReview = await Review.findByPk(req.params.reviewId)
 
