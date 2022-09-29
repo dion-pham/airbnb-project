@@ -547,7 +547,9 @@ router.get(
         // resBody.Spots
         const Spots = await Spot.findAll({
             include: [],
-            raw: true
+            raw: true,
+            limit: size,
+            offset: size * (page - 1)
         })
 
         for (let i = 0; i < Spots.length; i++) {
@@ -576,7 +578,13 @@ router.get(
                 attributes: ['url', 'preview'],
                 raw: true
             })
-            currentSpot.previewImage = previewImage.url
+            console.log(previewImage)
+
+            if (previewImage !== null) {
+                currentSpot.previewImage = previewImage.url
+            }
+            // currentSpot.previewImage = previewImage.url
+
             //alternative for multiple spots. an array of preview image urls
             // const newArr = []
             // for (let i = 0; i < previewImages.length; i++) {
