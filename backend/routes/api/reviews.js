@@ -159,7 +159,7 @@ router.post(
         if (!targetReview) {
             res.statusCode = 404
             res.json({
-                "message": "Spot couldn't be found",
+                "message": "Review couldn't be found",
                 "statusCode": 404
             })
         } else if (req.user.id !== targetReview.userId) {
