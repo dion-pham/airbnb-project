@@ -351,6 +351,9 @@ router.get(
                 raw: true
             })
             currentSpot.previewImage = previewImage.url
+            //   currentSpot.previewImage = previewImage[0].url if find all
+
+
             //alternative for multiple spots. an array of preview image urls
             // const newArr = []
             // for (let i = 0; i < previewImages.length; i++) {
@@ -493,7 +496,7 @@ router.get(
 
         const targetSpotJSON = targetSpot.toJSON()
 
-        targetSpotJSON.numReviews = targetReviews[0].numReviews
+        targetSpotJSON.numReviews = Number(targetReviews[0].numReviews)
 
         if (targetReviews[0].avgStarRating === null) {
             targetSpotJSON.avgStarRating = "There are no reviews"

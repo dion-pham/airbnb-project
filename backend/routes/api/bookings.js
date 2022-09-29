@@ -172,6 +172,7 @@ router.get(
                 raw: true
             })
             individualBooking.Spot.dataValues.previewImage = previewImages.url
+            //   individualBooking.Spot.dataValues.previewImage = previewImages[0].url if findAll
         }
         res.json({
             Bookings: userBookings
