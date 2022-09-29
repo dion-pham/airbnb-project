@@ -8,37 +8,37 @@ module.exports = {
         spotId: 1,
         userId: 3,
         review: 'Looks just like it from the show!',
-        stars: 4.5
+        stars: 4
       },
       {
         spotId: 1,
         userId: 2,
         review: 'Call me Watson, you are Sherlock',
-        stars: 4.3
+        stars: 5
       },
       {
         spotId: 2,
         userId: 1,
         review: 'Brings me back to my childhood',
-        stars: 4.7
+        stars: 5
       },
       {
         spotId: 2,
         userId: 3,
         review: 'Used to love watching full house as a kid',
-        stars: 4.2
+        stars: 4
       },
       {
         spotId: 3,
         userId: 1,
         review: 'Avadakabrah!',
-        stars: 3.9
+        stars: 3
       },
       {
         spotId: 3,
         userId: 2,
         review: 'There are people still living here and shoo away tourists. do not recommends',
-        stars: 3.5
+        stars: 4
       }
 
     ], {});

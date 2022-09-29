@@ -10,11 +10,61 @@ const spot = require('../../db/models/spot');
 
 const router = express.Router();
 
+
+const validateSpotCreate = [
+    check('address')
+        .exists({ checkFalsy: true })
+        .withMessage('Street address is required.'),
+    check('city')
+        .exists({ checkFalsy: true })
+        .withMessage('City is required'),
+    check('state')
+        .exists({ checkFalsy: true })
+        .withMessage('State is required'),
+    check('country')
+        .exists({ checkFalsy: true })
+        .withMessage("Country is required"),
+    check('lat')
+        .exists({ checkFalsy: true })
+        .isFloat()
+        .withMessage('Latitude is not valid'),
+    check('lng')
+        .exists({ checkFalsy: true })
+        .isFloat()
+        .withMessage('Longitude is not valid'),
+    check('name')
+        .exists({ checkFalsy: true })
+        .withMessage('Please add a name'),
+    check('name')
+        .isLength({ max: 50 })
+        .withMessage('Name must be less than 50 characters'),
+    check('description')
+        .exists({ checkFalsy: true })
+        .withMessage('Description is required'),
+    check('price')
+        .exists({ checkFalsy: true })
+        .isFloat()
+        .withMessage('Price per day is required'),
+    handleValidationErrors
+];
+
+const validateReviewCreate = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .withMessage('Review text is required'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt({ gt: 1, lt: 6 })
+        .withMessage('Stars must be an integer from 1 to 5'),
+    handleValidationErrors]
+
+
+
 //create a spot
 router.post(
     '/',
     requireAuth,
-    // validateSignup,
+    validateSpotCreate,
     async (req, res, next) => {
         const { address, city, state, country, lat, lng, name, description, price } = req.body
         const newUser = await Spot.create({
@@ -46,7 +96,7 @@ router.post(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
@@ -62,6 +112,17 @@ router.post(
         let newStartDate = new Date(startDate).getTime()
         let newEndDate = new Date(endDate).getTime()
 
+        if (newEndDate <= newStartDate) {
+            res.statusCode = 400
+            return res.json({
+                "message": "Validation error",
+                "statusCode": 400,
+                "errors": {
+                    "endDate": "endDate cannot come before or on startDate"
+                }
+            })
+        }
+
         const currentBookings = await Booking.findAll({
             where: {
                 spotId: targetSpot.id
@@ -74,10 +135,8 @@ router.post(
             let existingBookingsEnd = new Date(individualBooking.endDate).getTime()
             if ((newStartDate <= existingBookingsStart && newEndDate >= existingBookingsEnd) || (newStartDate >= existingBookingsStart && newEndDate <= existingBookingsEnd)) {
 
-
-
                 res.statusCode = 403
-                res.json({
+                return res.json({
                     "message": "Sorry, this spot is already booked for the specified dates",
                     "statusCode": 403,
                     "errors": {
@@ -108,13 +167,13 @@ router.post(
 router.post(
     '/:spotId/reviews',
     requireAuth,
-
+    validateReviewCreate,
     async (req, res, next) => {
         const targetSpot = await Spot.findByPk(req.params.spotId)
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
@@ -130,7 +189,7 @@ router.post(
         console.log('this is targetReview', targetReview)
         if (targetReview.length > 0) {
             res.statusCode = 403
-            res.json({
+            return res.json({
                 "message": "User already has a review for this spot",
                 "statusCode": 403
             })
@@ -159,7 +218,7 @@ router.delete(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
@@ -167,7 +226,7 @@ router.delete(
 
         if (req.user.id !== targetSpot.ownerId) {
             res.statusCode = 404
-            res.json("This spot does not belong to the current user")
+            return res.json("This spot does not belong to the current user")
         }
 
         await targetSpot.destroy()
@@ -184,14 +243,14 @@ router.delete(
 router.put(
     '/:spotId',
     requireAuth,
-
+    validateSpotCreate,
     async (req, res, next) => {
         const targetSpot = await Spot.findByPk(req.params.spotId)
 
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
@@ -199,7 +258,7 @@ router.put(
 
         if (req.user.id !== targetSpot.ownerId) {
             res.statusCode = 404
-            res.json("This spot does not belong to the current user")
+            return res.json("This spot does not belong to the current user")
         }
         const { address, city, state, country, lat, lng, name, description, price } = req.body
         await targetSpot.update({
@@ -231,13 +290,13 @@ router.post(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
         } else if (req.user.id !== targetSpot.ownerId) {
             res.statusCode = 403
-            res.json("This spot does not belong to the current user")
+            return res.json("This spot does not belong to the current user")
         }
         const { url, preview } = req.body
         const newImage = await SpotImage.create({
@@ -319,7 +378,7 @@ router.get(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json(
+            return res.json(
                 {
                     "message": "Spot couldn't be found",
                     "statusCode": 404
@@ -356,7 +415,7 @@ router.get(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json({
+            return res.json({
                 "message": "Spot couldn't be found",
                 "statusCode": 404
             })
@@ -409,7 +468,7 @@ router.get(
 
         if (!targetSpot) {
             res.statusCode = 404
-            res.json(
+            return res.json(
                 {
                     "message": "Spot couldn't be found",
                     "statusCode": 404
@@ -435,7 +494,12 @@ router.get(
         const targetSpotJSON = targetSpot.toJSON()
 
         targetSpotJSON.numReviews = targetReviews[0].numReviews
-        targetSpotJSON.avgStarRating = targetReviews[0].avgStarRating
+
+        if (targetReviews[0].avgStarRating === null) {
+            targetSpotJSON.avgStarRating = "There are no reviews"
+        } else if (targetReviews[0].avgStarRating) {
+            targetSpotJSON.avgStarRating = targetReviews[0].avgStarRating
+        }
 
         res.json(
             targetSpotJSON
@@ -453,11 +517,30 @@ router.get(
         page = parseInt(page)
         size = parseInt(size)
 
-        if (!Number.isInteger(page) || page > 10 || page < 1) {
+        if (!Number.isInteger(page) || page > 10) {
             page = 1
+        } else if (page < 1) {
+            res.statusCode = 400
+            return res.json({
+                "message": "Validation Error",
+                "statusCode": 400,
+                "errors": {
+                    "page": "Page must be greater than or equal to 1"
+                }
+            })
         }
-        if (!Number.isInteger(size) || size > 20 || size < 1) {
+
+        if (!Number.isInteger(size) || size > 20) {
             size = 20
+        } else if (size < 1) {
+            res.statusCode = 400
+            return res.json({
+                "message": "Validation Error",
+                "statusCode": 400,
+                "errors": {
+                    "size": "Size must be greater than or equal to 1"
+                }
+            })
         }
 
         // let resBody = {}
