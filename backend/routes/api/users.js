@@ -47,7 +47,7 @@ router.post(
 
         const token = await setTokenCookie(res, user);
         user.dataValues.token = token
-        // console.log(user)
+
         return res.json(
             user.dataValues
         );

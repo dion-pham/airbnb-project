@@ -22,8 +22,6 @@ router.delete(
             include: { model: Review }
         })
 
-        console.log(targetImage)
-
         if (!targetImage) {
             res.statusCode = 404
             return res.json({
