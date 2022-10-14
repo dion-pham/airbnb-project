@@ -17,12 +17,6 @@ const handleValidationErrors = (req, _res, next) => {
         err.status = 400;
         err.title = 'Bad request.';
 
-        // console.log('errors', errors[1])
-
-        // if (errors[0].includes('unique')) {
-        //     err.status = 403
-        // }
-
         next(err);
     }
     next();

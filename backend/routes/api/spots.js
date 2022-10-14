@@ -186,7 +186,6 @@ router.post(
             }
         })
 
-        console.log('this is targetReview', targetReview)
         if (targetReview.length > 0) {
             res.statusCode = 403
             return res.json({
@@ -581,7 +580,6 @@ router.get(
                 attributes: ['url', 'preview'],
                 raw: true
             })
-            console.log(previewImage)
 
             if (previewImage !== null) {
                 currentSpot.previewImage = previewImage.url

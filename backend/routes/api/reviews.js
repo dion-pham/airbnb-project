@@ -78,7 +78,6 @@ router.put(
             },
             raw: true
         })
-        console.log('targetspot', targetSpot)
 
         const { review, stars } = req.body
         await targetReview.update({

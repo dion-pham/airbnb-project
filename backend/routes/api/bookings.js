@@ -39,10 +39,6 @@ router.delete(
 
         const targetSpot = await Spot.findByPk(targetBooking.spotId)
 
-        // console.log('targetbooking', targetBooking)
-        // console.log('targetbookingspotid', targetBooking.Spot.ownerId)
-        // console.log('userid', req.user.id)
-        // console.log('targetspotownderid', targetSpot.ownerId)
         const existingBookingsStart = new Date(targetBooking.startDate).getTime()
         const currentDate = new Date().getTime()
         if (currentDate >= existingBookingsStart) {
@@ -160,7 +156,6 @@ router.get(
                 raw: true
             }
         })
-        // console.log(userBookings[0].Spot.id)
 
         for (const individualBooking of userBookings) {
             // alternate: findAll
