@@ -63,9 +63,10 @@ app.use((err, _req, _res, next) => {
         err.title = 'Validation error';
     }
 
-    if (err.errors[0].includes('unique')) {
-        err.status = 403
-    }
+    console.log('this is the error----', err)
+    // if (err.errors[0].includes('unique')) {
+    //     err.status = 403
+    // }
 
     next(err);
 });
