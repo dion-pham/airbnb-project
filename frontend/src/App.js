@@ -3,8 +3,10 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
-import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
+import SpotsList from "./components/SpotsList";
+
+import * as sessionActions from "./store/session";
 
 function App() {
   const dispatch = useDispatch();
@@ -20,6 +22,9 @@ function App() {
         <Switch>
           <Route path="/signup">
             <SignupFormPage />
+          </Route>
+          <Route path="/" >
+            <SpotsList component={SpotsList} />
           </Route>
         </Switch>
       )}

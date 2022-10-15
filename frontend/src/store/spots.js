@@ -7,19 +7,19 @@ const UPDATE_SPOT = 'spots/UPDATE_SPOT'
 const DELETE_SPOT = 'spots/DELETE_SPOT'
 
 // action creators (need CRUD)
-const actionLoad = allSpots => ({
+const actionLoad = load => ({
     type: LOAD,
-    allSpots
+    load
 });
 
-const actionAddSpot = singleSpot => ({
+const actionAddSpot = singleLoad => ({
     type: ADD_SPOT,
-    singleSpot
+    singleLoad
 });
 
-const actionUpdateSpot = singleSpot => ({
+const actionUpdateSpot = singleLoad => ({
     type: UPDATE_SPOT,
-    singleSpot
+    singleLoad
 });
 
 const actionDeleteSpot = (singleSpotId) => ({
@@ -106,8 +106,11 @@ const spotsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD:
             const newState = { ...state }
-            action.allSpots.Spots.forEach((spot) => { newState[spot.id] = spot })
-
+            action.load.Spots.forEach((spot) => { newState.allSpots[spot.id] = spot })
+            return newState
+        case ADD_SPOT:
+            const _newState = { ...state }
+            _newState[action.singleLoad.id] = action.singleLoad
             return newState
         default:
             return state;
