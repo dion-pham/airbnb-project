@@ -1,15 +1,17 @@
 // frontend/src/App.js
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import SignupFormPage from "./components/SignupFormPage";
 import Navigation from "./components/Navigation";
 import SpotsList from "./components/SpotsList";
 import CreateASpotForm from "./components/CreateASpotForm";
-import { thunkGetAllSpots } from "./store/spots";
 import SpotDetail from "./components/SpotDetail";
+import EditASpotForm from "./components/EditASpotForm";
 
 import * as sessionActions from "./store/session";
+
+import { thunkGetAllSpots } from "./store/spots";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +21,8 @@ function App() {
     // dispatch added here to getAllSpots upon first render
     dispatch(thunkGetAllSpots());
   }, [dispatch]);
+
+  // const spots = useSelector(state => state.spots.allSpots)
 
   return (
     <>
@@ -33,9 +37,10 @@ function App() {
             <SpotsList component={SpotsList} />
             <CreateASpotForm component={CreateASpotForm} />
           </Route>
-          {/* path not needed?? */}
-          <Route path="/api/spots/:spotId" >
+          <Route path="/spots/:spotId" >
             <SpotDetail component={SpotDetail} />
+            <EditASpotForm component={EditASpotForm} />
+            {/* spots={spots} */}
           </Route>
         </Switch>
       )}
