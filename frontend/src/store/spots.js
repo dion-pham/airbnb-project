@@ -2,6 +2,7 @@ import { csrfFetch } from './csrf';
 
 // type constants
 const LOAD = 'spots/LOAD'
+const LOAD_SPOT = 'spots/LOAD_SPOT'
 const ADD_SPOT = 'spots/ADD_SPOT'
 const UPDATE_SPOT = 'spots/UPDATE_SPOT'
 const DELETE_SPOT = 'spots/DELETE_SPOT'
@@ -11,6 +12,12 @@ const actionLoad = load => ({
     type: LOAD,
     load
 });
+
+const actionLoadSpot = singleLoad => ({
+    type: LOAD_SPOT,
+    singleLoad
+});
+
 
 const actionAddSpot = singleLoad => ({
     type: ADD_SPOT,
@@ -46,7 +53,7 @@ export const thunkGetSpotById = (id) => async dispatch => {
 
     if (response.ok) {
         const singleSpot = await response.json()
-        dispatch(actionAddSpot(singleSpot))
+        dispatch(actionLoadSpot(singleSpot))
     }
 }
 
@@ -83,18 +90,18 @@ export const thunkUpdateSpot = (spotId, payload) => async (dispatch) => {
 }
 
 // NEEDS WORDS!!! CRU(d) - delete a spot by id
-// export const thunkDeleteSpot = (spotId) => async (dispatch) => {
-//     const response = await csrfFetch(`/api/spots/${spotId}`, {
-//         method: 'DELETE'
-//     });
+export const thunkDeleteSpot = (spotId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'DELETE'
+    });
 
-//     if (response.ok) {
-//         const deletedSpot = await response.json()
-//         // needs work. because the response we get back is a message of 200?
-//         dispatch(actionDeleteSpot(deletedSpot))
-//         return deletedSpot
-//     }
-// }
+    if (response.ok) {
+        const deletedSpot = await response.json()
+        // needs work. because the response we get back is a message of 200?
+        dispatch(actionDeleteSpot(deletedSpot))
+        return deletedSpot
+    }
+}
 
 // reducers
 const initialState = {
@@ -108,18 +115,20 @@ const spotsReducer = (state = initialState, action) => {
             const newState = { ...state }
             action.load.Spots.forEach((spot) => { newState.allSpots[spot.id] = spot })
             return newState
-        case ADD_SPOT:
+        case LOAD_SPOT:
             const _newState = { ...state }
-            _newState[action.singleLoad.id] = action.singleLoad
-            return newState
+            _newState.singleSpot = action.singleLoad
+            return _newState
+        case ADD_SPOT:
+            if (!state[action.singleLoad.id]) {
+                const __newState = { ...state }
+                __newState.allSpots[action.singleLoad.id] = action.singleLoad
+                return __newState
+            } else {
+                return state
+            }
         default:
             return state;
     }
 }
-
-
-
-// normalize array function?
-
-
 export default spotsReducer;

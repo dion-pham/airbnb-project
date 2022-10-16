@@ -46,6 +46,17 @@ function LoginForm() {
                 />
             </label>
             <button type="submit">Log In</button>
+            <button
+                onClick={() =>
+                    dispatch(
+                        sessionActions.login({
+                            credential: 'Demo-lition',
+                            password: "password"
+                        })
+                    )}
+            >
+                Demo User
+            </button>
         </form>
     );
 }
