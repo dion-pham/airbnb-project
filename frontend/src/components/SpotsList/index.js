@@ -17,15 +17,13 @@ const SpotsList = () => {
     if (!spotList) return null
     return (
         <>
-            <h1>Spot List</h1>
-
+            <h1>Home Page</h1>
             {spotList.map((spot) => (
                 <div key={spot.id} className='spot-card'>
                     <Link to={`/api/spots/${spot.id}`}>{spot.name}</Link>
                 </div>
 
             ))}
-
         </>
     );
 };
