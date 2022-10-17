@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { thunkCreateSpot } from '../../store/spots';
+import { thunkCreateSpot, thunkCreateSpotImage } from '../../store/spots';
 import './CreateASpotForm.css'
 
 
@@ -19,6 +19,7 @@ const CreateASpotForm = () => {
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState("")
+    const [url, setUrl] = useState("")
     const [validationErrors, setValidationErrors] = useState([])
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -59,8 +60,11 @@ const CreateASpotForm = () => {
         if (price.length === 0) {
             errors.push("Price field is required")
         }
+        if (url.length === 0) {
+            errors.push("Url is required")
+        }
         setValidationErrors(errors)
-    }, [name, address, city, state, country, lat, lng, description, price])
+    }, [name, address, city, state, country, lat, lng, description, price, url])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -79,8 +83,14 @@ const CreateASpotForm = () => {
             price
         };
 
+        const imagePayload = {
+            url,
+            preview: true
+        }
+
         let createdSpot = await dispatch(thunkCreateSpot(payload))
         if (createdSpot) {
+            dispatch(thunkCreateSpotImage(createdSpot.id, imagePayload))
             history.push('/spots');
             setAddress('')
             setCity('')
@@ -93,6 +103,7 @@ const CreateASpotForm = () => {
             setPrice('')
             setValidationErrors([]);
             setHasSubmitted(false);
+            // add arguments to this ^ thunk
             // hideForm();
         }
     };
@@ -112,51 +123,56 @@ const CreateASpotForm = () => {
             <form className='create-spot-form' onSubmit={handleSubmit}>
                 <label>Create a spot for the phamily!</label>
                 <input
-                    type="name"
+                    type="text"
                     placeholder='name'
                     value={name}
                     onChange={(e) => setName(e.target.value)} />
                 <input
-                    type="address"
+                    type="text"
                     placeholder='address'
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                 />
                 <input
-                    type="city"
+                    type="text"
                     placeholder='city'
                     value={city}
                     onChange={(e) => setCity(e.target.value)} />
                 <input
-                    type="state"
+                    type="text"
                     placeholder='state'
                     value={state}
                     onChange={(e) => setState(e.target.value)} />
                 <input
-                    type="country"
+                    type="text"
                     placeholder='country'
                     value={country}
                     onChange={(e) => setCountry(e.target.value)} />
                 <input
-                    type="lat"
+                    type="text"
                     placeholder='latitude'
                     value={lat}
                     onChange={(e) => setLat(e.target.value)} />
                 <input
-                    type="lng"
+                    type="text"
                     placeholder='longitude'
                     value={lng}
                     onChange={(e) => setLng(e.target.value)} />
                 <input
-                    type="description"
+                    type="text"
                     placeholder='description'
                     value={description}
                     onChange={(e) => setDescription(e.target.value)} />
                 <input
-                    type="price"
+                    type="text"
                     placeholder='price'
                     value={price}
                     onChange={(e) => setPrice(e.target.value)} />
+                <input
+                    type="text"
+                    placeholder='image url'
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)} />
                 <button>
                     Create Your Home!
                 </button>

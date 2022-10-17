@@ -1,7 +1,6 @@
 // frontend/src/index.js
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from 'redux-persist/integration/react';
@@ -13,6 +12,8 @@ import { restoreCSRF, csrfFetch } from "./store/csrf";
 import * as sessionActions from "./store/session";
 import * as spotsActions from "./store/spots";
 import * as reviewsActions from './store/reviews'
+
+import "./index.css";
 
 const { store, persistor } = configureStore();
 
