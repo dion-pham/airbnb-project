@@ -30,7 +30,7 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
-          <Route exact path="/spots" >
+          <Route exact path={["/", "/spots"]} >
             <SpotsList component={SpotsList} />
             <CreateASpotForm component={CreateASpotForm} />
           </Route>
@@ -40,7 +40,6 @@ function App() {
           <Route path="/spots/:spotId" >
             <SpotDetail component={SpotDetail} />
           </Route>
-
         </Switch>
       )}
     </>

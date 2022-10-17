@@ -28,25 +28,35 @@ const CreateASpotForm = () => {
         const errors = []
         if (name.length === 0) {
             errors.push("Name field is required")
-        } else if (name.length > 50) {
+        }
+        if (name.length > 50) {
             errors.push("Name must be less than 50 characters")
-        } else if (address.length === 0) {
+        }
+        if (address.length === 0) {
             errors.push("Address field is required")
-        } else if (city.length === 0) {
+        }
+        if (city.length === 0) {
             errors.push("City field is required")
-        } else if (state.length === 0) {
+        }
+        if (state.length === 0) {
             errors.push("State field is required")
-        } else if (country.length === 0) {
+        }
+        if (country.length === 0) {
             errors.push("Country field is required")
-        } else if (!isLat(lat)) {
+        }
+        if (!isLat(lat)) {
             errors.push("Latitude field must be less than or equal to 90")
-        } else if (!isLng(lng)) {
+        }
+        if (!isLng(lng)) {
             errors.push("Longitude field must be less than or equal to 180")
-        } else if (description.length === 0) {
+        }
+        if (description.length === 0) {
             errors.push("Description is required")
-        } else if (!validatePrice(price)) {
+        }
+        if (!validatePrice(price)) {
             errors.push("Please enter a valid price")
-        } else if (price.length === 0) {
+        }
+        if (price.length === 0) {
             errors.push("Price field is required")
         }
         setValidationErrors(errors)

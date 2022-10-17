@@ -1,16 +1,9 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { thunkGetAllSpots } from '../../store/spots';
 import { Link } from 'react-router-dom';
 
 import './SpotsList.css';
-// import css
 
 const SpotsList = () => {
-    // const dispatch = useDispatch()
-    // useEffect(() => {
-    //     dispatch(thunkGetAllSpots());
-    // }, [dispatch]);
 
     const spotList = useSelector((state) => Object.values(state.spots.allSpots))
 
@@ -22,7 +15,6 @@ const SpotsList = () => {
                 <div key={spot.id} className='spot-card'>
                     <Link to={`/spots/${spot.id}`}>{spot.name}</Link>
                 </div>
-
             ))}
         </>
     );

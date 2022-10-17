@@ -1,13 +1,12 @@
 import { csrfFetch } from './csrf';
 
-// type constants
+// ***TYPE CONSTANTS***
 const LOAD = 'spots/LOAD'
 const LOAD_SPOT = 'spots/LOAD_SPOT'
 const ADD_SPOT = 'spots/ADD_SPOT'
-const UPDATE_SPOT = 'spots/UPDATE_SPOT'
 const DELETE_SPOT = 'spots/DELETE_SPOT'
 
-// action creators (need CRUD)
+// ***ACTION CREATORS*** (need CRUD)
 const actionLoad = load => ({
     type: LOAD,
     load
@@ -30,7 +29,7 @@ const actionDeleteSpot = (spotId) => ({
     spotId
 });
 
-// thunk action creators
+// ***THUNK ACTION CREATORS***
 
 // C(r)UD - get all spots
 export const thunkGetAllSpots = () => async dispatch => {
@@ -95,33 +94,33 @@ export const thunkDeleteSpot = (spotId) => async (dispatch) => {
     }
 }
 
-// reducers
+// ***initialState***
 const initialState = {
     allSpots: {},
     singleSpot: {}
 }
 
+// ***REDUCERS***
 const spotsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD:
-            // { ...state, allSpots: { ...state.allSpots }
-            const newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
-            action.load.Spots.forEach((spot) => { newState.allSpots[spot.id] = spot })
-            return newState
+            const loadState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
+            action.load.Spots.forEach((spot) => { loadState.allSpots[spot.id] = spot })
+            return loadState
         case LOAD_SPOT:
-            const _newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
-            _newState.singleSpot = action.singleLoad
-            return _newState
+            const loadSpotState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
+            loadSpotState.singleSpot = action.singleLoad
+            return loadSpotState
         case ADD_SPOT:
             // add spot
             // if (!state[action.singleLoad.id]) {
-            const __newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
-            __newState.allSpots[action.singleLoad.id] = action.singleLoad
-            return __newState
+            const addState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
+            addState.allSpots[action.singleLoad.id] = action.singleLoad
+            return addState
         case DELETE_SPOT:
-            const ___newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
-            delete ___newState.allSpots[action.spotId]
-            return ___newState
+            const deleteState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
+            delete deleteState.allSpots[action.spotId]
+            return deleteState
         default:
             return state;
     }

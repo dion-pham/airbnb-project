@@ -4,11 +4,13 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import spotsReducer from "./spots";
+import reviewsReducer from "./reviews";
 
 const rootReducer = combineReducers({
   // add reducer functions here
   session: sessionReducer,
-  spots: spotsReducer
+  spots: spotsReducer,
+  reviews: reviewsReducer
 
 });
 
