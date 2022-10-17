@@ -24,18 +24,13 @@ const actionAddSpot = singleLoad => ({
     singleLoad
 });
 
-const actionUpdateSpot = singleLoad => ({
-    type: UPDATE_SPOT,
-    singleLoad
-});
 
-const actionDeleteSpot = (singleSpotId) => ({
+const actionDeleteSpot = (spotId) => ({
     type: DELETE_SPOT,
-    singleSpotId
+    spotId
 });
 
 // thunk action creators
-// MUST CSRF FETCH
 
 // C(r)UD - get all spots
 export const thunkGetAllSpots = () => async dispatch => {
@@ -76,7 +71,7 @@ export const thunkCreateSpot = (payload) => async (dispatch) => {
 // CR(u)D - update a spot by id
 export const thunkUpdateSpot = (spotId, payload) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -89,17 +84,14 @@ export const thunkUpdateSpot = (spotId, payload) => async (dispatch) => {
     }
 }
 
-// NEEDS WORDS!!! CRU(d) - delete a spot by id
+// CRU(d) - delete a spot by id
 export const thunkDeleteSpot = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'DELETE'
     });
 
     if (response.ok) {
-        const deletedSpot = await response.json()
-        // needs work. because the response we get back is a message of 200?
-        dispatch(actionDeleteSpot(deletedSpot))
-        return deletedSpot
+        dispatch(actionDeleteSpot(spotId))
     }
 }
 
@@ -112,21 +104,24 @@ const initialState = {
 const spotsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD:
-            const newState = { ...state }
+            // { ...state, allSpots: { ...state.allSpots }
+            const newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
             action.load.Spots.forEach((spot) => { newState.allSpots[spot.id] = spot })
             return newState
         case LOAD_SPOT:
-            const _newState = { ...state }
+            const _newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
             _newState.singleSpot = action.singleLoad
             return _newState
         case ADD_SPOT:
-            if (!state[action.singleLoad.id]) {
-                const __newState = { ...state }
-                __newState.allSpots[action.singleLoad.id] = action.singleLoad
-                return __newState
-            } else {
-                return state
-            }
+            // add spot
+            // if (!state[action.singleLoad.id]) {
+            const __newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
+            __newState.allSpots[action.singleLoad.id] = action.singleLoad
+            return __newState
+        case DELETE_SPOT:
+            const ___newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
+            delete ___newState.allSpots[action.spotId]
+            return ___newState
         default:
             return state;
     }

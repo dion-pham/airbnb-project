@@ -1,24 +1,32 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { thunkCreateSpot } from '../../store/spots';
-import './CreateASpotForm.css'
+import { Redirect, useHistory, useParams } from 'react-router-dom';
+import { thunkUpdateSpot, thunkDeleteSpot, thunkGetAllSpots, thunkGetSpotById } from '../../store/spots';
+import './EditASpotForm.css'
 
 
-
-const CreateASpotForm = () => {
+const EditASpotForm = () => {
+    const { spotId } = useParams()
     const history = useHistory()
     const dispatch = useDispatch()
 
-    const [address, setAddress] = useState("")
-    const [city, setCity] = useState("")
-    const [state, setState] = useState("")
-    const [country, setCountry] = useState("")
-    const [lat, setLat] = useState("")
-    const [lng, setLng] = useState("")
-    const [name, setName] = useState("")
-    const [description, setDescription] = useState("")
-    const [price, setPrice] = useState("")
+    // useEffect(() => {
+    //     // dispatch(thunkGetAllSpots());
+    //     dispatch(thunkGetSpotById(spotId));
+    // }, [dispatch, spotId]);
+
+    const targetSpot = useSelector(state => state.spots.singleSpot)
+    // const targetSpot = useSelector(state => state.spots.allSpots[+spotId])
+
+    const [address, setAddress] = useState(targetSpot ? targetSpot.address : "")
+    const [city, setCity] = useState(targetSpot ? targetSpot.city : "")
+    const [state, setState] = useState(targetSpot ? targetSpot.state : "")
+    const [country, setCountry] = useState(targetSpot ? targetSpot.country : "")
+    const [lat, setLat] = useState(targetSpot ? targetSpot.lat : "")
+    const [lng, setLng] = useState(targetSpot ? targetSpot.lng : "")
+    const [name, setName] = useState(targetSpot ? targetSpot.name : "")
+    const [description, setDescription] = useState(targetSpot ? targetSpot.description : "")
+    const [price, setPrice] = useState(targetSpot ? targetSpot.price : "")
     const [validationErrors, setValidationErrors] = useState([])
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -52,6 +60,15 @@ const CreateASpotForm = () => {
         setValidationErrors(errors)
     }, [name, address, city, state, country, lat, lng, description, price])
 
+    // if (!targetSpot) return null
+
+    const deleteSpot = () => {
+        const deletedSpot = dispatch(thunkDeleteSpot(spotId))
+        if (deletedSpot) {
+            return history.push('/spots')
+        }
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setHasSubmitted(true)
@@ -69,20 +86,9 @@ const CreateASpotForm = () => {
             price
         };
 
-        let createdSpot = await dispatch(thunkCreateSpot(payload))
-        if (createdSpot) {
-            history.push('/spots');
-            setAddress('')
-            setCity('')
-            setState('')
-            setCountry('')
-            setLat('')
-            setLng('')
-            setName('')
-            setDescription('')
-            setPrice('')
-            setValidationErrors([]);
-            setHasSubmitted(false);
+        let edittedSpot = await dispatch(thunkUpdateSpot(spotId, payload))
+        if (edittedSpot) {
+            history.push(`/spots/${spotId}`);
             // hideForm();
         }
     };
@@ -100,7 +106,7 @@ const CreateASpotForm = () => {
                 </div>
             )}
             <form className='create-spot-form' onSubmit={handleSubmit}>
-                <label>Create a spot for the phamily!</label>
+                <label>Edit your Home!</label>
                 <input
                     type="name"
                     placeholder='name'
@@ -148,12 +154,18 @@ const CreateASpotForm = () => {
                     value={price}
                     onChange={(e) => setPrice(e.target.value)} />
                 <button>
-                    Create Your Home!
+                    Submit
                 </button>
             </form>
+            <button onClick={() => {
+                deleteSpot()
+            }}>
+                Delete spot
+            </button>
         </section>
     )
 }
+
 
 const isLat = number => {
     if (Math.abs(number) <= 90) return true
@@ -161,9 +173,10 @@ const isLat = number => {
 const isLng = number => {
     if (Math.abs(number) <= 180) return true
 }
+
 const validatePrice = number => {
     if (isFinite(number)) return true
 }
 
 
-export default CreateASpotForm;
+export default EditASpotForm;

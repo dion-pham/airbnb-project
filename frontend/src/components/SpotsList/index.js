@@ -8,11 +8,11 @@ import './SpotsList.css';
 
 const SpotsList = () => {
     // const dispatch = useDispatch()
-    const spotList = useSelector((state) => Object.values(state.spots.allSpots))
-
     // useEffect(() => {
     //     dispatch(thunkGetAllSpots());
     // }, [dispatch]);
+
+    const spotList = useSelector((state) => Object.values(state.spots.allSpots))
 
     if (!spotList) return null
     return (
@@ -20,7 +20,7 @@ const SpotsList = () => {
             <h1>Home Page</h1>
             {spotList.map((spot) => (
                 <div key={spot.id} className='spot-card'>
-                    <Link to={`/api/spots/${spot.id}`}>{spot.name}</Link>
+                    <Link to={`/spots/${spot.id}`}>{spot.name}</Link>
                 </div>
 
             ))}
