@@ -54,6 +54,7 @@ export const thunkGetSpotById = (id) => async dispatch => {
 
     if (response.ok) {
         const singleSpot = await response.json()
+        console.log('this is,', singleSpot)
         dispatch(actionLoadSpot(singleSpot))
     }
 }
@@ -147,8 +148,8 @@ const spotsReducer = (state = initialState, action) => {
             //     addImageState.singleSpot.SpotImages.splice(0, 1, action.singleImage)
             //     return addImageState
             // } else {
-            // addImageState.singleSpot.SpotImages.push(action.singleImage)
-            addImageState.singleSpot.SpotImages[0] = (action.singleImage)
+            addImageState.singleSpot.SpotImages.push(action.singleImage)
+            // addImageState.singleSpot.SpotImages[0] = (action.singleImage)
             return addImageState
         // }
         case DELETE_SPOT:

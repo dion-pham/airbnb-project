@@ -94,14 +94,14 @@ const EditASpotForm = () => {
             price
         };
 
-        const imagePayload = {
-            url,
-            preview: true
-        }
+        // const imagePayload = {
+        //     url,
+        //     preview: true
+        // }
 
         let edittedSpot = await dispatch(thunkUpdateSpot(spotId, payload))
         if (edittedSpot) {
-            dispatch(thunkCreateSpotImage(edittedSpot.id, imagePayload))
+            // dispatch(thunkCreateSpotImage(edittedSpot.id, imagePayload))
             history.push(`/spots/${spotId}`);
             // hideForm();
         }
@@ -167,11 +167,11 @@ const EditASpotForm = () => {
                     placeholder='price'
                     value={price}
                     onChange={(e) => setPrice(e.target.value)} />
-                <input
+                {/* <input
                     type="text"
                     placeholder='image url'
                     value={url}
-                    onChange={(e) => setUrl(e.target.value)} />
+                    onChange={(e) => setUrl(e.target.value)} /> */}
                 <button>
                     Submit
                 </button>

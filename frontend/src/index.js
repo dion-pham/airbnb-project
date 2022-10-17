@@ -3,7 +3,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { PersistGate } from 'redux-persist/integration/react';
 import App from "./App";
 import { ModalProvider } from "./context/Modal";
 
@@ -15,7 +14,7 @@ import * as reviewsActions from './store/reviews'
 
 import "./index.css";
 
-const { store, persistor } = configureStore();
+const store = configureStore();
 
 if (process.env.NODE_ENV !== "production") {
   restoreCSRF();
@@ -29,13 +28,11 @@ if (process.env.NODE_ENV !== "production") {
 function Root() {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ModalProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ModalProvider>
-      </PersistGate>
+      <ModalProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ModalProvider>
     </Provider >
   );
 }
