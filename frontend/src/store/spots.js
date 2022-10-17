@@ -24,18 +24,13 @@ const actionAddSpot = singleLoad => ({
     singleLoad
 });
 
-const actionUpdateSpot = singleLoad => ({
-    type: UPDATE_SPOT,
-    singleLoad
-});
 
-const actionDeleteSpot = (singleSpotId) => ({
+const actionDeleteSpot = (spotId) => ({
     type: DELETE_SPOT,
-    singleSpotId
+    spotId
 });
 
 // thunk action creators
-// MUST CSRF FETCH
 
 // C(r)UD - get all spots
 export const thunkGetAllSpots = () => async dispatch => {
@@ -89,7 +84,7 @@ export const thunkUpdateSpot = (spotId, payload) => async (dispatch) => {
     }
 }
 
-// NEEDS WORDS!!! CRU(d) - delete a spot by id
+// CRU(d) - delete a spot by id
 export const thunkDeleteSpot = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'DELETE'
@@ -125,7 +120,7 @@ const spotsReducer = (state = initialState, action) => {
             return __newState
         case DELETE_SPOT:
             const ___newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
-            delete ___newState.allSpots[action.singleSpotId]
+            delete ___newState.allSpots[action.spotId]
             return ___newState
         default:
             return state;

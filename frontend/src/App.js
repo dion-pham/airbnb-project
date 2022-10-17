@@ -18,11 +18,9 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
-    // dispatch added here to getAllSpots upon first render
     dispatch(thunkGetAllSpots());
   }, [dispatch]);
 
-  // const spots = useSelector(state => state.spots.allSpots)
 
   return (
     <>
@@ -32,16 +30,17 @@ function App() {
           <Route path="/signup">
             <SignupFormPage />
           </Route>
-          <Route exact path="/" >
-            {/* {["/", '/api/spots']} */}
+          <Route exact path="/spots" >
             <SpotsList component={SpotsList} />
             <CreateASpotForm component={CreateASpotForm} />
           </Route>
+          <Route path="/spots/:spotId/edit">
+            <EditASpotForm component={EditASpotForm} />
+          </Route>
           <Route path="/spots/:spotId" >
             <SpotDetail component={SpotDetail} />
-            <EditASpotForm component={EditASpotForm} />
-            {/* spots={spots} */}
           </Route>
+
         </Switch>
       )}
     </>

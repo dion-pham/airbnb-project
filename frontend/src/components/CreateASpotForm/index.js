@@ -4,17 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { thunkCreateSpot } from '../../store/spots';
 import './CreateASpotForm.css'
 
-const isLat = number => {
-    if (Math.abs(number) <= 90) return true
-}
-const isLng = number => {
-    if (Math.abs(number) <= 180) return true
-}
 
-const validatePrice = number => {
-    const regexValidator = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
-    if (number.match(regexValidator)) return true
-}
 
 const CreateASpotForm = () => {
     const history = useHistory()
@@ -49,13 +39,15 @@ const CreateASpotForm = () => {
         } else if (country.length === 0) {
             errors.push("Country field is required")
         } else if (!isLat(lat)) {
-            errors.push("Latitude field must be less than or equal to 90 ")
+            errors.push("Latitude field must be less than or equal to 90")
         } else if (!isLng(lng)) {
             errors.push("Longitude field must be less than or equal to 180")
         } else if (description.length === 0) {
             errors.push("Description is required")
         } else if (!validatePrice(price)) {
             errors.push("Please enter a valid price")
+        } else if (price.length === 0) {
+            errors.push("Price field is required")
         }
         setValidationErrors(errors)
     }, [name, address, city, state, country, lat, lng, description, price])
@@ -79,7 +71,7 @@ const CreateASpotForm = () => {
 
         let createdSpot = await dispatch(thunkCreateSpot(payload))
         if (createdSpot) {
-            history.push('/');
+            history.push('/spots');
             setAddress('')
             setCity('')
             setState('')
@@ -161,6 +153,16 @@ const CreateASpotForm = () => {
             </form>
         </section>
     )
+}
+
+const isLat = number => {
+    if (Math.abs(number) <= 90) return true
+}
+const isLng = number => {
+    if (Math.abs(number) <= 180) return true
+}
+const validatePrice = number => {
+    if (isFinite(number)) return true
 }
 
 

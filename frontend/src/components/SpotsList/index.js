@@ -8,11 +8,11 @@ import './SpotsList.css';
 
 const SpotsList = () => {
     // const dispatch = useDispatch()
-    const spotList = useSelector((state) => Object.values(state.spots.allSpots))
-
     // useEffect(() => {
     //     dispatch(thunkGetAllSpots());
     // }, [dispatch]);
+
+    const spotList = useSelector((state) => Object.values(state.spots.allSpots))
 
     if (!spotList) return null
     return (

@@ -1,21 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useHistory, useParams } from 'react-router-dom';
-import { thunkUpdateSpot } from '../../store/spots';
-import { thunkDeleteSpot } from '../../store/spots';
+import { thunkUpdateSpot, thunkDeleteSpot, thunkGetAllSpots, thunkGetSpotById } from '../../store/spots';
 import './EditASpotForm.css'
 
-const isLat = number => {
-    if (Math.abs(number) <= 90) return true
-}
-const isLng = number => {
-    if (Math.abs(number) <= 180) return true
-}
-
-const validatePrice = number => {
-    const regexValidator = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
-    if (number.match(regexValidator)) return true
-}
 
 const EditASpotForm = () => {
     const { spotId } = useParams()
@@ -23,14 +11,12 @@ const EditASpotForm = () => {
     const dispatch = useDispatch()
 
     // useEffect(() => {
+    //     // dispatch(thunkGetAllSpots());
     //     dispatch(thunkGetSpotById(spotId));
     // }, [dispatch, spotId]);
-    // console.log(spots, 'SPOTS')
-    // const targetSpot = useSelector(state => state.spots.singleSpot)
-    // const targetSpot = spot[spotId]
-    const targetSpot = useSelector(state => state.spots.allSpots[+spotId])
-    // console.log(targetSpot, "targetspot")
-    // // gets a single spot based off the spotId
+
+    const targetSpot = useSelector(state => state.spots.singleSpot)
+    // const targetSpot = useSelector(state => state.spots.allSpots[+spotId])
 
     const [address, setAddress] = useState(targetSpot ? targetSpot.address : "")
     const [city, setCity] = useState(targetSpot ? targetSpot.city : "")
@@ -43,19 +29,6 @@ const EditASpotForm = () => {
     const [price, setPrice] = useState(targetSpot ? targetSpot.price : "")
     const [validationErrors, setValidationErrors] = useState([])
     const [hasSubmitted, setHasSubmitted] = useState(false);
-    // console.log(targetSpot.address, "address")
-
-    // const [address, setAddress] = useState('')
-    // const [city, setCity] = useState('')
-    // const [state, setState] = useState('')
-    // const [country, setCountry] = useState('')
-    // const [lat, setLat] = useState('')
-    // const [lng, setLng] = useState('')
-    // const [name, setName] = useState('')
-    // const [description, setDescription] = useState('')
-    // const [price, setPrice] = useState('')
-    // const [validationErrors, setValidationErrors] = useState([])
-    // const [hasSubmitted, setHasSubmitted] = useState(false);
 
     // add sessionUser validation??
 
@@ -74,18 +47,27 @@ const EditASpotForm = () => {
         } else if (country.length === 0) {
             errors.push("Country field is required")
         } else if (!isLat(lat)) {
-            errors.push("Latitude field must be less than or equal to 90 ")
+            errors.push("Latitude field must be less than or equal to 90")
         } else if (!isLng(lng)) {
             errors.push("Longitude field must be less than or equal to 180")
         } else if (description.length === 0) {
             errors.push("Description is required")
         } else if (!validatePrice(price)) {
             errors.push("Please enter a valid price")
+        } else if (price.length === 0) {
+            errors.push("Price field is required")
         }
         setValidationErrors(errors)
     }, [name, address, city, state, country, lat, lng, description, price])
 
     // if (!targetSpot) return null
+
+    const deleteSpot = () => {
+        const deletedSpot = dispatch(thunkDeleteSpot(spotId))
+        if (deletedSpot) {
+            return history.push('/spots')
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -104,20 +86,9 @@ const EditASpotForm = () => {
             price
         };
 
-        let createdSpot = await dispatch(thunkUpdateSpot(spotId, payload))
-        if (createdSpot) {
+        let edittedSpot = await dispatch(thunkUpdateSpot(spotId, payload))
+        if (edittedSpot) {
             history.push(`/spots/${spotId}`);
-            // setAddress('')
-            // setCity('')
-            // setState('')
-            // setCountry('')
-            // setLat('')
-            // setLng('')
-            // setName('')
-            // setDescription('')
-            // setPrice('')
-            setValidationErrors([]);
-            setHasSubmitted(false);
             // hideForm();
         }
     };
@@ -187,13 +158,24 @@ const EditASpotForm = () => {
                 </button>
             </form>
             <button onClick={() => {
-                dispatch(thunkDeleteSpot(spotId))
-                return history.push(`/`);
+                deleteSpot()
             }}>
                 Delete spot
             </button>
         </section>
     )
+}
+
+
+const isLat = number => {
+    if (Math.abs(number) <= 90) return true
+}
+const isLng = number => {
+    if (Math.abs(number) <= 180) return true
+}
+
+const validatePrice = number => {
+    if (isFinite(number)) return true
 }
 
 
