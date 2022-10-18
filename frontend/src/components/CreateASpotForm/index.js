@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { thunkCreateSpot } from '../../store/spots';
+import { thunkCreateSpot, thunkCreateSpotImage } from '../../store/spots';
 import './CreateASpotForm.css'
 
 
@@ -19,6 +19,7 @@ const CreateASpotForm = () => {
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState("")
+    const [url, setUrl] = useState("")
     const [validationErrors, setValidationErrors] = useState([])
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -28,29 +29,48 @@ const CreateASpotForm = () => {
         const errors = []
         if (name.length === 0) {
             errors.push("Name field is required")
-        } else if (name.length > 50) {
+        }
+        if (name.length > 50) {
             errors.push("Name must be less than 50 characters")
-        } else if (address.length === 0) {
+        }
+        if (address.length === 0) {
             errors.push("Address field is required")
-        } else if (city.length === 0) {
+        }
+        if (city.length === 0) {
             errors.push("City field is required")
-        } else if (state.length === 0) {
+        }
+        if (state.length === 0) {
             errors.push("State field is required")
-        } else if (country.length === 0) {
+        }
+        if (country.length === 0) {
             errors.push("Country field is required")
-        } else if (!isLat(lat)) {
+        }
+        if (!lat) {
+            errors.push("Latitude field is required")
+        }
+        if (!lng) {
+            errors.push("Longitude field is required")
+        }
+        if (!isLat(lat)) {
             errors.push("Latitude field must be less than or equal to 90")
-        } else if (!isLng(lng)) {
+        }
+        if (!isLng(lng)) {
             errors.push("Longitude field must be less than or equal to 180")
-        } else if (description.length === 0) {
+        }
+        if (description.length === 0) {
             errors.push("Description is required")
-        } else if (!validatePrice(price)) {
+        }
+        if (!validatePrice(price)) {
             errors.push("Please enter a valid price")
-        } else if (price.length === 0) {
+        }
+        if (price.length === 0) {
             errors.push("Price field is required")
         }
+        if (url.length === 0) {
+            errors.push("Url is required")
+        }
         setValidationErrors(errors)
-    }, [name, address, city, state, country, lat, lng, description, price])
+    }, [name, address, city, state, country, lat, lng, description, price, url])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -69,8 +89,14 @@ const CreateASpotForm = () => {
             price
         };
 
+        const imagePayload = {
+            url,
+            preview: true
+        }
+
         let createdSpot = await dispatch(thunkCreateSpot(payload))
         if (createdSpot) {
+            dispatch(thunkCreateSpotImage(createdSpot.id, imagePayload))
             history.push('/spots');
             setAddress('')
             setCity('')
@@ -83,6 +109,7 @@ const CreateASpotForm = () => {
             setPrice('')
             setValidationErrors([]);
             setHasSubmitted(false);
+            // add arguments to this ^ thunk
             // hideForm();
         }
     };
@@ -102,51 +129,56 @@ const CreateASpotForm = () => {
             <form className='create-spot-form' onSubmit={handleSubmit}>
                 <label>Create a spot for the phamily!</label>
                 <input
-                    type="name"
+                    type="text"
                     placeholder='name'
                     value={name}
                     onChange={(e) => setName(e.target.value)} />
                 <input
-                    type="address"
+                    type="text"
                     placeholder='address'
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                 />
                 <input
-                    type="city"
+                    type="text"
                     placeholder='city'
                     value={city}
                     onChange={(e) => setCity(e.target.value)} />
                 <input
-                    type="state"
+                    type="text"
                     placeholder='state'
                     value={state}
                     onChange={(e) => setState(e.target.value)} />
                 <input
-                    type="country"
+                    type="text"
                     placeholder='country'
                     value={country}
                     onChange={(e) => setCountry(e.target.value)} />
                 <input
-                    type="lat"
+                    type="text"
                     placeholder='latitude'
                     value={lat}
                     onChange={(e) => setLat(e.target.value)} />
                 <input
-                    type="lng"
+                    type="text"
                     placeholder='longitude'
                     value={lng}
                     onChange={(e) => setLng(e.target.value)} />
                 <input
-                    type="description"
+                    type="text"
                     placeholder='description'
                     value={description}
                     onChange={(e) => setDescription(e.target.value)} />
                 <input
-                    type="price"
+                    type="text"
                     placeholder='price'
                     value={price}
                     onChange={(e) => setPrice(e.target.value)} />
+                <input
+                    type="text"
+                    placeholder='image url'
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)} />
                 <button>
                     Create Your Home!
                 </button>

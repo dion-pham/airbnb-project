@@ -1,28 +1,34 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { thunkGetAllSpots } from '../../store/spots';
 import { Link } from 'react-router-dom';
 
+import { thunkGetSpotById } from '../../store/spots';
+
 import './SpotsList.css';
-// import css
 
 const SpotsList = () => {
-    // const dispatch = useDispatch()
-    // useEffect(() => {
-    //     dispatch(thunkGetAllSpots());
-    // }, [dispatch]);
 
     const spotList = useSelector((state) => Object.values(state.spots.allSpots))
 
-    if (!spotList) return null
+    const dispatch = useDispatch()
+
+    const clicketyClack = (id) => {
+        dispatch(thunkGetSpotById(id))
+    }
+
+    if (!spotList.length) return null
     return (
         <>
             <h1>Home Page</h1>
             {spotList.map((spot) => (
                 <div key={spot.id} className='spot-card'>
-                    <Link to={`/spots/${spot.id}`}>{spot.name}</Link>
-                </div>
+                    <Link to={`/spots/${spot.id}`}
+                        onClick={(() => clicketyClack(spot.id))}
+                    >
+                        <img src={spot.previewImage} alt="Spot's image" width="265" height="252"></img>
+                        <div>{spot.name}</div>
+                    </Link>
 
+                </div >
             ))}
         </>
     );
