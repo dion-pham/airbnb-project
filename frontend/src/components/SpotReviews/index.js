@@ -6,6 +6,7 @@ import { thunkGetAllReviewsBySpotId } from '../../store/reviews';
 import './SpotReviews.css'
 
 const SpotReviews = ({ targetSpot }) => {
+    // const { spotId } = useParams()
     const dispatch = useDispatch()
 
 
@@ -23,7 +24,7 @@ const SpotReviews = ({ targetSpot }) => {
     return (
         <div className='review-card'>
             {targetReviewArray.map((review) => (
-                <li>
+                <li key={review.id}>
                     <div>
                         "{review.review}"
                     </div>
