@@ -1,10 +1,8 @@
 // frontend/src/index.js
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { PersistGate } from 'redux-persist/integration/react';
 import App from "./App";
 import { ModalProvider } from "./context/Modal";
 
@@ -12,8 +10,11 @@ import configureStore from "./store";
 import { restoreCSRF, csrfFetch } from "./store/csrf";
 import * as sessionActions from "./store/session";
 import * as spotsActions from "./store/spots";
+import * as reviewsActions from './store/reviews'
 
-const { store, persistor } = configureStore();
+import "./index.css";
+
+const store = configureStore();
 
 if (process.env.NODE_ENV !== "production") {
   restoreCSRF();
@@ -21,18 +22,17 @@ if (process.env.NODE_ENV !== "production") {
   window.store = store;
   window.sessionActions = sessionActions;
   window.spots = spotsActions
+  window.reviews = reviewsActions
 }
 
 function Root() {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ModalProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ModalProvider>
-      </PersistGate>
+      <ModalProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ModalProvider>
     </Provider >
   );
 }

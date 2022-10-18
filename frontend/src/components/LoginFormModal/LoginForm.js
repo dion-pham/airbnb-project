@@ -50,8 +50,8 @@ function LoginForm() {
                 onClick={() =>
                     dispatch(
                         sessionActions.login({
-                            credential: 'Demo-lition',
-                            password: "password"
+                            credential: 'FakeUser4',
+                            password: "password5"
                         })
                     )}
             >
