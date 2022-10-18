@@ -27,9 +27,11 @@ const SpotsList = () => {
                         <img src={spot.previewImage} alt="Spot's image" width="265" height="252"></img>
                         <div>{spot.name}</div>
                     </Link>
-
                 </div >
             ))}
+            <div>
+                <Link to='/spots/create'>Create a home for the phamily</Link>
+            </div>
         </>
     );
 };

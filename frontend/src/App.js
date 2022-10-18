@@ -32,6 +32,9 @@ function App() {
           </Route>
           <Route exact path={["/", "/spots"]} >
             <SpotsList component={SpotsList} />
+            {/* <CreateASpotForm component={CreateASpotForm} /> */}
+          </Route>
+          <Route path='/spots/create'>
             <CreateASpotForm component={CreateASpotForm} />
           </Route>
           <Route path="/spots/:spotId/edit">

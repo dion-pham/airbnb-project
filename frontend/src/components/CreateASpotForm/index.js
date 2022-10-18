@@ -97,7 +97,8 @@ const CreateASpotForm = () => {
         let createdSpot = await dispatch(thunkCreateSpot(payload))
         if (createdSpot) {
             dispatch(thunkCreateSpotImage(createdSpot.id, imagePayload))
-            history.push('/spots');
+            // history.push('/spots');
+            history.push(`/spots/${createdSpot.id}`)
             setAddress('')
             setCity('')
             setState('')
