@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useHistory, useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSpotById, thunkGetAllSpots } from '../../store/spots';
+import SpotReviews from '../SpotReviews';
 
 import './SpotDetail.css'
 
@@ -16,9 +17,14 @@ const SpotDetail = () => {
 
     const targetSpot = useSelector(state => state.spots.singleSpot)
     const sessionUser = useSelector(state => state.session.user)
+    // const targetReviews = useSelector(state => state.reviews.spot)
+
 
     // if (!targetSpot) return null
     // this would always be true since empty object.
+    const targetSpotArray = Object.keys(targetSpot)
+    if (!targetSpotArray.length) return null
+
 
     if (!sessionUser) return null
     let buttons;
@@ -35,9 +41,6 @@ const SpotDetail = () => {
         )
     }
 
-    const targetSpotArray = Object.keys(targetSpot)
-    if (!targetSpotArray.length) return null
-
     return (
         <div className='spot-card'>
             <h1>{targetSpot.name}</h1>
@@ -53,6 +56,8 @@ const SpotDetail = () => {
                 <img src={targetSpot.SpotImages[0].url} alt="Spot's image" width="500" height="600"></img>
             </div>
             <div>{buttons}</div>
+            <div>{targetSpot.avgStarRating} Stars - {targetSpot.numReviews} Reviews</div>
+            <SpotReviews targetSpot={targetSpot} />
         </div>
     );
 };

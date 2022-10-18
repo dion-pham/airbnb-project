@@ -54,7 +54,6 @@ export const thunkGetSpotById = (id) => async dispatch => {
 
     if (response.ok) {
         const singleSpot = await response.json()
-        console.log('this is,', singleSpot)
         dispatch(actionLoadSpot(singleSpot))
     }
 }
