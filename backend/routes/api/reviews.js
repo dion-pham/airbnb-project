@@ -10,7 +10,6 @@ const spot = require('../../db/models/spot');
 
 const router = express.Router();
 
-
 const validateReviewCreate = [
     check('review')
         .exists({ checkFalsy: true })
@@ -20,7 +19,6 @@ const validateReviewCreate = [
         .isInt({ gt: 0, lt: 6 })
         .withMessage('Stars must be an integer from 1 to 5'),
     handleValidationErrors]
-
 
 //delete a review
 router.delete(
