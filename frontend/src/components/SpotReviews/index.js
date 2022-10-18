@@ -8,11 +8,8 @@ import { thunkGetAllSpots, thunkGetSpotById } from '../../store/spots';
 import './SpotReviews.css'
 
 const SpotReviews = ({ targetSpot }) => {
-    // const { spotId } = useParams()
     const dispatch = useDispatch()
     const history = useHistory()
-
-
 
     useEffect(() => {
         dispatch(thunkGetAllReviewsBySpotId(targetSpot.id))
@@ -37,10 +34,9 @@ const SpotReviews = ({ targetSpot }) => {
                         if (deletey) {
                             setTimeout(() => {
                                 dispatch(thunkGetSpotById(targetSpot.id))
-                                // dispatch(thunkGetAllReviewsBySpotId(targetSpot.id))
+
                             }, 100);
                         }
-                        // history.push(`/spots/${targetSpot.id}`)
                     }}
                 >
                     Delete
@@ -51,7 +47,6 @@ const SpotReviews = ({ targetSpot }) => {
         }
 
     }
-
 
     return (
         <div className='review-card'>
