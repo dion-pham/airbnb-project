@@ -41,6 +41,7 @@ export const thunkGetAllReviewsBySpotId = (spotId) => async dispatch => {
 
     if (response.ok) {
         const allReviews = await response.json()
+        console.log(allReviews, 'this is allReviews')
         dispatch(actionLoadAllReviewsBySpotId(allReviews))
     }
 }
@@ -65,7 +66,9 @@ export const thunkCreateReview = (spotId, payload) => async (dispatch) => {
         body: JSON.stringify(payload)
     })
     if (response.ok) {
+        console.log(response, 'this is response')
         const createdReview = await response.json()
+        console.log(createdReview, 'this is created review')
         dispatch(actionAddReview(createdReview))
         return createdReview
     }
@@ -79,6 +82,7 @@ export const thunkDeleteReview = (reviewId) => async (dispatch) => {
 
     if (response.ok) {
         dispatch(actionDeleteReview(reviewId))
+        return true
     }
 }
 
@@ -90,6 +94,7 @@ export const thunkDeleteUserReview = (reviewId) => async (dispatch) => {
 
     if (response.ok) {
         dispatch(actionDeleteUserReview(reviewId))
+        return true
     }
 }
 

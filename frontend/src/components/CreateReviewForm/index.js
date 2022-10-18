@@ -2,12 +2,17 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { thunkCreateReview } from '../../store/reviews';
+import { thunkGetAllReviewsBySpotId } from '../../store/reviews';
+import { thunkGetAllSpots, thunkGetSpotById } from '../../store/spots';
 import './CreateReviewForm.css'
 
 const CreateReviewForm = () => {
     const { spotId } = useParams()
     const history = useHistory()
     const dispatch = useDispatch()
+
+    const userId = useSelector(state => state.session.user.id)
+    // console.log(userId)
 
     const [review, setReview] = useState("")
     const [stars, setStars] = useState(0)
@@ -47,6 +52,10 @@ const CreateReviewForm = () => {
             setHasSubmitted(false);
             // hideForm();
         }
+        dispatch(thunkGetSpotById(spotId))
+        dispatch(thunkGetAllReviewsBySpotId(spotId))
+
+
     }
     return (
         <section className='new-review-container'>
