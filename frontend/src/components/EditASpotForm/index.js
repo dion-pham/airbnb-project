@@ -47,6 +47,12 @@ const EditASpotForm = () => {
         if (country.length === 0) {
             errors.push("Country field is required")
         }
+        if (!lat) {
+            errors.push("Latitude field is required")
+        }
+        if (!lng) {
+            errors.push("Longitude field is required")
+        }
         if (!isLat(lat)) {
             errors.push("Latitude field must be less than or equal to 90")
         }
@@ -103,6 +109,8 @@ const EditASpotForm = () => {
         if (edittedSpot) {
             // dispatch(thunkCreateSpotImage(edittedSpot.id, imagePayload))
             history.push(`/spots/${spotId}`);
+            setValidationErrors([]);
+            setHasSubmitted(false);
             // hideForm();
         }
     };
@@ -184,7 +192,6 @@ const EditASpotForm = () => {
         </section>
     )
 }
-
 
 const isLat = number => {
     if (Math.abs(number) <= 90) return true

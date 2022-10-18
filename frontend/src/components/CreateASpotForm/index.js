@@ -45,6 +45,12 @@ const CreateASpotForm = () => {
         if (country.length === 0) {
             errors.push("Country field is required")
         }
+        if (!lat) {
+            errors.push("Latitude field is required")
+        }
+        if (!lng) {
+            errors.push("Longitude field is required")
+        }
         if (!isLat(lat)) {
             errors.push("Latitude field must be less than or equal to 90")
         }

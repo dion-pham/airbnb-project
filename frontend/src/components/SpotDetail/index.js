@@ -3,6 +3,7 @@ import { useHistory, useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSpotById, thunkGetAllSpots } from '../../store/spots';
 import SpotReviews from '../SpotReviews';
+import CreateReviewForm from '../CreateReviewForm';
 
 import './SpotDetail.css'
 
@@ -17,6 +18,7 @@ const SpotDetail = () => {
 
     const targetSpot = useSelector(state => state.spots.singleSpot)
     const sessionUser = useSelector(state => state.session.user)
+
 
 
     // if (!targetSpot) return null
@@ -55,8 +57,11 @@ const SpotDetail = () => {
                 <img src={targetSpot.SpotImages[0].url} alt="Spot's image" width="500" height="600"></img>
             </div>
             <div>{buttons}</div>
-            <div>{targetSpot.avgStarRating} - {targetSpot.numReviews} Reviews</div>
+            <div>
+                {targetSpot.avgStarRating} - {targetSpot.numReviews} Reviews
+            </div>
             <SpotReviews targetSpot={targetSpot} />
+            <CreateReviewForm />
         </div>
     );
 };

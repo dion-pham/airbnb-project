@@ -15,11 +15,13 @@ const SpotReviews = ({ targetSpot }) => {
     }, [dispatch, targetSpot.id]);
 
     const targetReviews = useSelector(state => state.reviews.spot)
+    const sessionUser = useSelector(state => state.session.user)
 
     const targetReviewArray = Object.values(targetReviews)
     if (!targetReviewArray.length) return null
+    const sessionUserArray = Object.values(sessionUser)
+    if (!sessionUserArray.length) return null
 
-    console.log(targetReviewArray, 'this is targetreviews')
 
     return (
         <div className='review-card'>
@@ -29,7 +31,7 @@ const SpotReviews = ({ targetSpot }) => {
                         "{review.review}"
                     </div>
                     <div>
-                        {review.User.firstName} rated this {review.stars} stars
+                        {review.User && review.User.firstName} rated this {review.stars} stars
                     </div>
                 </li>
             ))}
