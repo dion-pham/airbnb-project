@@ -47,11 +47,10 @@ const SpotReviews = ({ targetSpot }) => {
         } else {
             return null
         }
-
     }
 
     const hideReviewForm = () => {
-        if (sessionUserReview) {
+        if (sessionUserReview || sessionUser.id === targetSpot.ownerId) {
             return null
         } else {
             return <div>

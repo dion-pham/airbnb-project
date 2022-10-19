@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { thunkGetSpotById } from '../../store/spots';
+import { thunkGetAllSpots, thunkGetSpotById } from '../../store/spots';
 
 import './SpotsList.css';
 
@@ -13,6 +14,10 @@ const SpotsList = () => {
     const clicketyClack = (id) => {
         dispatch(thunkGetSpotById(id))
     }
+
+    useEffect(() => {
+        dispatch(thunkGetAllSpots())
+    }, [dispatch]);
 
     let createLinkAccountLink;
     if (sessionUser) {
@@ -41,7 +46,7 @@ const SpotsList = () => {
                     <Link to={`/spots/${spot.id}`}
                         onClick={(() => clicketyClack(spot.id))}
                     >
-                        <img src={spot.previewImage} alt="Spot's image" width="265" height="252"></img>
+                        <img src={spot?.previewImage} alt="Spot's image" width="265" height="252"></img>
                         <div>{spot.name}</div>
                     </Link>
                 </div >
