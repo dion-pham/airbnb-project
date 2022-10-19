@@ -6,19 +6,31 @@ import { thunkGetSpotById } from '../../store/spots';
 import './SpotsList.css';
 
 const SpotsList = () => {
-
     const spotList = useSelector((state) => Object.values(state.spots.allSpots))
-
+    const sessionUser = useSelector((state) => state.session.user)
     const dispatch = useDispatch()
 
     const clicketyClack = (id) => {
         dispatch(thunkGetSpotById(id))
     }
 
+    let createButton;
+    if (sessionUser) {
+        createButton = (
+            <div>
+                <Link to='/spots/create'>Create a home for the phamily</Link>
+            </div>
+        )
+    }
+
     if (!spotList.length) return null
     return (
         <>
             <h1>Home Page</h1>
+            <div>
+                {/* <Link to='/spots/create'>Create a home for the phamily</Link> */}
+                {createButton}
+            </div>
             {spotList.map((spot) => (
                 <div key={spot.id} className='spot-card'>
                     <Link to={`/spots/${spot.id}`}
@@ -29,9 +41,8 @@ const SpotsList = () => {
                     </Link>
                 </div >
             ))}
-            <div>
-                <Link to='/spots/create'>Create a home for the phamily</Link>
-            </div>
+            {/* if conditional is user */}
+
         </>
     );
 };

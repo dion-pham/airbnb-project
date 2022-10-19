@@ -19,13 +19,8 @@ const SpotDetail = () => {
     const targetSpot = useSelector(state => state.spots.singleSpot)
     const sessionUser = useSelector(state => state.session.user)
 
-
-
-    // if (!targetSpot) return null
-    // this would always be true since empty object.
     const targetSpotArray = Object.keys(targetSpot)
     if (!targetSpotArray.length) return null
-
 
     if (!sessionUser) return null
     let buttons;
