@@ -46,7 +46,7 @@ export const thunkGetAllReviewsBySpotId = (spotId) => async dispatch => {
     }
 }
 
-// // C(r)UD - get all reviews from a spot by current user. add to the account page??
+// // C(r)UD - get all reviews by current user. add to the account page??
 export const thunkGetAllReviewsCurrentUser = () => async dispatch => {
     const response = await csrfFetch(`/api/reviews/current`)
 
@@ -108,14 +108,19 @@ const initialState = {
 const reviewsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_BY_SPOTID:
-            const loadStateSpotId = { ...state, spot: {}, user: {} }
-            //keep as empty object here just for load state
+            // const loadStateSpotId = { ...state, spot: {}, user: {} }
+            const loadStateSpotId = { ...state }
+            loadStateSpotId.spot = {}
+            loadStateSpotId.user = {}
             action.allReviews.Reviews.forEach((review) => {
                 loadStateSpotId.spot[review.id] = review
             })
             return loadStateSpotId
         case LOAD_BY_CURRENT:
-            const loadCurrentState = { ...state, spot: { ...state.spot }, user: { ...state.user } }
+            // const loadCurrentState = { ...state, spot: { ...state.spot }, user: { ...state.user } }
+            const loadCurrentState = { ...state }
+            loadCurrentState.spot = {}
+            loadCurrentState.user = {}
             action.allReviews.Reviews.forEach((review) => {
                 loadCurrentState.user[review.id] = review
             })

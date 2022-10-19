@@ -1,5 +1,5 @@
 // frontend/src/components/LoginFormModal/LoginForm.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 
@@ -8,9 +8,22 @@ function LoginForm() {
     const [credential, setCredential] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState([]);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
+
+    useEffect(() => {
+        const errors = []
+        if (credential.length === 0) {
+            errors.push("Name field is required")
+        }
+        if (password.length === 0) {
+            errors.push("Password is required")
+        }
+        setErrors(errors)
+    }, [credential, password])
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setHasSubmitted(true)
         setErrors([]);
         return dispatch(sessionActions.login({ credential, password })).catch(
             async (res) => {
@@ -22,18 +35,27 @@ function LoginForm() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <ul>
+            {/* <ul>
                 {errors.map((error, idx) => (
                     <li key={idx}>{error}</li>
                 ))}
-            </ul>
+            </ul> */}
+            {hasSubmitted && errors.length > 0 && (
+                <div>
+                    The following errors were found:
+                    <ul>
+                        {errors.map((error, idx) => (
+                            <li key={idx}>{error}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
             <label>
                 Username or Email
                 <input
                     type="text"
                     value={credential}
                     onChange={(e) => setCredential(e.target.value)}
-                    required
                 />
             </label>
             <label>
@@ -42,7 +64,6 @@ function LoginForm() {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
                 />
             </label>
             <button type="submit">Log In</button>
@@ -50,8 +71,8 @@ function LoginForm() {
                 onClick={() =>
                     dispatch(
                         sessionActions.login({
-                            credential: 'FakeUser4',
-                            password: "password5"
+                            credential: 'phamsome',
+                            password: "pass1word"
                         })
                     )}
             >

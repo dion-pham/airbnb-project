@@ -2,12 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-import SignupFormPage from "./components/SignupFormPage";
+// import SignupForm from "./components/SignupForm";
+import SignUpFormModal from "./components/SignupFormModal";
 import Navigation from "./components/Navigation";
 import SpotsList from "./components/SpotsList";
 import CreateASpotForm from "./components/CreateASpotForm";
 import SpotDetail from "./components/SpotDetail";
 import EditASpotForm from "./components/EditASpotForm";
+import CurrentUserBookingsReviews from "./components/CurrentUserBookingsReviews/CurrentUserBookingsReviews";
 
 import * as sessionActions from "./store/session";
 
@@ -28,10 +30,13 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route path="/signup">
-            <SignupFormPage />
+            <SignUpFormModal />
           </Route>
           <Route exact path={["/", "/spots"]} >
             <SpotsList component={SpotsList} />
+            {/* <CreateASpotForm component={CreateASpotForm} /> */}
+          </Route>
+          <Route path='/spots/create'>
             <CreateASpotForm component={CreateASpotForm} />
           </Route>
           <Route path="/spots/:spotId/edit">
@@ -40,7 +45,11 @@ function App() {
           <Route path="/spots/:spotId" >
             <SpotDetail component={SpotDetail} />
           </Route>
+          <Route exact path="/account" >
+            <CurrentUserBookingsReviews component={CurrentUserBookingsReviews} />
+          </Route>
         </Switch>
+
       )}
     </>
   );

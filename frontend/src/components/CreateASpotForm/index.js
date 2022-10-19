@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { thunkCreateSpot, thunkCreateSpotImage } from '../../store/spots';
 import './CreateASpotForm.css'
 
@@ -9,6 +9,7 @@ import './CreateASpotForm.css'
 const CreateASpotForm = () => {
     const history = useHistory()
     const dispatch = useDispatch()
+    const sessionUser = useSelector(state => state.session.user)
 
     const [address, setAddress] = useState("")
     const [city, setCity] = useState("")
@@ -22,8 +23,6 @@ const CreateASpotForm = () => {
     const [url, setUrl] = useState("")
     const [validationErrors, setValidationErrors] = useState([])
     const [hasSubmitted, setHasSubmitted] = useState(false);
-
-    // add sessionUser validation??
 
     useEffect(() => {
         const errors = []
@@ -72,6 +71,8 @@ const CreateASpotForm = () => {
         setValidationErrors(errors)
     }, [name, address, city, state, country, lat, lng, description, price, url])
 
+    if (!sessionUser) return <Redirect to="/" />;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setHasSubmitted(true)
@@ -97,7 +98,8 @@ const CreateASpotForm = () => {
         let createdSpot = await dispatch(thunkCreateSpot(payload))
         if (createdSpot) {
             dispatch(thunkCreateSpotImage(createdSpot.id, imagePayload))
-            history.push('/spots');
+            // history.push('/spots');
+            history.push(`/spots/${createdSpot.id}`)
             setAddress('')
             setCity('')
             setState('')
@@ -109,7 +111,6 @@ const CreateASpotForm = () => {
             setPrice('')
             setValidationErrors([]);
             setHasSubmitted(false);
-            // add arguments to this ^ thunk
             // hideForm();
         }
     };
