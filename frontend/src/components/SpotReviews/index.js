@@ -3,24 +3,26 @@ import { useHistory, useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetAllReviewsBySpotId, thunkDeleteReview } from '../../store/reviews';
 import { thunkGetAllSpots, thunkGetSpotById } from '../../store/spots';
+import CreateReviewForm from '../CreateReviewForm';
 
 
 import './SpotReviews.css'
 
 const SpotReviews = ({ targetSpot }) => {
     const dispatch = useDispatch()
-    const history = useHistory()
 
     useEffect(() => {
         dispatch(thunkGetAllReviewsBySpotId(targetSpot.id))
     }, [dispatch, targetSpot.id]);
 
-    const sessionUser = useSelector(state => state.session.user)
     const targetReviews = useSelector(state => state.reviews.spot)
+    const sessionUser = useSelector(state => state.session.user)
     const targetReviewArray = Object.values(targetReviews)
     if (!targetReviewArray.length) return null
     const sessionUserArray = Object.values(sessionUser)
     if (!sessionUserArray.length) return null
+
+    const sessionUserReview = targetReviewArray?.find(review => review?.User?.id === sessionUserArray[2])
 
     // if (!targetReviewArray[targetReviewArray.length - 1]?.User?.firstName) return null
 
@@ -48,6 +50,16 @@ const SpotReviews = ({ targetSpot }) => {
 
     }
 
+    const hideReviewForm = () => {
+        if (sessionUserReview) {
+            return null
+        } else {
+            return <div>
+                <CreateReviewForm />
+            </div>
+        }
+    }
+
     return (
         <div className='review-card'>
             {targetReviewArray.map((review) => (
@@ -56,11 +68,12 @@ const SpotReviews = ({ targetSpot }) => {
                         "{review.review}"
                     </div>
                     <div>
-                        {review.User && review.User?.firstName} rated this {review.stars} stars
+                        {review.User && review.User?.firstName} rated this {review.stars} stars {new Date(review.createdAt).toLocaleDateString()}
                     </div>
                     <div>{reviewDeleteButton(review.userId, review.id)}</div>
                 </li>
             ))}
+            {hideReviewForm()}
         </div>
     )
 }

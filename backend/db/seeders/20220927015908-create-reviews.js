@@ -37,44 +37,44 @@ module.exports = {
       {
         spotId: 3,
         userId: 5,
-        review: 'Was bombared by tourists during my stay. would not recommend',
-        stars: 4
+        review: 'Was bombarded by tourists during my stay. would not recommend',
+        stars: 2
       },
       {
         spotId: 4,
         userId: 5,
         review: 'Drug free establishment, i really enjoyed my stay',
-        stars: 4
+        stars: 5
       },
       {
         spotId: 4,
         userId: 6,
         review: 'Found a pizza on the roof when I was there...',
-        stars: 4
+        stars: 2
       },
       {
         spotId: 5,
         userId: 6,
         review: 'Felt like a fresh-prince for the weekend. love it',
-        stars: 4
+        stars: 5
       },
       {
         spotId: 5,
         userId: 7,
         review: 'Comes with an in-house butler!',
-        stars: 4
+        stars: 5
       },
       {
         spotId: 6,
         userId: 7,
         review: 'nice amenities',
-        stars: 4
+        stars: 3
       },
       {
         spotId: 6,
         userId: 8,
         review: 'owner was very prompt in communication',
-        stars: 4
+        stars: 5
       },
       {
         spotId: 7,
@@ -110,7 +110,13 @@ module.exports = {
         spotId: 9,
         userId: 6,
         review: 'truly a house for a multimillionaire superhero',
-        stars: 4
+        stars: 5
+      },
+      {
+        spotId: 9,
+        userId: 1,
+        review: 'hard to find on google maps but once i got there, it was a great time',
+        stars: 3
       },
       {
         spotId: 10,
@@ -122,7 +128,13 @@ module.exports = {
         spotId: 10,
         userId: 8,
         review: 'never watched New Girl, but i felt like a new man after staying here',
-        stars: 4
+        stars: 5
+      },
+      {
+        spotId: 10,
+        userId: 1,
+        review: 'honestly, this place sucked',
+        stars: 2
       }
     ], {});
   },
@@ -130,7 +142,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete('Reviews', {
-      id: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] }
+      id: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22] }
     }, {});
   }
 };

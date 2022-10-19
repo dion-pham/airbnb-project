@@ -3,7 +3,7 @@ import { useHistory, useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSpotById, thunkGetAllSpots } from '../../store/spots';
 import SpotReviews from '../SpotReviews';
-import CreateReviewForm from '../CreateReviewForm';
+// import CreateReviewForm from '../CreateReviewForm';
 
 import './SpotDetail.css'
 
@@ -17,6 +17,7 @@ const SpotDetail = () => {
     }, [dispatch, spotId]);
 
     const targetSpot = useSelector(state => state.spots.singleSpot)
+
     const sessionUser = useSelector(state => state.session.user)
 
     const targetSpotArray = Object.keys(targetSpot)
@@ -56,7 +57,7 @@ const SpotDetail = () => {
                 {targetSpot.avgStarRating} - {targetSpot.numReviews} Reviews
             </div>
             <SpotReviews targetSpot={targetSpot} />
-            <CreateReviewForm />
+            {/* <CreateReviewForm/> */}
         </div>
     );
 };

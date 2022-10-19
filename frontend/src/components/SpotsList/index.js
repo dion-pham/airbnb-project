@@ -14,11 +14,16 @@ const SpotsList = () => {
         dispatch(thunkGetSpotById(id))
     }
 
-    let createButton;
+    let createLinkAccountLink;
     if (sessionUser) {
-        createButton = (
+        createLinkAccountLink = (
             <div>
-                <Link to='/spots/create'>Create a home for the phamily</Link>
+                <div>
+                    <Link to='/spots/create'>Create a home for the phamily</Link>
+                </div>
+                <div>
+                    <Link to='/account'>Account details</Link>
+                </div>
             </div>
         )
     }
@@ -29,7 +34,7 @@ const SpotsList = () => {
             <h1>Home Page</h1>
             <div>
                 {/* <Link to='/spots/create'>Create a home for the phamily</Link> */}
-                {createButton}
+                {createLinkAccountLink}
             </div>
             {spotList.map((spot) => (
                 <div key={spot.id} className='spot-card'>

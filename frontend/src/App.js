@@ -9,6 +9,7 @@ import SpotsList from "./components/SpotsList";
 import CreateASpotForm from "./components/CreateASpotForm";
 import SpotDetail from "./components/SpotDetail";
 import EditASpotForm from "./components/EditASpotForm";
+import CurrentUserBookingsReviews from "./components/CurrentUserBookingsReviews/CurrentUserBookingsReviews";
 
 import * as sessionActions from "./store/session";
 
@@ -44,7 +45,11 @@ function App() {
           <Route path="/spots/:spotId" >
             <SpotDetail component={SpotDetail} />
           </Route>
+          <Route exact path="/account" >
+            <CurrentUserBookingsReviews component={CurrentUserBookingsReviews} />
+          </Route>
         </Switch>
+
       )}
     </>
   );
