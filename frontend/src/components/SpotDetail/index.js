@@ -50,7 +50,7 @@ const SpotDetail = () => {
             <div>Longitude: {targetSpot.lng}</div>
             <div>Price per night: ${targetSpot.price}</div>
             <div>
-                <img src={targetSpot.SpotImages[0].url} alt="Spot's image" width="500" height="600"></img>
+                <img src={targetSpot?.SpotImages[0]?.url} alt="Spot's image" width="500" height="600"></img>
             </div>
             <div>{buttons}</div>
             <div>
