@@ -94,7 +94,7 @@ const SpotReviews = ({ targetSpot }) => {
         return (
             <div className='review-card'>
                 {targetReviewArray.map((review) => (
-                    <li key={review.id}>
+                    <li key={review.id} >
                         <div>
                             "{review.review}"
                         </div>

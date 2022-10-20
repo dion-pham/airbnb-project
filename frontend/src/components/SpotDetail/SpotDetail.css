@@ -1,0 +1,49 @@
+.spot-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.spot-card-top {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 25px 10px 0px
+}
+
+.spot-card-top h1 {
+    margin-bottom: 5px;
+}
+
+.spot-card-top-ratings-location {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    /* align-items: flex-start; */
+}
+
+.spot-card-top img {
+    border-radius: 25px;
+    width: 95%;
+    height: 100%;
+    margin: 25px 0px 25px 0px
+}
+
+.spot-card-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 65%;
+    /* height: 100%; */
+    margin-top: 40px;
+    /* margin: 35px; */
+}
+
+/* .spot-card-bottom>div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 40px;
+    /* margin: 35px; */
+
+
+/* .spot-card-bottom h3 {} */

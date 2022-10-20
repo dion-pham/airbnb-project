@@ -13,7 +13,7 @@ const CurrentUserBookingsReviews = () => {
 
     const spotList = useSelector((state) => Object.values(state.spots.allSpots))
     const sessionUser = useSelector((state) => state.session.user)
-    const usersSpotList = spotList.filter(spot => sessionUser.id === spot.ownerId)
+    const usersSpotList = spotList?.filter(spot => sessionUser?.id === spot.ownerId)
     const reviewsList = useSelector((state) => Object.values(state.reviews.user))
     console.log('reviewsList', reviewsList)
 
@@ -22,12 +22,6 @@ const CurrentUserBookingsReviews = () => {
     }, [dispatch]);
 
     if (!sessionUser) return <Redirect to="/" />;
-
-
-    // only show this page if current user is logged in?
-    // put users current bookings
-    // put users current reviews (maybe don't put.)
-
 
     return (
         <div>

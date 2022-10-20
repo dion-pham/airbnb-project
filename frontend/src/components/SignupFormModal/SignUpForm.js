@@ -69,7 +69,7 @@ function SignupForm() {
                     The following errors were found:
                     <ul>
                         {errors.map((error, idx) => (
-                            <li key={idx}>{error}</li>
+                            <li key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>
                         ))}
                     </ul>
                 </div>

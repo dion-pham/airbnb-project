@@ -67,7 +67,7 @@ const CreateReviewForm = () => {
                     The following errors were found:
                     <ul>
                         {validationErrors.map((error) => (
-                            <li key={error}>{error}</li>
+                            <li key={error}><i className='fa fa-exclamation-circle' />  {error}</li>
                         ))}
                     </ul>
                 </div>
