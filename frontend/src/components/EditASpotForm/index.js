@@ -125,7 +125,7 @@ const EditASpotForm = () => {
                     The following errors were found:
                     <ul>
                         {validationErrors.map((error) => (
-                            <li key={error}>{error}</li>
+                            <li key={error}> <i className='fa fa-exclamation-circle' /> {error}</li>
                         ))}
                     </ul>
                 </div>
@@ -187,7 +187,7 @@ const EditASpotForm = () => {
                     Submit
                 </button>
             </form>
-            <button onClick={() => {
+            <button className='delete-button' onClick={() => {
                 deleteSpot()
             }}>
                 Delete spot

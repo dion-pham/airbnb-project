@@ -1,1 +1,12 @@
-/* .review-card {} */
+.review-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.review-card-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 5px
+}

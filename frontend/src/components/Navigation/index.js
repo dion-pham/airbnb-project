@@ -24,12 +24,14 @@ function Navigation({ isLoaded }) {
         );
     } else {
         sessionLinks = (
-            <div className='navBar-sessionLinks'>
-                <>
+            <div className='navBar-modalLinks'>
+                <div>
                     <LoginFormModal />
+                </div>
+                <div>
                     <SignUpFormModal />
-                    {/* <NavLink to="/signup">Sign Up</NavLink> */}
-                </>
+                </div>
+
             </div>
         );
     }

@@ -63,7 +63,8 @@ function SignupForm() {
 
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='signup-form' onSubmit={handleSubmit}>
+            <h1>Welcome to PhamBnb!</h1>
             {hasSubmitted && errors.length > 0 && (
                 <div>
                     The following errors were found:
@@ -75,7 +76,7 @@ function SignupForm() {
                 </div>
             )}
             <label>
-                First Name
+                <h3>First Name</h3>
                 <input
                     type="text"
                     value={firstName}
@@ -83,7 +84,7 @@ function SignupForm() {
                 />
             </label>
             <label>
-                Last Name
+                <h3> Last Name</h3>
                 <input
                     type="text"
                     value={lastName}
@@ -91,7 +92,8 @@ function SignupForm() {
                 />
             </label>
             <label>
-                Email
+                <h3>Email</h3>
+
                 <input
                     type="text"
                     value={email}
@@ -99,7 +101,7 @@ function SignupForm() {
                 />
             </label>
             <label>
-                Username
+                <h3>Username</h3>
                 <input
                     type="text"
                     value={username}
@@ -107,7 +109,7 @@ function SignupForm() {
                 />
             </label>
             <label>
-                Password
+                <h3>Password</h3>
                 <input
                     type="password"
                     value={password}
@@ -115,7 +117,7 @@ function SignupForm() {
                 />
             </label>
             <label>
-                Confirm Password
+                <h3>Confirm Password</h3>
                 <input
                     type="password"
                     value={confirmPassword}

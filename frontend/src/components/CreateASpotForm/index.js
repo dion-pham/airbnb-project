@@ -198,5 +198,4 @@ const validatePrice = number => {
     if (isFinite(number)) return true
 }
 
-
 export default CreateASpotForm;

@@ -1,0 +1,50 @@
+.account-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 75px;
+}
+
+.account-wrapper h1 {
+    font-size: 75px;
+    margin: 0 0 25px 0;
+    text-decoration: underline;
+}
+
+.account-spot-card {
+    margin: 5px 0 10px 0;
+}
+
+.account-spot-card-image {
+    border-radius: 25px;
+    width: 750px;
+    height: 420px;
+}
+
+.account-spot-card-name {
+    font-size: 30px;
+}
+
+.account-wrapper-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 50px;
+}
+
+.account-review-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgb(164, 126, 78);
+    box-shadow: 1px 1px 0px rgb(164, 126, 78);
+    border-radius: 25px;
+    margin: 0 25px 0 25px;
+    padding: 10px 0 0 10px;
+    gap: 5px;
+    width: 200px;
+    height: 100px;
+}
+
+.account-review-card-link {
+    font-weight: bold;
+}

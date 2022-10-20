@@ -1,10 +1,15 @@
 .navBar {
-    position: relative;
+    position: fixed;
+    top: 0;
+    background-color: white;
+    width: 100%;
     /* make it fixed */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    margin: 0;
+    z-index: 1;
 }
 
 .navBar-sessionLinks {
@@ -12,7 +17,20 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    /* margin-right: 25%; */
+    margin-right: 5px;
+}
+
+.navBar-modalLinks {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 85px;
+
+}
+
+.navBar-modalLinks div {
+    padding: 5px;
 }
 
 .navBar-sessionLinks div {
@@ -32,6 +50,7 @@
     width: 75px;
     height: 45px;
     border-radius: 25px;
+    margin-right: 100px;
 }
 
 .profile-dropdown {
@@ -41,6 +60,7 @@
     justify-content: space-between;
     /* align-items: stretch; */
     margin-top: 10px;
+    margin-right: 100px;
     border: 1px solid rgb(164, 126, 78);
     border-radius: 25px;
     padding: 25px;
@@ -50,7 +70,7 @@
     background-color: white;
     z-index: 1;
     box-shadow: 1px 1px 0px rgb(164, 126, 78);
-    ;
+
 }
 
 .profile-dropdown li {

@@ -14,3 +14,13 @@ a:active {
     text-decoration: none;
     color: rgb(164, 126, 78);
 }
+
+button {
+    border-radius: 25px;
+    background-color: rgb(164, 126, 78);
+    color: white
+}
+
+li {
+    list-style: none;
+}

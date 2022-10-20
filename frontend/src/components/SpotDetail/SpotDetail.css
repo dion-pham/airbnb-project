@@ -1,13 +1,22 @@
 .spot-card {
     display: flex;
     flex-direction: column;
+    /* justify-content: start; */
     align-items: center;
+    /* margin-bottom: 10px; */
+    margin: 75px 0 25px 25px
+}
+
+.spot-card li {
+    list-style: none;
+    margin: 10px 0 10px 0;
 }
 
 .spot-card-top {
     display: flex;
     flex-direction: column;
-    margin: 10px 25px 10px 0px
+    justify-content: center;
+    margin: 10px 25px 0px 0px
 }
 
 .spot-card-top h1 {
@@ -17,33 +26,81 @@
 .spot-card-top-ratings-location {
     display: flex;
     flex-direction: row;
-    /* justify-content: space-between; */
-    /* align-items: flex-start; */
 }
 
-.spot-card-top img {
+.spot-card-top-image {
+    width: 1024px;
+    height: 760px;
+}
+
+.spot-card-top-image>img {
     border-radius: 25px;
-    width: 95%;
+    width: 100%;
     height: 100%;
-    margin: 25px 0px 25px 0px
+    margin: 25px 0px 25px 0px;
+}
+
+.edit-button {
+    /* margin-top: 40px; */
+    width: 150px;
+    height: 50px;
+    margin-bottom: 10px;
 }
 
 .spot-card-bottom {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 65%;
     /* height: 100%; */
-    margin-top: 40px;
+    /* margin-top: 40px; */
     /* margin: 35px; */
+    margin: 50px 0 0 0;
+    padding-bottom: 50px;
 }
 
-/* .spot-card-bottom>div {
+.spot-card-bottom-left {
+    display: flex;
+    flex-direction: column;
+    /* max-width: 250px; */
+
+    /* gap: 5px; */
+}
+
+.spot-card-bottom-left-ratings {
+    margin-bottom: 5px;
+}
+
+.spot-card-bottom-left>h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    text-decoration: underline;
+}
+
+.spot-card-bottom-left>h3 {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin-top: 40px;
-    /* margin: 35px; */
+    text-decoration: underline;
+    padding-bottom: 25px;
+}
 
+.spot-card-bottom-right {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 10px;
+    border: 1px solid rgb(164, 126, 78);
+    box-shadow: 5px 5px 0px rgb(164, 126, 78);
+    border-radius: 25px;
+    max-width: 250px;
+    height: 175px;
+}
 
-/* .spot-card-bottom h3 {} */
+.spot-card-bottom-right-price {
+    font-weight: bold;
+}
+
+.spot-card-bottom-right-book {
+    margin-top: 50px;
+    font-weight: bold;
+}

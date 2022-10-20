@@ -6,11 +6,12 @@
     align-items: center;
     flex-wrap: wrap-reverse;
     width: 100%;
-    /* margin-top: 45px; */
+    margin-top: 75px;
 }
 
 .spot-card-outer-container-flex h1 {
     align-items: left;
+    margin: 20px 0 0 0
 }
 
 .spot-card-inner-container-grid {
@@ -37,6 +38,7 @@
     max-width: fit-content;
     height: 345px;
     max-height: fit-content;
+    margin: 0 0 5px 0;
 }
 
 .spot-card-inner-information {

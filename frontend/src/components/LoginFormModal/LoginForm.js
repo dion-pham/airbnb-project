@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
+import './LoginForm.css'
 
 function LoginForm() {
     const dispatch = useDispatch();
@@ -34,12 +35,9 @@ function LoginForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            {/* <ul>
-                {errors.map((error, idx) => (
-                    <li key={idx}>{error}</li>
-                ))}
-            </ul> */}
+
+        <form className='login-form' onSubmit={handleSubmit}>
+            <h1>Welcome back!</h1>
             {hasSubmitted && errors.length > 0 && (
                 <div>
                     The following errors were found:
@@ -51,7 +49,7 @@ function LoginForm() {
                 </div>
             )}
             <label>
-                Username or Email
+                <h3>Username or Email</h3>
                 <input
                     type="text"
                     value={credential}
@@ -59,7 +57,7 @@ function LoginForm() {
                 />
             </label>
             <label>
-                Password
+                <h3>Password</h3>
                 <input
                     type="password"
                     value={password}

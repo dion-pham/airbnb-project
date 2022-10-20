@@ -1,0 +1,9 @@
+/* content here is the same as createASpotForm because they
+have the same classNames */
+
+.delete-button {
+    margin-top: 50px;
+    height: 75px;
+    width: 509px;
+    font-size: 50px;
+}

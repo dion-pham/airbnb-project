@@ -15,7 +15,7 @@ const CreateReviewForm = () => {
     // console.log(userId)
 
     const [review, setReview] = useState("")
-    const [stars, setStars] = useState(0)
+    const [stars, setStars] = useState("")
     const [validationErrors, setValidationErrors] = useState([])
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -59,7 +59,6 @@ const CreateReviewForm = () => {
     }
 
 
-
     return (
         <section className='new-review-container'>
             {hasSubmitted && validationErrors.length > 0 && (
@@ -67,21 +66,21 @@ const CreateReviewForm = () => {
                     The following errors were found:
                     <ul>
                         {validationErrors.map((error) => (
-                            <li key={error}><i className='fa fa-exclamation-circle' />  {error}</li>
+                            <li key={error}> <i className='fa fa-exclamation-circle' />  {error}</li>
                         ))}
                     </ul>
                 </div>
             )}
             <form className='create-review-form' onSubmit={handleSubmit}>
                 <label>How was your stay? Leave a review</label>
-                <input
-                    type="text"
+                <textarea
+                    // type="textarea"
                     placeholder='review'
                     value={review}
                     onChange={(e) => setReview(e.target.value)} />
                 <input
                     type="number"
-                    placeholder='stars 0 - 5'
+                    placeholder='rating from 0 to 5'
                     value={stars}
                     onChange={(e) => setStars(e.target.value)}
                 />

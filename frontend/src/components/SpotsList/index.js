@@ -19,24 +19,10 @@ const SpotsList = () => {
         dispatch(thunkGetAllSpots())
     }, [dispatch]);
 
-    // let createLinkAccountLink;
-    // if (sessionUser) {
-    //     createLinkAccountLink = (
-    //         <div>
-    //             <div>
-    //                 <Link to='/spots/create'>Create a home for the phamily</Link>
-    //             </div>
-    //             {/* <div>
-    //                 <Link to='/account'>Account details</Link>
-    //             </div> */}
-    //         </div>
-    //     )
-    // }
 
     if (!spotList.length) return null
     return (
-        <div >
-
+        <div>
             <div className='spot-card-outer-container-flex'>
                 <h1>Phamily Home Page</h1>
                 <div className='spot-card-inner-container-grid'>
@@ -51,10 +37,9 @@ const SpotsList = () => {
                                         {spot.city}, {spot.state}
                                     </div>
                                     <div>
-                                        <i class="fa-solid fa-star"></i> {spot.avgRating}
+                                        <i className="fa-solid fa-star"></i> {parseFloat(spot.avgRating).toFixed(1)}
                                     </div>
                                 </div>
-
                                 <div>${spot.price} per night</div>
                             </Link>
                         </div >

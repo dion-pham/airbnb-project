@@ -77,12 +77,12 @@ const SpotReviews = ({ targetSpot }) => {
         return (
             <div className='review-card'>
                 {targetReviewArray.map((review) => (
-                    <li key={review.id}>
+                    <li className='review-card-list' key={review.id}>
                         <div>
-                            "{review.review}"
+                            <i class="fa-solid fa-user"></i> "{review.review}"
                         </div>
                         <div>
-                            {review.User && review.User?.firstName} rated this {review.stars} stars {new Date(review.createdAt).toLocaleDateString()}
+                            {review.User && review.User?.firstName} rated this {review.stars} stars · {new Date(review.createdAt).toLocaleDateString()}
                         </div>
                         <div>{reviewDeleteButton(review.userId, review.id)}</div>
                     </li>
@@ -95,11 +95,13 @@ const SpotReviews = ({ targetSpot }) => {
             <div className='review-card'>
                 {targetReviewArray.map((review) => (
                     <li key={review.id} >
+
                         <div>
-                            "{review.review}"
+                            {/* <i class="fa-solid fa-user"></i> */}
+                            <i class="fa-solid fa-user"></i>  "{review.review}"
                         </div>
                         <div>
-                            {review.User && review.User?.firstName} rated this {review.stars} stars {new Date(review.createdAt).toLocaleDateString()}
+                            {review.User && review.User?.firstName} rated this {review.stars} stars · {new Date(review.createdAt).toLocaleDateString()}
                         </div>
                     </li>
                 ))}
