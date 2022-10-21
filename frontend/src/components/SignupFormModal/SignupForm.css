@@ -11,14 +11,17 @@
 }
 
 .signup-form button {
-    margin: 5px 5px 0 15px;
+    margin: 5px 10px 0 10px;
     width: 520px;
     height: 52px;
+
 }
 
 .signup-form input {
     border-radius: 25px;
     margin: 10px 15px 0 15px;
+    padding-left: 20px;
     width: 520px;
     height: 52px;
+
 }
