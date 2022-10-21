@@ -72,7 +72,10 @@ const CreateASpotForm = () => {
         if (url.length === 0) {
             errors.push("Url is required")
         }
-        if (!url.includes('.')) {
+        if (!url.includes('.', 'jpg', 'jpeg', 'png')) {
+            errors.push("Url must be valid")
+        }
+        if (!url.includes('jpg', 'jpeg', 'png')) {
             errors.push("Url must be valid")
         }
         // additional url validations
