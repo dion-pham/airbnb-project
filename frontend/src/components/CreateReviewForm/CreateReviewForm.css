@@ -1,0 +1,21 @@
+.create-review-form {
+    display: flex;
+    flex-direction: column;
+    border-radius: 99px;
+}
+
+.create-review-form label {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.create-review-form button {
+    border-radius: 25px;
+    margin-top: 20px;
+}
+
+
+.new-review-container li {
+    list-style: none;
+    padding: 5px 0 5px 0;
+}

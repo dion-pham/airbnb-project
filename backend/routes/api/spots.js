@@ -24,14 +24,14 @@ const validateSpotCreate = [
     check('country')
         .exists({ checkFalsy: true })
         .withMessage("Country is required"),
-    check('lat')
-        .exists({ checkFalsy: true })
-        .isFloat()
-        .withMessage('Latitude is not valid'),
-    check('lng')
-        .exists({ checkFalsy: true })
-        .isFloat()
-        .withMessage('Longitude is not valid'),
+    // check('lat')
+    //     .exists({ checkFalsy: true })
+    //     .isFloat()
+    //     .withMessage('Latitude is not valid'),
+    // check('lng')
+    //     .exists({ checkFalsy: true })
+    //     .isFloat()
+    //     .withMessage('Longitude is not valid'),
     check('name')
         .exists({ checkFalsy: true })
         .withMessage('Please add a name'),

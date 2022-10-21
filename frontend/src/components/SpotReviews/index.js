@@ -19,62 +19,95 @@ const SpotReviews = ({ targetSpot }) => {
     const sessionUser = useSelector(state => state.session.user)
     const targetReviewArray = Object.values(targetReviews)
     if (!targetReviewArray.length) return null
-    const sessionUserArray = Object.values(sessionUser)
-    if (!sessionUserArray.length) return null
+    // const sessionUserArray = Object.values(sessionUser)
+    // if (!sessionUserArray.length) return null
 
-    const sessionUserReview = targetReviewArray?.find(review => review?.User?.id === sessionUserArray[2])
+    // const sessionUserReview = targetReviewArray?.find(review => review?.User?.id === sessionUserArray[2])
 
     // if (!targetReviewArray[targetReviewArray.length - 1]?.User?.firstName) return null
 
-    let buttons;
-    const reviewDeleteButton = (userReviewId, reviewId) => {
-        if (sessionUser.id === userReviewId) {
-            return buttons = (
-                <button
-                    onClick={() => {
-                        let deletey = dispatch(thunkDeleteReview(reviewId))
-                        if (deletey) {
-                            setTimeout(() => {
-                                dispatch(thunkGetSpotById(targetSpot.id))
+    // const hideReviewForm = () => {
+    //     if (sessionUserReview || sessionUser.id === targetSpot.ownerId) {
+    //         return null
+    //     } else {
+    //         return <div>
+    //             <CreateReviewForm />
+    //         </div>
+    //     }
+    // }
 
-                            }, 100);
-                        }
-                    }}
-                >
-                    Delete
-                </button>
-            )
-        } else {
-            return null
+    if (sessionUser) {
+        const sessionUserArray = Object.values(sessionUser)
+        if (!sessionUserArray.length) return null
+        const sessionUserReview = targetReviewArray?.find(review => review?.User?.id === sessionUserArray[2])
+
+        let buttons;
+        const reviewDeleteButton = (userReviewId, reviewId) => {
+            if (sessionUser.id === userReviewId) {
+                return buttons = (
+                    <button
+                        onClick={() => {
+                            let deletey = dispatch(thunkDeleteReview(reviewId))
+                            if (deletey) {
+                                setTimeout(() => {
+                                    dispatch(thunkGetSpotById(targetSpot.id))
+
+                                }, 100);
+                            }
+                        }}
+                    >
+                        Delete
+                    </button>
+                )
+            } else {
+                return null
+            }
         }
-    }
 
-    const hideReviewForm = () => {
-        if (sessionUserReview || sessionUser.id === targetSpot.ownerId) {
-            return null
-        } else {
-            return <div>
-                <CreateReviewForm />
+        const hideReviewForm = () => {
+            if (sessionUserReview || sessionUser.id === targetSpot.ownerId) {
+                return null
+            } else {
+                return <div>
+                    <CreateReviewForm />
+                </div>
+            }
+        }
+
+        return (
+            <div className='review-card'>
+                {targetReviewArray.map((review) => (
+                    <li className='review-card-list' key={review.id}>
+                        <div>
+                            <i class="fa-solid fa-user"></i> "{review.review}"
+                        </div>
+                        <div>
+                            {review.User && review.User?.firstName} rated this {review.stars} stars · {new Date(review.createdAt).toLocaleDateString()}
+                        </div>
+                        <div>{reviewDeleteButton(review.userId, review.id)}</div>
+                    </li>
+                ))}
+                {hideReviewForm()}
             </div>
-        }
-    }
+        )
+    } else {
+        return (
+            <div className='review-card'>
+                {targetReviewArray.map((review) => (
+                    <li key={review.id} >
 
-    return (
-        <div className='review-card'>
-            {targetReviewArray.map((review) => (
-                <li key={review.id}>
-                    <div>
-                        "{review.review}"
-                    </div>
-                    <div>
-                        {review.User && review.User?.firstName} rated this {review.stars} stars {new Date(review.createdAt).toLocaleDateString()}
-                    </div>
-                    <div>{reviewDeleteButton(review.userId, review.id)}</div>
-                </li>
-            ))}
-            {hideReviewForm()}
-        </div>
-    )
+                        <div>
+                            {/* <i class="fa-solid fa-user"></i> */}
+                            <i class="fa-solid fa-user"></i>  "{review.review}"
+                        </div>
+                        <div>
+                            {review.User && review.User?.firstName} rated this {review.stars} stars · {new Date(review.createdAt).toLocaleDateString()}
+                        </div>
+                    </li>
+                ))}
+            </div>
+        )
+    }
 }
 
 export default SpotReviews

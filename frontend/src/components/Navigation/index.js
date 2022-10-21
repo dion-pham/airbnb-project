@@ -13,23 +13,36 @@ function Navigation({ isLoaded }) {
     let sessionLinks;
     if (sessionUser) {
         sessionLinks = (
-            <ProfileButton user={sessionUser} />
+            <div className='navBar-sessionLinks'>
+                <div>
+                    <NavLink to='/spots/create'>Become a Host</NavLink>
+                </div>
+                <div>
+                    <ProfileButton user={sessionUser} />
+                </div>
+            </div>
         );
     } else {
         sessionLinks = (
-            <>
-                <LoginFormModal />
-                <SignUpFormModal />
-                {/* <NavLink to="/signup">Sign Up</NavLink> */}
-            </>
+            <div className='navBar-modalLinks'>
+                <div>
+                    <LoginFormModal />
+                </div>
+                <div>
+                    <SignUpFormModal />
+                </div>
+
+            </div>
         );
     }
     return (
-        <ul>
+        <ul className='navBar no-bullets'>
             <li>
-                <NavLink exact to="/">Home</NavLink>
-                {isLoaded && sessionLinks}
+                <NavLink exact to="/">
+                    <img src='https://i.imgur.com/zYlOYUG.png' alt="Spot's image" width="75" height="75"></img>
+                </NavLink>
             </li>
+            <li>  {isLoaded && sessionLinks}</li>
         </ul>
     );
 }

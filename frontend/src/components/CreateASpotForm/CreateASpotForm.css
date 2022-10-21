@@ -1,0 +1,49 @@
+.new-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 75px;
+}
+
+.new-form-container li {
+    list-style: none;
+    padding: 5px 0 5px 0;
+}
+
+.create-spot-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-spot-form>label {
+    padding-left: 25px;
+    height: 75px;
+    width: 100%;
+    border-radius: 25px;
+    font-size: 45px;
+    font-weight: bold;
+}
+
+
+.create-spot-form>input {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 35px;
+    padding-left: 25px;
+    height: 75px;
+    width: 100%;
+    border-radius: 25px;
+    font-size: 45px;
+}
+
+.create-spot-form button {
+    margin-top: 50px;
+    height: 75px;
+    width: 100%;
+    font-size: 50px;
+}

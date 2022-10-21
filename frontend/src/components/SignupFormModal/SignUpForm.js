@@ -24,20 +24,35 @@ function SignupForm() {
         if (firstName.length === 0) {
             errors.push("First name field is required")
         }
+        if (firstName.length > 50) {
+            errors.push("First name field must be less than 50 characters")
+        }
         if (lastName.length === 0) {
             errors.push("Last name field is required")
+        }
+        if (lastName.length > 50) {
+            errors.push("Last name field must be less than 50 characters")
         }
         if (email.length === 0) {
             errors.push("Email field is required")
         }
+        if (email.length > 50) {
+            errors.push("Email name field must be less than 50 characters")
+        }
+        if (!email.includes('.') || !email.includes('@')) {
+            errors.push('Email must be valid')
+        }
         if (username.length === 0) {
             errors.push("Username field is required")
+        }
+        if (username.length > 50) {
+            errors.push("Username field must be less than 50 characters")
         }
         if (password.length === 0) {
             errors.push("Password field is required")
         }
         if (confirmPassword.length === 0) {
-            errors.push("Password field is required")
+            errors.push("Confirm password field is required")
         }
 
         setErrors(errors)
@@ -63,19 +78,20 @@ function SignupForm() {
 
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='signup-form' onSubmit={handleSubmit}>
+            <h1>Welcome to PhamBnb!</h1>
             {hasSubmitted && errors.length > 0 && (
                 <div>
                     The following errors were found:
                     <ul>
                         {errors.map((error, idx) => (
-                            <li key={idx}>{error}</li>
+                            <li key={idx}><i className='fa fa-exclamation-circle' />  {error}</li>
                         ))}
                     </ul>
                 </div>
             )}
             <label>
-                First Name
+                <h3>First Name</h3>
                 <input
                     type="text"
                     value={firstName}
@@ -83,7 +99,7 @@ function SignupForm() {
                 />
             </label>
             <label>
-                Last Name
+                <h3> Last Name</h3>
                 <input
                     type="text"
                     value={lastName}
@@ -91,7 +107,8 @@ function SignupForm() {
                 />
             </label>
             <label>
-                Email
+                <h3>Email</h3>
+
                 <input
                     type="text"
                     value={email}
@@ -99,7 +116,7 @@ function SignupForm() {
                 />
             </label>
             <label>
-                Username
+                <h3>Username</h3>
                 <input
                     type="text"
                     value={username}
@@ -107,7 +124,7 @@ function SignupForm() {
                 />
             </label>
             <label>
-                Password
+                <h3>Password</h3>
                 <input
                     type="password"
                     value={password}
@@ -115,7 +132,7 @@ function SignupForm() {
                 />
             </label>
             <label>
-                Confirm Password
+                <h3>Confirm Password</h3>
                 <input
                     type="password"
                     value={confirmPassword}

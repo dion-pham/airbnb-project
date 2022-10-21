@@ -19,41 +19,34 @@ const SpotsList = () => {
         dispatch(thunkGetAllSpots())
     }, [dispatch]);
 
-    let createLinkAccountLink;
-    if (sessionUser) {
-        createLinkAccountLink = (
-            <div>
-                <div>
-                    <Link to='/spots/create'>Create a home for the phamily</Link>
-                </div>
-                <div>
-                    <Link to='/account'>Account details</Link>
-                </div>
-            </div>
-        )
-    }
 
     if (!spotList.length) return null
     return (
-        <>
-            <h1>Home Page</h1>
-            <div>
-                {/* <Link to='/spots/create'>Create a home for the phamily</Link> */}
-                {createLinkAccountLink}
+        <div>
+            <div className='spot-card-outer-container-flex'>
+                <h1>Phamily Home Page</h1>
+                <div className='spot-card-inner-container-grid'>
+                    {spotList.map((spot) => (
+                        <div key={spot.id} className='spot-card'>
+                            <Link to={`/spots/${spot.id}`}
+                                onClick={(() => clicketyClack(spot.id))}
+                            >
+                                <img src={spot?.previewImage} alt="Spot's image" className='spot-card-image'></img>
+                                <div className='spot-card-inner-information'>
+                                    <div className='spot-card-inner-location'>
+                                        {spot.city}, {spot.state}
+                                    </div>
+                                    <div>
+                                        <i className="fa-solid fa-star"></i> {typeof spot.avgRating === "number" ? parseFloat(spot.avgRating).toFixed(1) : spot.avgRating}
+                                    </div>
+                                </div>
+                                <div>${spot.price} per night</div>
+                            </Link>
+                        </div >
+                    ))}
+                </div>
             </div>
-            {spotList.map((spot) => (
-                <div key={spot.id} className='spot-card'>
-                    <Link to={`/spots/${spot.id}`}
-                        onClick={(() => clicketyClack(spot.id))}
-                    >
-                        <img src={spot?.previewImage} alt="Spot's image" width="265" height="252"></img>
-                        <div>{spot.name}</div>
-                    </Link>
-                </div >
-            ))}
-            {/* if conditional is user */}
-
-        </>
+        </div >
     );
 };
 export default SpotsList;
