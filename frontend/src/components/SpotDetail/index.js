@@ -39,8 +39,10 @@ const SpotDetail = () => {
     }
 
     let avgStarRating;
-    if (typeof targetSpot.avgStarRating === "number") {
-        avgStarRating = parseFloat(targetSpot.avgStarRating).toFixed(1)
+    if (typeof targetSpot?.avgStarRating === "number") {
+        avgStarRating = parseFloat(targetSpot?.avgStarRating).toFixed(1)
+    } else if (typeof Number(targetSpot?.avgStarRating) === "number") {
+        avgStarRating = Number(parseFloat(targetSpot?.avgStarRating).toFixed(1))
     }
 
     if (sessionUser) {
