@@ -19,7 +19,6 @@ const SpotsList = () => {
         dispatch(thunkGetAllSpots())
     }, [dispatch]);
 
-
     if (!spotList.length) return null
     return (
         <div>
@@ -28,7 +27,7 @@ const SpotsList = () => {
                 <div className='spot-card-inner-container-grid'>
                     {spotList.map((spot) => (
                         <div key={spot.id} className='spot-card'>
-                            <Link to={`/spots/${spot.id}`}
+                            <Link className='spot-card-link' to={`/spots/${spot.id}`}
                                 onClick={(() => clicketyClack(spot.id))}
                             >
                                 <img src={spot?.previewImage} alt="Spot's image" className='spot-card-image'></img>
@@ -40,7 +39,7 @@ const SpotsList = () => {
                                         <i className="fa-solid fa-star"></i> {typeof spot.avgRating === "number" ? parseFloat(spot.avgRating).toFixed(1) : spot.avgRating}
                                     </div>
                                 </div>
-                                <div>${spot.price} per night</div>
+                                <div className='spot-price'>${spot.price} per night</div>
                             </Link>
                         </div >
                     ))}

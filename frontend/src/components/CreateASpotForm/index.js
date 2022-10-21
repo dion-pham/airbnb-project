@@ -72,6 +72,9 @@ const CreateASpotForm = () => {
         if (url.length === 0) {
             errors.push("Url is required")
         }
+        if (!url.includes('.')) {
+            errors.push("Url must be valid")
+        }
         // additional url validations
         setValidationErrors(errors)
     }, [name, address, city, state, country, description, price, url])
