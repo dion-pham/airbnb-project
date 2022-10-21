@@ -28,6 +28,7 @@ const CurrentUserBookingsReviews = () => {
     return (
         <div className='account-wrapper'>
             <h1>Your spots</h1>
+            {usersSpotList ? <h2>You currently don't own any spots! Become a host today</h2> : null}
             <div className='account-wrapper-top'>
                 {usersSpotList.map((spot) => (
                     <div key={spot.id} className='account-spot-card'>
@@ -41,6 +42,7 @@ const CurrentUserBookingsReviews = () => {
                 ))}
             </div>
             <h1>Your reviews</h1>
+            {reviewsList ? <h2>You haven't made any reviews! Become a reviewer today</h2> : null}
             <div className='account-wrapper-bottom'>
                 {reviewsList.map((review) => (
                     <div key={review.id} className='account-review-card'>
@@ -49,7 +51,7 @@ const CurrentUserBookingsReviews = () => {
                         >
                             <div>{review.Spot.name}</div>
                         </Link>
-                        <div>"{review.review}" · {new Date(review.createdAt).toLocaleDateString()}</div>
+                        <div className='account-review-card-description'>"{review.review}" · {new Date(review.createdAt).toLocaleDateString()}</div>
                         <div><i className="fa-solid fa-star"></i> {typeof review.stars === "number" ? parseFloat(review.stars).toFixed(1) : review.stars}</div>
                     </div >
                 ))}

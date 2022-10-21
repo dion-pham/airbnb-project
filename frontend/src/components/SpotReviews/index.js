@@ -18,23 +18,7 @@ const SpotReviews = ({ targetSpot }) => {
     const targetReviews = useSelector(state => state.reviews.spot)
     const sessionUser = useSelector(state => state.session.user)
     const targetReviewArray = Object.values(targetReviews)
-    if (!targetReviewArray.length) return null
-    // const sessionUserArray = Object.values(sessionUser)
-    // if (!sessionUserArray.length) return null
-
-    // const sessionUserReview = targetReviewArray?.find(review => review?.User?.id === sessionUserArray[2])
-
-    // if (!targetReviewArray[targetReviewArray.length - 1]?.User?.firstName) return null
-
-    // const hideReviewForm = () => {
-    //     if (sessionUserReview || sessionUser.id === targetSpot.ownerId) {
-    //         return null
-    //     } else {
-    //         return <div>
-    //             <CreateReviewForm />
-    //         </div>
-    //     }
-    // }
+    // if (!targetReviewArray.length) return null
 
     if (sessionUser) {
         const sessionUserArray = Object.values(sessionUser)
@@ -76,7 +60,7 @@ const SpotReviews = ({ targetSpot }) => {
 
         return (
             <div className='review-card'>
-                {targetReviewArray.map((review) => (
+                {targetReviewArray?.map((review) => (
                     <li className='review-card-list' key={review.id}>
                         <div>
                             <i class="fa-solid fa-user"></i> "{review.review}"
@@ -93,18 +77,20 @@ const SpotReviews = ({ targetSpot }) => {
     } else {
         return (
             <div className='review-card'>
-                {targetReviewArray.map((review) => (
-                    <li key={review.id} >
-
+                {targetReviewArray?.map((review) => (
+                    <li className='review-card-list' key={review.id}>
                         <div>
-                            {/* <i class="fa-solid fa-user"></i> */}
-                            <i class="fa-solid fa-user"></i>  "{review.review}"
+                            <i class="fa-solid fa-user"></i> "{review.review}"
                         </div>
                         <div>
                             {review.User && review.User?.firstName} rated this {review.stars} stars · {new Date(review.createdAt).toLocaleDateString()}
                         </div>
                     </li>
                 ))}
+                {/* <div>
+                    <CreateReviewForm />
+                </div> */}
+
             </div>
         )
     }

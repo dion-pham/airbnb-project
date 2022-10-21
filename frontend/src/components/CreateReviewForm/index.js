@@ -58,7 +58,6 @@ const CreateReviewForm = () => {
         dispatch(thunkGetSpotById(spotId))
         dispatch(thunkGetAllReviewsBySpotId(spotId))
 
-
     }
 
 
@@ -90,11 +89,6 @@ const CreateReviewForm = () => {
                     Submit
                 </button>
             </form>
-            {/* <button onClick={() => {
-                deleteSpot()
-            }}>
-                Delete spot
-            </button> */}
         </section>
     )
 }
