@@ -24,6 +24,7 @@ const CurrentUserBookingsReviews = () => {
 
     if (!sessionUser) return <Redirect to="/" />;
 
+
     return (
         <div className='account-wrapper'>
             <h1>Your spots</h1>
@@ -49,7 +50,7 @@ const CurrentUserBookingsReviews = () => {
                             <div>{review.Spot.name}</div>
                         </Link>
                         <div>"{review.review}" · {new Date(review.createdAt).toLocaleDateString()}</div>
-                        <div><i className="fa-solid fa-star"></i> {review.stars}</div>
+                        <div><i className="fa-solid fa-star"></i> {typeof review.stars === "number" ? parseFloat(review.stars).toFixed(1) : review.stars}</div>
                     </div >
                 ))}
             </div>

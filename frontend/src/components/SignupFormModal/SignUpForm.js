@@ -24,20 +24,35 @@ function SignupForm() {
         if (firstName.length === 0) {
             errors.push("First name field is required")
         }
+        if (firstName.length > 50) {
+            errors.push("First name field must be less than 50 characters")
+        }
         if (lastName.length === 0) {
             errors.push("Last name field is required")
+        }
+        if (lastName.length > 50) {
+            errors.push("Last name field must be less than 50 characters")
         }
         if (email.length === 0) {
             errors.push("Email field is required")
         }
+        if (email.length > 50) {
+            errors.push("Email name field must be less than 50 characters")
+        }
+        if (!email.includes('.') || !email.includes('@')) {
+            errors.push('Email must be valid')
+        }
         if (username.length === 0) {
             errors.push("Username field is required")
+        }
+        if (username.length > 50) {
+            errors.push("Username field must be less than 50 characters")
         }
         if (password.length === 0) {
             errors.push("Password field is required")
         }
         if (confirmPassword.length === 0) {
-            errors.push("Password field is required")
+            errors.push("Confirm password field is required")
         }
 
         setErrors(errors)

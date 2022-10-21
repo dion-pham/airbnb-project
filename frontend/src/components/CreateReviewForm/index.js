@@ -24,6 +24,9 @@ const CreateReviewForm = () => {
         if (review.length === 0) {
             errors.push("Review field is required")
         }
+        if (review.length > 256) {
+            errors.push("Review field cannot be longer than 256 characters ")
+        }
         if (!stars) {
             errors.push("Stars are required")
         }
@@ -74,13 +77,12 @@ const CreateReviewForm = () => {
             <form className='create-review-form' onSubmit={handleSubmit}>
                 <label>How was your stay? Leave a review</label>
                 <textarea
-                    // type="textarea"
                     placeholder='review'
                     value={review}
                     onChange={(e) => setReview(e.target.value)} />
                 <input
                     type="number"
-                    placeholder='rating from 0 to 5'
+                    placeholder='please leave a rating from 0 to 5'
                     value={stars}
                     onChange={(e) => setStars(e.target.value)}
                 />

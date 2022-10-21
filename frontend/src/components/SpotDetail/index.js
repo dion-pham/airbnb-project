@@ -23,22 +23,6 @@ const SpotDetail = () => {
     const targetSpotArray = Object.keys(targetSpot)
     if (!targetSpotArray.length) return null
 
-    // if (!sessionUser) return null
-
-
-    // if (sessionUser.id === targetSpot.ownerId) {
-    //     buttons = (
-    //         <div>
-    //             <button
-    //                 onClick={() => history.push(`/spots/${spotId}/edit`)}
-    //             // <Redirect to={`/spots/${spotId}/edit`}
-    //             >
-    //                 Edit this spot!
-    //             </button>
-    //         </div>
-    //     )
-    // }
-
     let buttons;
     const editSpotButton = () => {
         if (sessionUser.id === targetSpot.ownerId) {
@@ -46,7 +30,6 @@ const SpotDetail = () => {
                 <div>
                     <button className='edit-button'
                         onClick={() => history.push(`/spots/${spotId}/edit`)}
-                    // <Redirect to={`/spots/${spotId}/edit`}
                     >
                         Edit this spot!
                     </button>
@@ -56,10 +39,9 @@ const SpotDetail = () => {
     }
 
     let avgStarRating;
-    console.log(targetSpot.avgStarRating, 'this is avgrating')
-    avgStarRating = parseFloat(targetSpot.avgStarRating).toFixed(1)
-    console.log('thisis fixed', avgStarRating)
-    console.log(targetSpot.avgStarRating, 'oldone')
+    if (typeof targetSpot.avgStarRating === "number") {
+        avgStarRating = parseFloat(targetSpot.avgStarRating).toFixed(1)
+    }
 
     if (sessionUser) {
         return (
@@ -70,6 +52,7 @@ const SpotDetail = () => {
                         <div>
                             <i className="fa-solid fa-star"></i> {avgStarRating} · {targetSpot.numReviews} Reviews · {targetSpot.city}, {targetSpot.state} {targetSpot.country}
                         </div>
+
                         <div>
 
                         </div>
@@ -92,14 +75,13 @@ const SpotDetail = () => {
                     <div className='spot-card-bottom-right' >
                         <div className='spot-card-bottom-right-price'>${targetSpot.price} night </div>
                         <div>
-                            <i className="fa-solid fa-star"></i> {avgStarRating} · {targetSpot.numReviews} Reviews · {targetSpot.city}, {targetSpot.state} {targetSpot.country}
+                            <i className="fa-solid fa-star"></i> {avgStarRating} · {targetSpot.numReviews} Reviews
                         </div>
                         <div className='spot-card-bottom-right-book'>This spot is currently unavailable. </div>
                     </div>
                 </div>
             </div >
 
-            // add this for a non user BELOW after you are done with the sessionUser stuff!!!
         );
     } else {
 
@@ -134,7 +116,7 @@ const SpotDetail = () => {
                         <div>
                             <i className="fa-solid fa-star"></i> {avgStarRating} · {targetSpot.numReviews} Reviews · {targetSpot.city}, {targetSpot.state} {targetSpot.country}
                         </div>
-                        <div className='spot-card-bottom-right-book'>Book Today!</div>
+                        <div className='spot-card-bottom-right-book'>This spot is currently unavailable.</div>
                     </div>
                 </div>
             </div >

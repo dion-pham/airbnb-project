@@ -37,7 +37,7 @@ const SpotsList = () => {
                                         {spot.city}, {spot.state}
                                     </div>
                                     <div>
-                                        <i className="fa-solid fa-star"></i> {parseFloat(spot.avgRating).toFixed(1)}
+                                        <i className="fa-solid fa-star"></i> {typeof spot.avgRating === "number" ? parseFloat(spot.avgRating).toFixed(1) : spot.avgRating}
                                     </div>
                                 </div>
                                 <div>${spot.price} per night</div>

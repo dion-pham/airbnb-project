@@ -14,7 +14,7 @@ function LoginForm() {
     useEffect(() => {
         const errors = []
         if (credential.length === 0) {
-            errors.push("Name field is required")
+            errors.push("Name or username field is required")
         }
         if (password.length === 0) {
             errors.push("Password is required")

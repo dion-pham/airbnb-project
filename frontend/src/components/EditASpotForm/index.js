@@ -39,29 +39,32 @@ const EditASpotForm = () => {
         if (address?.length === 0) {
             errors.push("Address field is required")
         }
+        if (address?.length > 50) {
+            errors.push("Address field must be less than 50 characters")
+        }
         if (city?.length === 0) {
             errors.push("City field is required")
+        }
+        if (city?.length > 50) {
+            errors.push("City field must be less than 50 characters")
         }
         if (state?.length === 0) {
             errors.push("State field is required")
         }
+        if (state?.length > 50) {
+            errors.push("State field must be less than 50 characters")
+        }
         if (country?.length === 0) {
             errors.push("Country field is required")
         }
-        // if (!lat) {
-        //     errors.push("Latitude field is required")
-        // }
-        // if (!lng) {
-        //     errors.push("Longitude field is required")
-        // }
-        // if (!isLat(lat)) {
-        //     errors.push("Latitude field must be less than or equal to 90")
-        // }
-        // if (!isLng(lng)) {
-        //     errors.push("Longitude field must be less than or equal to 180")
-        // }
+        if (country?.length > 50) {
+            errors.push("Country field must be less than 50 characters")
+        }
         if (description?.length === 0) {
             errors.push("Description is required")
+        }
+        if (description?.length > 256) {
+            errors.push("Description must be less than 50 characters")
         }
         if (!validatePrice(price)) {
             errors.push("Please enter a valid price")
@@ -69,13 +72,13 @@ const EditASpotForm = () => {
         if (price?.length === 0) {
             errors.push("Price field is required")
         }
-        // if (url.length === 0) {
-        //     errors.push("Url is required")
-        // }
+        if (price < 0) {
+            errors.push("Price field must be valid")
+        }
+        // additional url validations
         setValidationErrors(errors)
     }, [name, address, city, state, country, description, price])
 
-    // if (!targetSpot) return null
     const targetSpotArray = Object.values(targetSpot)
     if (!targetSpotArray.length) return null
 
@@ -96,21 +99,13 @@ const EditASpotForm = () => {
             city,
             state,
             country,
-            // lat,
-            // lng,
             name,
             description,
             price
         };
 
-        // const imagePayload = {
-        //     url,
-        //     preview: true
-        // }
-
         let edittedSpot = await dispatch(thunkUpdateSpot(spotId, payload))
         if (edittedSpot) {
-            // dispatch(thunkCreateSpotImage(edittedSpot.id, imagePayload))
             history.push(`/spots/${spotId}`);
             setValidationErrors([]);
             setHasSubmitted(false);
@@ -158,16 +153,6 @@ const EditASpotForm = () => {
                     placeholder='country'
                     value={country}
                     onChange={(e) => setCountry(e.target.value)} />
-                {/* <input
-                    type="text"
-                    placeholder='latitude'
-                    value={lat}
-                    onChange={(e) => setLat(e.target.value)} />
-                <input
-                    type="text"
-                    placeholder='longitude'
-                    value={lng}
-                    onChange={(e) => setLng(e.target.value)} /> */}
                 <input
                     type="text"
                     placeholder='description'
@@ -178,11 +163,6 @@ const EditASpotForm = () => {
                     placeholder='price per night'
                     value={price}
                     onChange={(e) => setPrice(e.target.value)} />
-                {/* <input
-                    type="text"
-                    placeholder='image url'
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)} /> */}
                 <button>
                     Submit
                 </button>
