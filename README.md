@@ -2,7 +2,7 @@
 
 Welcome to PhamBnb! This is a fully functional clone of the popular home-share website, AirBnb, developed by yours truly, Dion Pham. Please visit the [live](https://airbnb-project310.herokuapp.com/) link to this project here.
 
-Splash Page:
+## Splash Page:
 ![image](https://user-images.githubusercontent.com/68131808/197274775-2e085b18-44da-456f-bf2b-7e69e464742c.png)
 
 ### [Backend API Routes ](https://github.com/dion-pham/airbnb-project/wiki/Backend-API-Routes---Database-Schema)
