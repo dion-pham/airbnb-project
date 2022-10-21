@@ -24,11 +24,11 @@ const CurrentUserBookingsReviews = () => {
 
     if (!sessionUser) return <Redirect to="/" />;
 
-
+    console.log(usersSpotList, 'this is user spot list')
     return (
         <div className='account-wrapper'>
             <h1>Your spots</h1>
-            {/* {usersSpotList ? <h2>You currently don't own any spots! Become a host today</h2> : <h2></h2>} */}
+            {usersSpotList.length ? null : <h2>You currently don't own any spots! Become a host today</h2>}
             <div className='account-wrapper-top'>
                 {usersSpotList.map((spot) => (
                     <div key={spot.id} className='account-spot-card'>
@@ -42,7 +42,7 @@ const CurrentUserBookingsReviews = () => {
                 ))}
             </div>
             <h1>Your reviews</h1>
-            {/* {reviewsList ? <h2>You haven't made any reviews! Become a reviewer today</h2> : null} */}
+            {reviewsList.length ? null : <h2>You haven't made any reviews! Become a reviewer today</h2>}
             <div className='account-wrapper-bottom'>
                 {reviewsList.map((review) => (
                     <div key={review.id} className='account-review-card'>
