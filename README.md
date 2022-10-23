@@ -20,6 +20,10 @@ Click above for redux state shape.
 ## Get Started
 To run on a local host, clone the respository. Run npm install in both the backend and the frontend directories, and run npm start in both directories so that they are running concurrently. 
 
+## Built with: 
+
+Frameworks, platforms, and libaries
+
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
