@@ -50,7 +50,7 @@ const SpotDetail = () => {
     // if (sessionUser) {
 
     return (
-        <div className='spot-card'>
+        <div className='spot-card-container'>
             < div className='spot-card-top'>
                 <h1>{targetSpot.name}</h1>
                 <div className='spot-card-top-ratings-location'>
