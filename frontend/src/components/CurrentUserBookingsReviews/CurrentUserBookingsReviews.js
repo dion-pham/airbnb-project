@@ -44,17 +44,19 @@ const CurrentUserBookingsReviews = () => {
             <h1>Your reviews</h1>
             {reviewsList.length ? null : <h2>You haven't made any reviews! Become a reviewer today</h2>}
             <div className='account-wrapper-bottom'>
-                {reviewsList.map((review) => (
-                    <div key={review.id} className='account-review-card'>
-                        <Link className='account-review-card-link' to={`/spots/${review.spotId}`}
-                            onClick={(() => clicketyClack(review.spotId))}
-                        >
-                            <div>{review.Spot.name}</div>
-                        </Link>
-                        <div className='account-review-card-description'>"{review.review}" · {new Date(review.createdAt).toLocaleDateString()}</div>
-                        <div><i className="fa-solid fa-star"></i> {typeof review.stars === "number" ? parseFloat(review.stars).toFixed(1) : review.stars}</div>
-                    </div >
-                ))}
+                <div className='account-wrapper-bottom-reviews'>
+                    {reviewsList.map((review) => (
+                        <div key={review.id} className='account-review-card'>
+                            <Link className='account-review-card-link' to={`/spots/${review.spotId}`}
+                                onClick={(() => clicketyClack(review.spotId))}
+                            >
+                                <div>{review.Spot.name}</div>
+                            </Link>
+                            <div className='account-review-card-description'>"{review.review}" · {new Date(review.createdAt).toLocaleDateString()}</div>
+                            <div><i className="fa-solid fa-star"></i> {typeof review.stars === "number" ? parseFloat(review.stars).toFixed(1) : review.stars}</div>
+                        </div >
+                    ))}
+                </div>
             </div>
         </div>
     )
