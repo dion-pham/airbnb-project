@@ -38,13 +38,13 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    /* max-width: 880px */
+    max-width: 1024px
 }
 
 .account-wrapper-bottom-reviews {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-wrap: wrap;
     padding-bottom: 50px;
 }
