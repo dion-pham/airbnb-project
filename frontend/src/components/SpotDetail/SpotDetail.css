@@ -58,9 +58,10 @@
 .spot-card-bottom-left {
     display: flex;
     flex-direction: column;
-    padding-bottom: 32px;
-    width: 85%;
+    width: 80%;
+    padding: 0 64px 0 0;
 }
+
 
 .spot-card-bottom-left-hosted-by {
     padding: 0 0 24px 0;
