@@ -119,7 +119,7 @@ const SpotDetail = () => {
                             Total before taxes
                         </div>
                         <div>
-                            ${Math.ceil(targetSpot.price + (targetSpot.price * .0625) + (targetSpot.price * .1146))}
+                            ${Math.ceil((targetSpot.price * 5) + (targetSpot.price * .0625) + (targetSpot.price * .1146))}
                         </div>
                     </div>
 
