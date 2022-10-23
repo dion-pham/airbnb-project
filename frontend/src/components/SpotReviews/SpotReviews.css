@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    border-bottom: 1px solid rgb(164, 126, 78);
+    padding: 0 0 32px 0;
 }
 
 .review-card-list {
@@ -9,5 +11,15 @@
     flex-direction: column;
     justify-content: space-evenly;
     overflow: auto;
-    gap: 5px
+    gap: 5px;
+    padding-top: 10px
+}
+
+.review-card-list div {
+    row-gap: 5px;
+}
+
+.create-review-form-input {
+    margin: 0 0 0 0;
+    /* border-top: 1px solid rgb(164, 126, 78); */
 }
