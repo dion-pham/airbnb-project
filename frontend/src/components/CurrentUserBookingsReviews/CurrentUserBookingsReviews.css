@@ -5,10 +5,18 @@
     margin-top: 75px;
 }
 
+/* .account-wrapper-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 75px;
+} */
+
 .account-wrapper h1 {
-    font-size: 75px;
-    margin: 0 0 25px 0;
-    text-decoration: underline;
+    font-size: 45px;
+    margin: 25px 0 25px 0;
+    border-bottom: 2.5px solid rgb(164, 126, 78);
 }
 
 .account-spot-card {
@@ -29,9 +37,21 @@
 .account-wrapper-bottom {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+    max-width: 1024px
+}
+
+.account-wrapper-bottom-reviews {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
     padding-bottom: 50px;
 }
+
+/* .account-wrapper-bottom-reviews>div {
+
+} */
 
 .account-review-card {
     display: flex;
@@ -40,7 +60,7 @@
     border: 1px solid rgb(164, 126, 78);
     box-shadow: 1px 1px 0px rgb(164, 126, 78);
     border-radius: 15px;
-    margin: 0 25px 0 25px;
+    margin: 25px 25px 25px 25px;
     padding: 10px 10px 10px 10px;
     gap: 5px;
     width: 300px;
@@ -48,13 +68,16 @@
 }
 
 .account-review-card-description {
-    overflow: scroll;
-}
-
-::-webkit-scrollbar-thumb {
+    overflow-x: hidden;
+    overflow-y: auto;
     color: rgb(164, 126, 78);
     scrollbar-color: rgb(164, 126, 78);
 }
+
+/* ::-webkit-scrollbar:thu {
+    color: rgb(164, 126, 78);
+    scrollbar-color: rgb(164, 126, 78);
+} */
 
 .account-review-card-link {
     font-weight: bold;

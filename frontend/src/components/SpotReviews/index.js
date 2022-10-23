@@ -52,26 +52,30 @@ const SpotReviews = ({ targetSpot }) => {
             if (sessionUserReview || sessionUser.id === targetSpot.ownerId) {
                 return null
             } else {
-                return <div>
+                return <div className='create-review-form-input'>
                     <CreateReviewForm />
                 </div>
             }
         }
 
         return (
-            <div className='review-card'>
-                {targetReviewArray?.map((review) => (
-                    <li className='review-card-list' key={review.id}>
-                        <div>
-                            <i class="fa-solid fa-user"></i> "{review.review}"
-                        </div>
-                        <div>
-                            {review.User && review.User?.firstName} rated this {review.stars} stars · {new Date(review.createdAt).toLocaleDateString()}
-                        </div>
-                        <div>{reviewDeleteButton(review.userId, review.id)}</div>
-                    </li>
-                ))}
-                {hideReviewForm()}
+            <div>
+                <div className='review-card'>
+                    {targetReviewArray?.map((review) => (
+                        <li className='review-card-list' key={review.id}>
+                            <div>
+                                <i class="fa-solid fa-user"></i> "{review.review}"
+                            </div>
+                            <div>
+                                {review.User && review.User?.firstName} rated this {review.stars} stars · {new Date(review.createdAt).toLocaleDateString()}
+                            </div>
+                            <div>{reviewDeleteButton(review.userId, review.id)}</div>
+                        </li>
+                    ))}
+                </div>
+                <div>
+                    {hideReviewForm()}
+                </div>
             </div>
         )
     } else {
