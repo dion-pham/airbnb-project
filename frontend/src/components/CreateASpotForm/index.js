@@ -73,7 +73,7 @@ const CreateASpotForm = () => {
             errors.push("Url is required")
         }
         if (!/^https?:\/\/.+\.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(url)) {
-            errors.push("Url must include a valid picture file that ends in .jpg, .jpeg, or .png");
+            errors.push("Url must be a valid picture file starts with https:// and ends in .jpg, .jpeg, or .png");
         }
 
 
