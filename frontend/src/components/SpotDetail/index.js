@@ -69,6 +69,20 @@ const SpotDetail = () => {
                         <h1 >Hosted by {targetSpot.Owner.firstName}</h1>
                         3 guests · 1 bedroom · 3 beds · 1 bath
                     </div>
+                    <div className='spot-card-bottom-left-icons'>
+                        <div>
+                            <img src='https://i.imgur.com/MTE2zNy.png' className='spot-card-bottom-left-icons-image' alt='air-cover' width='20' height='20' ></img>
+                            Self check-in.
+                        </div>
+                        <div>
+                            <img src='https://i.imgur.com/ztXO2J4.png' className='spot-card-bottom-left-icons-image' alt='air-cover' width='20' height='20' ></img>
+                            Popular location!
+                        </div>
+                        <div>
+                            <img src='https://i.imgur.com/oGs0JTK.png' className='spot-card-bottom-left-icons-image' alt='air-cover' width='20' height='20' ></img>
+                            Free cancellation for 48 hours.
+                        </div>
+                    </div>
                     <div className='spot-card-bottom-left-img'>
                         <img src='https://i.imgur.com/peICz9g.png' alt='air-cover' width='124' height='50' ></img>
                     </div>
