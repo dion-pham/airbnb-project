@@ -72,12 +72,11 @@ const CreateASpotForm = () => {
         if (url.length === 0) {
             errors.push("Url is required")
         }
-        if (!url.includes('.')) {
-            errors.push("Url must be a link")
+        if (!/^https?:\/\/.+\.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(url)) {
+            errors.push("Url must include a valid picture file that ends in .jpg, .jpeg, or .png");
         }
-        if (!url.includes('jpg', 'jpeg', 'png')) {
-            errors.push("Url must include a valid picture file")
-        }
+
+
         // additional url validations
         setValidationErrors(errors)
     }, [name, address, city, state, country, description, price, url])
