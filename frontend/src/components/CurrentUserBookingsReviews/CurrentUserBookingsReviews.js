@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import { thunkGetAllReviewsCurrentUser } from '../../store/reviews';
-import { thunkGetSpotById } from '../../store/spots';
+import { thunkGetAllSpots, thunkGetSpotById } from '../../store/spots';
 import './CurrentUserBookingsReviews.css'
 
 const CurrentUserBookingsReviews = () => {
@@ -20,6 +20,7 @@ const CurrentUserBookingsReviews = () => {
 
     useEffect(() => {
         dispatch(thunkGetAllReviewsCurrentUser());
+        dispatch(thunkGetAllSpots())
     }, [dispatch]);
 
     if (!sessionUser) return <Redirect to="/" />;
