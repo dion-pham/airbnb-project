@@ -62,6 +62,22 @@
     padding: 0 64px 0 0;
 }
 
+.spot-card-bottom-left>div {
+    row-gap: 20px;
+}
+
+
+.spot-card-bottom-left-icons {
+    display: flex;
+    flex-direction: column;
+    margin: 12px 0 0 0;
+    padding: 24px 0px 24px 0;
+    border-bottom: 1px solid rgb(164, 126, 78);
+}
+
+.spot-card-bottom-left-icons-image {
+    padding: 0 10px 0 0;
+}
 
 .spot-card-bottom-left-hosted-by {
     padding: 0 0 24px 0;
@@ -74,7 +90,7 @@
 
 .spot-card-bottom-left-img img {
     margin-right: 10px;
-    padding-right: 10px;
+    padding: 10px 10px 0 0;
 }
 
 .spot-card-bottom-air-cover-info {
