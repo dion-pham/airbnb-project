@@ -1,7 +1,7 @@
 # ![image](https://user-images.githubusercontent.com/68131808/197428685-6a21649f-c0a6-42b8-8b07-cb23fd29d72d.png)
 # PhamBnb - a Phamily friendly clone of Airbnb.
 
-Welcome to PhamBnb! This is a fully functional clone of the popular home-share website, AirBnb, developed by yours truly, Dion Pham. Please visit the [live](https://airbnb-project310.herokuapp.com/) link to this project here.
+Welcome to PhamBnb! This is a fully functional clone of the popular home-share website, AirBnb, developed by yours truly, Dion Pham. Please visit the [live](http://pham-bnb310.herokuapp.com/) link to this project here.
 
 ![image](https://user-images.githubusercontent.com/68131808/197274775-2e085b18-44da-456f-bf2b-7e69e464742c.png)
 
