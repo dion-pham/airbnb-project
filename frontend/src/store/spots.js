@@ -76,16 +76,24 @@ export const thunkCreateSpot = (payload) => async (dispatch) => {
 
 // (c)RUD - add image to a spot
 export const thunkCreateSpotImage = (spotId, payload) => async (dispatch) => {
+    const formData = new FormData()
+    if (payload) {
+        const image = payload
+        formData.append('image', image)
+    }
+
     const response = await csrfFetch(`/api/spots/${spotId}/images`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'multipart/form-data'
         },
-        body: JSON.stringify(payload)
+        body: formData
     })
+
     if (response.ok) {
         const createdImage = await response.json()
         dispatch(actionAddImage(spotId, createdImage))
+        console.log(createdImage, 'createdImage')
         return createdImage
     }
 }
@@ -135,22 +143,14 @@ const spotsReducer = (state = initialState, action) => {
             loadSpotState.singleSpot = action.singleLoad
             return loadSpotState
         case ADD_SPOT:
-            // if (!state[action.singleLoad.id]) {
             const addState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
             addState.allSpots[action.singleLoad.id] = action.singleLoad
             return addState
         case ADD_IMAGE:
             const addImageState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
-            addImageState.allSpots[action.spotId].previewImage = action.singleImage.url
-            // console.log('this is,', addImageState.singleSpot.SpotImages)
-            // if (addImageState.singleSpot.SpotImages[0]) {
-            //     addImageState.singleSpot.SpotImages.splice(0, 1, action.singleImage)
-            //     return addImageState
-            // } else {
+            addImageState.allSpots[action.spotId].previewImage = action.singleImage.spotImageUrl
             addImageState.singleSpot.SpotImages.push(action.singleImage)
-            // addImageState.singleSpot.SpotImages[0] = (action.singleImage)
             return addImageState
-        // }
         case DELETE_SPOT:
             const deleteState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { ...state.singleSpot } }
             delete deleteState.allSpots[action.spotId]

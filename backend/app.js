@@ -14,6 +14,7 @@ const app = express();
 app.use(morgan('dev'));
 
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 
 
@@ -61,7 +62,7 @@ app.use((err, _req, _res, next) => {
         err.title = 'Validation error';
     }
 
-    if (err.errors[0].includes('unique')) {
+    if (err.errors && err.errors[0].includes('unique')) {
         err.status = 403
     }
 
