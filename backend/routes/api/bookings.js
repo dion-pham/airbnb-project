@@ -141,7 +141,6 @@ router.put(
 );
 
 
-
 // Get all of the Current User's Bookings
 router.get(
     '/current',

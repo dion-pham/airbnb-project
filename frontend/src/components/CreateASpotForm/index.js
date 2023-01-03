@@ -70,13 +70,12 @@ const CreateASpotForm = () => {
         if (price < 0) {
             errors.push("Price field must be valid")
         }
-        // if (url.length === 0) {
-        //     errors.push("Url is required")
-        // }
-        // if (!/^https?:\/\/.+\.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(url)) {
-        //     errors.push("Url must be a valid picture file starts with https:// and ends in .jpg, .jpeg, or .png");
-        // }
-
+        if (image.length === 0) {
+            errors.push("Url is required")
+        }
+        if (!/^https?:\/\/.+\.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(image)) {
+            errors.push("Url must be a valid picture file starts with https:// and ends in .jpg, .jpeg, or .png");
+        }
 
         // additional url validations
         setValidationErrors(errors)
