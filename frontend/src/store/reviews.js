@@ -143,11 +143,3 @@ const reviewsReducer = (state = initialState, action) => {
 }
 
 export default reviewsReducer
-
-// action.allReviews.Reviews.forEach((review) => {
-//     newState.spot[review.id] = review
-// })
-
-// window.store.dispatch(window.reviews.thunkGetAllReviewsBySpotId(1));
-
-// window.store.dispatch(window.reviews.thunkGetAllReviewsCurrentUser());

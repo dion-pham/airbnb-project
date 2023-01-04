@@ -6,6 +6,7 @@ import SpotReviews from '../SpotReviews';
 // import CreateReviewForm from '../CreateReviewForm';
 
 import './SpotDetail.css'
+import CreateABookingForm from '../CreateABookingForm';
 
 const SpotDetail = () => {
     const { spotId } = useParams()
@@ -17,7 +18,6 @@ const SpotDetail = () => {
     }, [dispatch, spotId]);
 
     const targetSpot = useSelector(state => state.spots.singleSpot)
-    console.log(targetSpot, 'this is targetspot')
     const sessionUser = useSelector(state => state.session.user)
 
     const targetSpotArray = Object.keys(targetSpot)
@@ -104,40 +104,11 @@ const SpotDetail = () => {
                             <i className="fa-solid fa-star"></i> {avgStarRating} · {targetSpot.numReviews} Reviews
                         </div>
                     </div>
-                    <div className='spot-card-bottom-right-pricing'>
-                        <div className='bottom-description'>
-                            <div>
-                                ${targetSpot.price} x 5 nights
-                            </div>
-                            <div>
-                                Cleaning fee
-                            </div>
-                            <div>
-                                Service fee
-                            </div>
-                        </div>
-                        <div className='bottom-prices'>
-                            <div>
-                                ${Math.ceil(targetSpot.price * 5)}
-                            </div>
-                            <div>
-                                ${Math.ceil(targetSpot.price * .0625)}
-                            </div>
-                            <div>
-                                ${Math.ceil(targetSpot.price * .1146)}
-                            </div>
-                        </div>
-                    </div>
-                    <div className='bottom-total-price'>
-                        <div>
-                            Total before taxes
-                        </div>
-                        <div>
-                            ${Math.ceil((targetSpot.price * 5) + (targetSpot.price * .0625) + (targetSpot.price * .1146))}
-                        </div>
-                    </div>
+                    <CreateABookingForm/>
 
-                    <div className='spot-card-bottom-right-book'>This spot is currently unavailable. </div>
+
+                    {/* <div className='spot-card-bottom-right-book'>This spot is currently unavailable. </div> */}
+
                 </div>
             </div>
         </div >
