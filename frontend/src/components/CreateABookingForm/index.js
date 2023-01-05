@@ -3,19 +3,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Redirect, useParams } from 'react-router-dom';
 import { thunkAddBooking, thunkGetAllBookingsByCurrentUser } from '../../store/bookings';
 import './CreateABookingForm.css'
+import EditABookingForm from './editBookingForm';
 
 const CreateABookingForm = () => {
     const dispatch = useDispatch()
     const { spotId } = useParams()
-    const history = useHistory()
-    const [startDate, setStartDate] = useState('')
-    const [endDate, setEndDate] = useState('')
-    const [validationErrors, setValidationErrors] = useState([])
-    const [hasSubmitted, setHasSubmitted] = useState(false);
-    const [nights, setNights] = useState()
-
     const sessionUserId = useSelector(state => state?.session.user.id)
     const targetSpot = useSelector(state => state.spots.singleSpot)
+    const existingBookings = useSelector(state => Object.values(state.bookings.allBookings))
+    const currentSpotUserBooked = existingBookings.find(booking => booking.spotId == spotId)
+
+    const history = useHistory()
+    const [startDate, setStartDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.startDate).toLocaleDateString('en-CA') : '')
+    const [endDate, setEndDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.endDate).toLocaleDateString('en-CA') : '')
+    const [validationErrors, setValidationErrors] = useState([])
+    const [hasSubmitted, setHasSubmitted] = useState(false);
+    const [nights, setNights] = useState(0)
+
 
     useEffect(() => {
         const errors = []
@@ -73,81 +77,8 @@ const CreateABookingForm = () => {
         dispatch(thunkGetAllBookingsByCurrentUser())
     }
 
-
-    let priceRender;
-    endDate && startDate ? priceRender =
-        <div>
-            <div className='spot-card-bottom-right-pricing'>
-                <div className='bottom-description'>
-                    <div>
-                        ${targetSpot.price} x {nights} nights
-                    </div>
-                    <div>
-                        Cleaning fee
-                    </div>
-                    <div>
-                        Service fee
-                    </div>
-                </div>
-                <div className='bottom-prices'>
-                    <div>
-                        ${Math.ceil(targetSpot.price * nights)}
-                    </div>
-                    <div>
-                        ${Math.ceil(targetSpot.price * nights * .0625)}
-                    </div>
-                    <div>
-                        ${Math.ceil(targetSpot.price * nights * .1146)}
-                    </div>
-                </div>
-            </div>
-            <div className='bottom-total-price'>
-                <div>
-                    Total before taxes
-                </div>
-                <div>
-                    ${Math.ceil((targetSpot.price * nights) + (targetSpot.price * nights * .0625) + (targetSpot.price * nights * .1146))}
-                </div>
-            </div>
-        </div>
-        :
-        priceRender =
-        <div>
-            <div className='spot-card-bottom-right-pricing'>
-                <div className='bottom-description'>
-                    <div>
-                        ${targetSpot.price} x 5 nights
-                    </div>
-                    <div>
-                        Cleaning fee
-                    </div>
-                    <div>
-                        Service fee
-                    </div>
-                </div>
-                <div className='bottom-prices'>
-                    <div>
-                        ${Math.ceil(targetSpot.price * 5)}
-                    </div>
-                    <div>
-                        ${Math.ceil(targetSpot.price * 5 * .0625)}
-                    </div>
-                    <div>
-                        ${Math.ceil(targetSpot.price * 5 * .1146)}
-                    </div>
-                </div>
-            </div>
-            <div className='bottom-total-price'>
-                <div>
-                    Total before taxes
-                </div>
-                <div>
-                    ${Math.ceil((targetSpot.price * 5) + (targetSpot.price * 5 * .0625) + (targetSpot.price * 5 *.1146))}
-                </div>
-            </div>
-        </div>
-
-    return (
+    let currentlyBooked;
+    !currentSpotUserBooked && sessionUserId ? currentlyBooked =
         <div className='bookings-dates-container'>
             {hasSubmitted && validationErrors.length > 0 && (
                 <div>
@@ -181,17 +112,113 @@ const CreateABookingForm = () => {
                     </label>
                 </div>
                 <div>
-                    {sessionUserId && <button className='reserve-button' type='submit'>Reserve</button>}
+                    <button className='reserve-button' type='submit'>Reserve</button>
+                    {/* {!currentSpotUserBooked && sessionUserId ? <button className='reserve-button' type='submit'>Reserve</button> : null}
+            {currentSpotUserBooked && sessionUserId && <EditABookingForm/> } */}
+                    {/* technically dont need a modal because you can just replace the add form with edit form if a current reservation already exists */}
                 </div>
             </form>
-            {priceRender}
+        </div>
+        : currentlyBooked =
+        <div>
+            <EditABookingForm />
+        </div>
+
+
+    let priceRender;
+    if (endDate && startDate) {
+        priceRender =
+            <div>
+                <div className='spot-card-bottom-right-pricing'>
+                    <div className='bottom-description'>
+                        <div>
+                            ${targetSpot.price} x {nights} nights
+                        </div>
+                        <div>
+                            Cleaning fee
+                        </div>
+                        <div>
+                            Service fee
+                        </div>
+                    </div>
+                    <div className='bottom-prices'>
+                        <div>
+                            ${Math.ceil(targetSpot.price * nights)}
+                        </div>
+                        <div>
+                            ${Math.ceil(targetSpot.price * nights * .0625)}
+                        </div>
+                        <div>
+                            ${Math.ceil(targetSpot.price * nights * .1146)}
+                        </div>
+                    </div>
+                </div>
+                <div className='bottom-total-price'>
+                    <div>
+                        Total before taxes
+                    </div>
+                    <div>
+                        ${Math.ceil((targetSpot.price * nights) + (targetSpot.price * nights * .0625) + (targetSpot.price * nights * .1146))}
+                    </div>
+                </div>
+            </div>
+    } else {
+        priceRender =
+            <div>
+                <div className='spot-card-bottom-right-pricing'>
+                    <div className='bottom-description'>
+                        <div>
+                            ${targetSpot.price} x 5 nights
+                        </div>
+                        <div>
+                            Cleaning fee
+                        </div>
+                        <div>
+                            Service fee
+                        </div>
+                    </div>
+                    <div className='bottom-prices'>
+                        <div>
+                            ${Math.ceil(targetSpot.price * 5)}
+                        </div>
+                        <div>
+                            ${Math.ceil(targetSpot.price * 5 * .0625)}
+                        </div>
+                        <div>
+                            ${Math.ceil(targetSpot.price * 5 * .1146)}
+                        </div>
+                    </div>
+                </div>
+                <div className='bottom-total-price'>
+                    <div>
+                        Total before taxes
+                    </div>
+                    <div>
+                        ${Math.ceil((targetSpot.price * 5) + (targetSpot.price * 5 * .0625) + (targetSpot.price * 5 * .1146))}
+                    </div>
+                </div>
+            </div>
+    }
+
+
+    return (
+        <div>
+            <div>
+                {currentlyBooked}
+            </div>
+            <div>
+                {!currentSpotUserBooked ? priceRender: null}
+            </div>
         </div>
     )
 }
 
 
 
+
+
 // after submitting booking, change reserve to update booking??
+// then add update modal
 //  have it so that if no bookings are chosen, conditionally render the example price for 5 nights
 // pull validation errors from the front end?
 

@@ -105,6 +105,7 @@ const SpotDetail = () => {
                         </div>
                     </div>
                     <CreateABookingForm/>
+                    {/* add edit booking form here and conditionally render depending if current spot has booking yet or not */}
 
 
                     {/* <div className='spot-card-bottom-right-book'>This spot is currently unavailable. </div> */}
