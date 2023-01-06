@@ -79,7 +79,6 @@ const CreateASpotForm = () => {
         setValidationErrors(errors)
     }, [name, address, city, state, country, description, price, image])
 
-    console.log(image.name, 'image name')
     if (!sessionUser) return <Redirect to="/" />;
 
     const handleSubmit = async (e) => {
