@@ -22,10 +22,6 @@ const EditABookingForm = () => {
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [nights, setNights] = useState()
 
-    console.log(currentDate, 'currentdate')
-    console.log(startDate, 'startdate')
-
-
 
     useEffect(() => {
         const errors = []
@@ -122,6 +118,7 @@ const EditABookingForm = () => {
             setHasSubmitted(false)
         }
         dispatch(thunkGetAllBookingsByCurrentUser())
+        return alert('Booking successfully updated!')
     }
 
 
