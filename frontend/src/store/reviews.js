@@ -41,7 +41,6 @@ export const thunkGetAllReviewsBySpotId = (spotId) => async dispatch => {
 
     if (response.ok) {
         const allReviews = await response.json()
-        console.log(allReviews, 'this is allReviews')
         dispatch(actionLoadAllReviewsBySpotId(allReviews))
     }
 }

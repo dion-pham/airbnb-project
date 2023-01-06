@@ -1,0 +1,43 @@
+
+.dates-form {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.dates-form-inputs {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid rgb(164, 126, 78);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.start-date-input {
+    margin-right: 2px;
+    border-right: 1px solid rgb(164, 126, 78);
+    padding-right: 5px;
+}
+
+.end-date-input {
+    padding-left: 5px;
+}
+
+.reserve-button {
+    width: 270px;
+    height: 25px;
+    margin-top: 5px;
+}
+
+.delete-booking-button {
+    width: 270px;
+    height: 25px;
+    margin-top: 5px;
+}
+
+.edit-booking-button {
+    width: 270px;
+    height: 25px;
+    margin-top: 5px;
+}

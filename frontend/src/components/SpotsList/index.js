@@ -23,7 +23,6 @@ const SpotsList = () => {
     return (
         <div>
             <div className='spot-card-outer-container-flex'>
-                <h1>Phamily Home Page</h1>
                 <div className='spot-card-inner-container-grid'>
                     {spotList.map((spot) => (
                         <div key={spot.id} className='spot-card'>

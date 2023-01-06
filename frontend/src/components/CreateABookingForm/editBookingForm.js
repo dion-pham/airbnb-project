@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Redirect, useParams } from 'react-router-dom';
 import { thunkDeleteBooking, thunkEditBooking, thunkGetAllBookingsByCurrentUser } from '../../store/bookings';
-import { thunkGetSpotById } from '../../store/spots';
+import './CreateABookingForm.css'
 
 const EditABookingForm = () => {
     const dispatch = useDispatch()
@@ -12,6 +12,8 @@ const EditABookingForm = () => {
 
     const existingBookings = useSelector(state => Object.values(state.bookings.allBookings))
     const currentSpotUserBooked = existingBookings.find(booking => booking.spotId == spotId)
+    const currentDate = new Date().toISOString().slice(0, 10)
+
 
     const history = useHistory()
     const [startDate, setStartDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.startDate).toISOString().slice(0, 10) : '')
@@ -19,6 +21,10 @@ const EditABookingForm = () => {
     const [validationErrors, setValidationErrors] = useState([])
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [nights, setNights] = useState()
+
+    console.log(currentDate, 'currentdate')
+    console.log(startDate, 'startdate')
+
 
 
     useEffect(() => {
@@ -35,8 +41,13 @@ const EditABookingForm = () => {
         if (endDate < startDate) {
             errors.push("End Date cannot be before Start Date")
         }
+        // if (currentDate === startDate) {
+        //     errors.push('You must book at least 1 day in advance')
+        // }
         setValidationErrors(errors)
-    }, [startDate, endDate])
+    }, [startDate, endDate, currentDate])
+
+
 
 
     useEffect(() => {
@@ -55,20 +66,25 @@ const EditABookingForm = () => {
         setEndDate(e.target.value)
     }
 
-    const deleteBooking = async () => {
+    const deleteBooking = async (e) => {
+        e.preventDefault()
+        setHasSubmitted(true)
         let deleteSuccess = await dispatch(thunkDeleteBooking(currentSpotUserBooked.id)).catch(
             async (res) => {
                 const data = await res.json();
                 if (data && data.errors) {
                     const backendErrors = []
                     for (let error of Object.values((data.errors))) {
+                        console.log(error, 'this is an error')
                         backendErrors.push(error)
                         setValidationErrors(backendErrors)
                     }
                 }
             }
         );
+        // if (validationErrors.length) return alert('Cannot delete')
         if (deleteSuccess) {
+            // setHasSubmitted(false)
             setTimeout(() => {
                 dispatch(thunkGetAllBookingsByCurrentUser())
             }, 100);
@@ -100,7 +116,7 @@ const EditABookingForm = () => {
                 }
             }
         );
-        if (validationErrors.length) return alert('Cannot submit')
+        if (validationErrors.length) return alert('Cannot edit')
         if (edittedBooking) {
             history.push(`/spots/${spotId}`)
             setHasSubmitted(false)
@@ -196,34 +212,36 @@ const EditABookingForm = () => {
                     </ul>
                 </div>
             )}
-            <form onSubmit={handleSubmit}>
-                <div className='start-date-input'>
-                    <label>
-                        CHECK-IN
-                        <input
-                            type='date'
-                            value={startDate}
-                            onChange={changeStartDate}
-                        />
-                    </label>
-                </div>
-                <div className='end-date-input'>
-                    <label>
-                        CHECK-OUT
-                        <input
-                            type='date'
-                            value={endDate}
-                            onChange={changeEndDate}
-                        />
-                    </label>
+            <form onSubmit={handleSubmit} className='dates-form'>
+                <div className='dates-form-inputs'>
+                    <div className='start-date-input'>
+                        <label>
+                            CHECK-IN
+                            <input
+                                type='date'
+                                value={startDate}
+                                onChange={changeStartDate}
+                            />
+                        </label>
+                    </div>
+                    <div className='end-date-input'>
+                        <label>
+                            CHECK-OUT
+                            <input
+                                type='date'
+                                value={endDate}
+                                onChange={changeEndDate}
+                            />
+                        </label>
+                    </div>
                 </div>
                 <div>
                     {currentSpotUserBooked && sessionUserId ? <button className='edit-booking-button' type='submit'>Edit Reservation</button> : null}
                 </div>
-            </form>
             {currentSpotUserBooked && sessionUserId ? <button className='delete-booking-button'
                 onClick={deleteBooking}
             >Delete Reservation</button> : null}
+            </form>
             {priceRender}
         </div>
     )

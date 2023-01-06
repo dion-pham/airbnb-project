@@ -12,19 +12,11 @@ const CreateABookingForm = () => {
     const targetSpot = useSelector(state => state.spots.singleSpot)
     const existingBookings = useSelector(state => Object.values(state.bookings.allBookings))
     const currentSpotUserBooked = existingBookings.find(booking => booking.spotId == spotId)
+    const currentDate = new Date().toISOString().slice(0, 10)
 
     const history = useHistory()
     const [startDate, setStartDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.startDate).toISOString().slice(0, 10) : '')
     const [endDate, setEndDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.endDate).toISOString().slice(0, 10) : '')
-
-    //
-    console.log(startDate, 'start without format')
-    // console.log((new Date(currentSpotUserBooked?.startDate).toLocaleDateString('en-US', {
-    //     timeZone: 'UTC'
-    // })).replace(/(..).(..).(....)/, "$3-$1-$2"), 'startdate format')
-    // console.log((new Date(currentSpotUserBooked?.startDate).toISOString().slice(0, 10)), 'isostring format')
-    //
-
     const [validationErrors, setValidationErrors] = useState([])
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [nights, setNights] = useState(0)
@@ -43,6 +35,9 @@ const CreateABookingForm = () => {
         }
         if (endDate < startDate) {
             errors.push("End Date cannot be before Start Date")
+        }
+        if (currentDate === startDate) {
+            errors.push('You must book at least 1 day in advance')
         }
         setValidationErrors(errors)
     }, [startDate, endDate])
@@ -98,26 +93,28 @@ const CreateABookingForm = () => {
                     </ul>
                 </div>
             )}
-            <form onSubmit={handleSubmit}>
-                <div className='start-date-input'>
-                    <label>
-                        CHECK-IN
-                        <input
-                            type='date'
-                            value={startDate}
-                            onChange={changeStartDate}
-                        />
-                    </label>
-                </div>
-                <div className='end-date-input'>
-                    <label>
-                        CHECK-OUT
-                        <input
-                            type='date'
-                            value={endDate}
-                            onChange={changeEndDate}
-                        />
-                    </label>
+            <form onSubmit={handleSubmit} className='dates-form'>
+                <div className='dates-form-inputs'>
+                    <div className='start-date-input'>
+                        <label>
+                            CHECK-IN
+                            <input
+                                type='date'
+                                value={startDate}
+                                onChange={changeStartDate}
+                            />
+                        </label>
+                    </div>
+                    <div className='end-date-input'>
+                        <label>
+                            CHECK-OUT
+                            <input
+                                type='date'
+                                value={endDate}
+                                onChange={changeEndDate}
+                            />
+                        </label>
+                    </div>
                 </div>
                 <div>
                     <button className='reserve-button' type='submit'>Reserve</button>
