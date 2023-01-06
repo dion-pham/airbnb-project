@@ -18,7 +18,8 @@ const CreateASpotForm = () => {
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [price, setPrice] = useState("")
-    const [url, setUrl] = useState("")
+    // const [url, setUrl] = useState("")
+    const [image, setImage] = useState(null)
     const [validationErrors, setValidationErrors] = useState([])
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -69,17 +70,16 @@ const CreateASpotForm = () => {
         if (price < 0) {
             errors.push("Price field must be valid")
         }
-        if (url.length === 0) {
-            errors.push("Url is required")
+        if (!image) {
+            errors.push("Image is required")
         }
-        if (!/^https?:\/\/.+\.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(url)) {
+        if (!/^https?:\/\/.+\.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(image)) {
             errors.push("Url must be a valid picture file starts with https:// and ends in .jpg, .jpeg, or .png");
         }
 
-
         // additional url validations
         setValidationErrors(errors)
-    }, [name, address, city, state, country, description, price, url])
+    }, [name, address, city, state, country, description, price, image])
 
     if (!sessionUser) return <Redirect to="/" />;
 
@@ -98,14 +98,15 @@ const CreateASpotForm = () => {
             price
         };
 
-        const imagePayload = {
-            url,
-            preview: true
-        }
+        // const imagePayload = {
+        //     // url,
+        //     image,
+        //     // preview: true
+        // }
 
         let createdSpot = await dispatch(thunkCreateSpot(payload))
         if (createdSpot) {
-            dispatch(thunkCreateSpotImage(createdSpot.id, imagePayload))
+            dispatch(thunkCreateSpotImage(createdSpot.id, image))
             history.push(`/spots/${createdSpot.id}`)
             setAddress('')
             setCity('')
@@ -114,11 +115,17 @@ const CreateASpotForm = () => {
             setName('')
             setDescription('')
             setPrice('')
+            setImage(null)
             setValidationErrors([]);
             setHasSubmitted(false);
             // hideForm();
         }
     };
+
+    const updateFile = (e) => {
+        const file = e.target.files[0]
+        if (file) setImage(file)
+    }
 
     return (
         <section className='new-form-container'>
@@ -170,11 +177,14 @@ const CreateASpotForm = () => {
                     placeholder='price per night'
                     value={price}
                     onChange={(e) => setPrice(e.target.value)} />
+                <label for='file-uploading' className='spot-upload-label' id='spot-upload-label-id'>
+                    Spot Image
                 <input
-                    type="text"
-                    placeholder='image url'
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)} />
+                    id = 'file-uploading'
+                    type = 'file'
+                    onChange={updateFile}
+                />
+                </label>
                 <button>
                     Create Your Home!
                 </button>

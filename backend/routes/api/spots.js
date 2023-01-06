@@ -7,6 +7,7 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { response } = require('express');
 const spot = require('../../db/models/spot');
+const { singleMulterUpload, singlePublicFileUpload } = require('../../awsS3');
 
 const router = express.Router();
 
@@ -283,9 +284,10 @@ router.put(
 router.post(
     '/:spotId/images',
     requireAuth,
-
+    singleMulterUpload('image'),
     async (req, res, next) => {
         const targetSpot = await Spot.findByPk(req.params.spotId)
+        const spotImageUrl = await singlePublicFileUpload(req.file)
 
         if (!targetSpot) {
             res.statusCode = 404
@@ -297,11 +299,11 @@ router.post(
             res.statusCode = 403
             return res.json("This spot does not belong to the current user")
         }
-        const { url, preview } = req.body
+        // const { url, preview } = req.body
         const newImage = await SpotImage.create({
             spotId: targetSpot.id,
-            url,
-            preview,
+            url: spotImageUrl,
+            preview: true
         })
 
         const response = await SpotImage.findByPk(newImage.id);

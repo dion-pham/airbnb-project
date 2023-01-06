@@ -124,8 +124,8 @@ router.put(
                 "message": "Sorry, this spot is already booked for the specified dates",
                 "statusCode": 403,
                 "errors": {
-                    "startDate": "Start date conflicts with an existing booking",
-                    "endDate": "End date conflicts with an existing booking"
+                    "startDate": "Start date conflicts with an existing booking. Please delete your booking and try again.",
+                    "endDate": "End date conflicts with an existing booking. Please delete your booking and try again."
                 }
             })
         }
@@ -139,7 +139,6 @@ router.put(
         )
     }
 );
-
 
 
 // Get all of the Current User's Bookings

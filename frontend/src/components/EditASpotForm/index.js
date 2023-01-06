@@ -19,8 +19,6 @@ const EditASpotForm = () => {
     const [city, setCity] = useState(targetSpot ? targetSpot.city : "")
     const [state, setState] = useState(targetSpot ? targetSpot.state : "")
     const [country, setCountry] = useState(targetSpot ? targetSpot.country : "")
-    // const [lat, setLat] = useState(targetSpot ? targetSpot.lat : "")
-    // const [lng, setLng] = useState(targetSpot ? targetSpot.lng : "")
     const [name, setName] = useState(targetSpot ? targetSpot.name : "")
     const [description, setDescription] = useState(targetSpot ? targetSpot.description : "")
     const [price, setPrice] = useState(targetSpot ? targetSpot.price : "")
