@@ -1,7 +1,7 @@
 // frontend/src/components/SignupFormPage/index.js
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 import * as sessionActions from "../../store/session";
 
@@ -9,7 +9,9 @@ import './SignupForm.css';
 
 function SignupForm() {
     const dispatch = useDispatch();
+    const history = useHistory()
     const sessionUser = useSelector((state) => state.session.user);
+
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("");
@@ -58,7 +60,8 @@ function SignupForm() {
         setErrors(errors)
     }, [firstName, lastName, email, username, password, confirmPassword])
 
-    if (sessionUser) return <Redirect to="/" />;
+    // if (sessionUser) return <Redirect to="/" />;
+    if (sessionUser) history.push(`/`)
 
     const handleSubmit = (e) => {
         e.preventDefault();

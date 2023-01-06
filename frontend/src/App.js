@@ -14,6 +14,9 @@ import CurrentUserBookingsReviews from "./components/CurrentUserBookingsReviews/
 import * as sessionActions from "./store/session";
 
 import { thunkGetAllSpots } from "./store/spots";
+import LoginFormModal from "./components/LoginFormModal";
+import LoginForm from "./components/LoginFormModal/LoginForm";
+import SignupForm from "./components/SignupFormModal/SignUpForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,8 +32,11 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route path="/signup">
-            <SignUpFormModal />
+          <Route path="/login">
+            <LoginForm />
+          </Route>
+          <Route path="/sign-up">
+            <SignupForm />
           </Route>
           <Route exact path={["/", "/spots"]} >
             <SpotsList component={SpotsList} />

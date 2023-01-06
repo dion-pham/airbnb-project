@@ -180,3 +180,9 @@
     padding-bottom: 24px;
     border-bottom: 1px solid rgb(164, 126, 78);
 }
+
+.non-logged-in-link:link {
+    /* color: black; */
+    text-decoration: underline;
+
+}

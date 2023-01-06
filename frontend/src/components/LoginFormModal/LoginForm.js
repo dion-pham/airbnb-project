@@ -1,11 +1,15 @@
 // frontend/src/components/LoginFormModal/LoginForm.js
 import React, { useState, useEffect } from "react";
 import * as sessionActions from "../../store/session";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import './LoginForm.css'
+import { useHistory } from "react-router-dom";
 
 function LoginForm() {
     const dispatch = useDispatch();
+    const history = useHistory()
+    const sessionUser = useSelector(state => state?.session.user)
+
     const [credential, setCredential] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState([]);
@@ -21,6 +25,8 @@ function LoginForm() {
         }
         setErrors(errors)
     }, [credential, password])
+
+    if (sessionUser)  history.push(`/`)
 
     const handleSubmit = (e) => {
         e.preventDefault();

@@ -78,10 +78,11 @@ const CreateABookingForm = () => {
             setHasSubmitted(false)
         }
         dispatch(thunkGetAllBookingsByCurrentUser())
+        return alert('Spot successfully booked!')
     }
 
     let currentlyBooked;
-    !currentSpotUserBooked && sessionUserId ? currentlyBooked =
+    !currentSpotUserBooked ? currentlyBooked =
         <div className='bookings-dates-container'>
             {hasSubmitted && validationErrors.length > 0 && (
                 <div>

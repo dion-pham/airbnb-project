@@ -116,9 +116,9 @@ const EditABookingForm = () => {
         if (edittedBooking) {
             history.push(`/spots/${spotId}`)
             setHasSubmitted(false)
+            return alert('Booking successfully updated!')
         }
         dispatch(thunkGetAllBookingsByCurrentUser())
-        return alert('Booking successfully updated!')
     }
 
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory, useParams, Redirect } from 'react-router-dom';
+import { useHistory, useParams, Redirect, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetSpotById, thunkGetAllSpots } from '../../store/spots';
 import SpotReviews from '../SpotReviews';
@@ -7,6 +7,7 @@ import SpotReviews from '../SpotReviews';
 
 import './SpotDetail.css'
 import CreateABookingForm from '../CreateABookingForm';
+import LoginFormModal from '../LoginFormModal';
 
 const SpotDetail = () => {
     const { spotId } = useParams()
@@ -104,9 +105,14 @@ const SpotDetail = () => {
                             <i className="fa-solid fa-star"></i> {avgStarRating} · {targetSpot.numReviews} Reviews
                         </div>
                     </div>
-                    {targetSpot.Owner.id !== sessionUser.id && (<CreateABookingForm/>)}
-                    {/* add edit booking form here and conditionally render depending if current spot has booking yet or not */}
-                    {targetSpot.Owner.id === sessionUser.id && (<div className='spot-card-bottom-right-book'>This spot is owned by you. </div>)}
+                    {sessionUser && targetSpot.Owner.id !== sessionUser.id && (<CreateABookingForm />)}
+                    {!sessionUser &&
+                    (<div className='spot-card-bottom-right-book'>
+                        <div>
+                            Please <Link to={'/login'} className='non-logged-in-link'>login</Link> or <Link to={'/sign-up'} className='non-logged-in-link'>signup</Link> to book this spot
+                        </div>
+                    </div>)}
+                    {sessionUser && targetSpot.Owner.id === sessionUser.id && (<div className='spot-card-bottom-right-book'>This spot is owned by you. </div>)}
 
 
                 </div>
