@@ -41,9 +41,10 @@
 .edit-booking-button {
     width: 270px;
     height: 25px;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 .bottom-total-price {
     margin-top: 10px;
+    border-bottom: none;
 }
