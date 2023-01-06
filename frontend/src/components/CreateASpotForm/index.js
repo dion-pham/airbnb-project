@@ -73,14 +73,13 @@ const CreateASpotForm = () => {
         if (!image) {
             errors.push("Image is required")
         }
-        if (!/^https?:\/\/.+\.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(image)) {
-            errors.push("Url must be a valid picture file starts with https:// and ends in .jpg, .jpeg, or .png");
+        if (!/^\S+.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(image?.name)) {
+            errors.push("Url must be a valid picture file that has no spaces and ends with .jpg, .jpeg, or .png");
         }
-
-        // additional url validations
         setValidationErrors(errors)
     }, [name, address, city, state, country, description, price, image])
 
+    console.log(image.name, 'image name')
     if (!sessionUser) return <Redirect to="/" />;
 
     const handleSubmit = async (e) => {
