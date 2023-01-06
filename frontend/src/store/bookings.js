@@ -62,6 +62,7 @@ export const thunkEditBooking = (bookingId, payload) => async dispatch => {
         },
         body: JSON.stringify(payload)
     })
+    console.log(response, 'test response')
     if (response.ok) {
         const edittedBooking = await response.json()
         dispatch(actionAddBooking(edittedBooking))
@@ -75,8 +76,10 @@ export const thunkDeleteBooking = (bookingId) => async dispatch => {
     });
     if (response.ok) {
         dispatch(actionDeleteBooking(bookingId))
+        return response
     }
 }
+    // return data.errors
 
 
 // initialState
@@ -96,13 +99,13 @@ const bookingsReducer = (state = initialState, action) => {
                 loadState.allBookings[booking.id] = booking
             })
             return loadState
-        // may need to add load single booking?
         case ADD_BOOKING:
             const addState = {...state, allBookings: {...state.allBookings}, currentBooking: {...state.currentBooking}}
             addState.allBookings[action.singleBooking.id] = action.singleBooking
         case DELETE_BOOKING:
             const deleteState = {...state, allBookings: {...state.allBookings}, currentBooking: {...state.currentBooking}}
             delete deleteState.allBookings[action.bookingId]
+            return deleteState
         default:
             return state;
     }

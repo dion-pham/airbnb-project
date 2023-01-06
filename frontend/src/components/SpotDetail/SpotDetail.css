@@ -133,7 +133,7 @@
     box-shadow: 5px 5px 0px rgb(164, 126, 78);
     border-radius: 25px;
     width: 350px;
-    height: 350px;
+    height: 100%;
 }
 
 .container-price-rating-stars {

@@ -9,12 +9,13 @@ const EditABookingForm = () => {
     const { spotId } = useParams()
     const sessionUserId = useSelector(state => state?.session.user.id)
     const targetSpot = useSelector(state => state.spots.singleSpot)
+
     const existingBookings = useSelector(state => Object.values(state.bookings.allBookings))
     const currentSpotUserBooked = existingBookings.find(booking => booking.spotId == spotId)
 
     const history = useHistory()
-    const [startDate, setStartDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.startDate).toLocaleDateString('en-CA') : '')
-    const [endDate, setEndDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.endDate).toLocaleDateString('en-CA') : '')
+    const [startDate, setStartDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.startDate).toISOString().slice(0, 10) : '')
+    const [endDate, setEndDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.endDate).toISOString().slice(0, 10) : '')
     const [validationErrors, setValidationErrors] = useState([])
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [nights, setNights] = useState()
@@ -54,8 +55,8 @@ const EditABookingForm = () => {
         setEndDate(e.target.value)
     }
 
-    const deleteBooking = () => {
-        let deleteSuccess = dispatch(thunkDeleteBooking(currentSpotUserBooked.id))
+    const deleteBooking = async () => {
+        let deleteSuccess = await dispatch(thunkDeleteBooking(currentSpotUserBooked.id))
         if (deleteSuccess) {
             setTimeout(() => {
                 dispatch(thunkGetAllBookingsByCurrentUser())
@@ -63,11 +64,11 @@ const EditABookingForm = () => {
         }
     }
 
+    // if edittedbooking.errors, return those errors
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         setHasSubmitted(true)
-        if (validationErrors.length) return alert('Cannot submit')
 
         const payload = {
             spotId: spotId,
@@ -76,7 +77,19 @@ const EditABookingForm = () => {
             endDate
         }
 
-        let edittedBooking = await dispatch(thunkEditBooking(currentSpotUserBooked.id, payload))
+        let edittedBooking = await dispatch(thunkEditBooking(currentSpotUserBooked.id, payload)).catch(
+            async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    const backendErrors = []
+                    for (let error of Object.values((data.errors))) {
+                        backendErrors.push(error)
+                        setValidationErrors(backendErrors)
+                    }
+                }
+            }
+        );
+        if (validationErrors.length) return alert('Cannot submit')
         if (edittedBooking) {
             history.push(`/spots/${spotId}`)
             setHasSubmitted(false)
@@ -195,11 +208,11 @@ const EditABookingForm = () => {
                 </div>
                 <div>
                     {currentSpotUserBooked && sessionUserId ? <button className='edit-booking-button' type='submit'>Edit Reservation</button> : null}
-                    {currentSpotUserBooked && sessionUserId ? <button className='delete-booking-button'
-                    onClick={deleteBooking}
-                    >Delete Reservation</button> : null}
                 </div>
             </form>
+            {currentSpotUserBooked && sessionUserId ? <button className='delete-booking-button'
+                onClick={deleteBooking}
+            >Delete Reservation</button> : null}
             {priceRender}
         </div>
     )

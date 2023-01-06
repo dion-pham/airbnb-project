@@ -70,8 +70,8 @@ const CreateASpotForm = () => {
         if (price < 0) {
             errors.push("Price field must be valid")
         }
-        if (image.length === 0) {
-            errors.push("Url is required")
+        if (!image) {
+            errors.push("Image is required")
         }
         if (!/^https?:\/\/.+\.(jpg|jpeg|png|JPG|JPEG|PNG)$/.test(image)) {
             errors.push("Url must be a valid picture file starts with https:// and ends in .jpg, .jpeg, or .png");
@@ -177,15 +177,14 @@ const CreateASpotForm = () => {
                     placeholder='price per night'
                     value={price}
                     onChange={(e) => setPrice(e.target.value)} />
-                {/* <input
-                    type="text"
-                    placeholder='image url'
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)} /> */}
+                <label for='file-uploading' className='spot-upload-label' id='spot-upload-label-id'>
+                    Spot Image
                 <input
+                    id = 'file-uploading'
                     type = 'file'
                     onChange={updateFile}
                 />
+                </label>
                 <button>
                     Create Your Home!
                 </button>

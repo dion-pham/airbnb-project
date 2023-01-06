@@ -47,3 +47,27 @@
     width: 100%;
     font-size: 50px;
 }
+
+.spot-upload-label{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 20px;
+    line-height: 40px;
+    border: 2px solid grey;
+    width: 400px;
+    color: rgb(117,117,117);
+    font-style: normal;
+    font-weight: lighter;
+    margin-top: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+#spot-upload-label-id {
+    font-weight: 100;
+}
+
+#file-uploading {
+    margin-left: 10px;
+}

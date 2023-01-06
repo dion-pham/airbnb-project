@@ -14,8 +14,17 @@ const CreateABookingForm = () => {
     const currentSpotUserBooked = existingBookings.find(booking => booking.spotId == spotId)
 
     const history = useHistory()
-    const [startDate, setStartDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.startDate).toLocaleDateString('en-CA') : '')
-    const [endDate, setEndDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.endDate).toLocaleDateString('en-CA') : '')
+    const [startDate, setStartDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.startDate).toISOString().slice(0, 10) : '')
+    const [endDate, setEndDate] = useState(currentSpotUserBooked ? new Date(currentSpotUserBooked?.endDate).toISOString().slice(0, 10) : '')
+
+    //
+    console.log(startDate, 'start without format')
+    // console.log((new Date(currentSpotUserBooked?.startDate).toLocaleDateString('en-US', {
+    //     timeZone: 'UTC'
+    // })).replace(/(..).(..).(....)/, "$3-$1-$2"), 'startdate format')
+    // console.log((new Date(currentSpotUserBooked?.startDate).toISOString().slice(0, 10)), 'isostring format')
+    //
+
     const [validationErrors, setValidationErrors] = useState([])
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [nights, setNights] = useState(0)
@@ -59,7 +68,6 @@ const CreateABookingForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setHasSubmitted(true)
-        console.log(startDate, 'startDate')
         if (validationErrors.length) return alert('Cannot submit')
 
         const payload = {
@@ -113,9 +121,6 @@ const CreateABookingForm = () => {
                 </div>
                 <div>
                     <button className='reserve-button' type='submit'>Reserve</button>
-                    {/* {!currentSpotUserBooked && sessionUserId ? <button className='reserve-button' type='submit'>Reserve</button> : null}
-            {currentSpotUserBooked && sessionUserId && <EditABookingForm/> } */}
-                    {/* technically dont need a modal because you can just replace the add form with edit form if a current reservation already exists */}
                 </div>
             </form>
         </div>
@@ -207,7 +212,7 @@ const CreateABookingForm = () => {
                 {currentlyBooked}
             </div>
             <div>
-                {!currentSpotUserBooked ? priceRender: null}
+                {!currentSpotUserBooked ? priceRender : null}
             </div>
         </div>
     )
