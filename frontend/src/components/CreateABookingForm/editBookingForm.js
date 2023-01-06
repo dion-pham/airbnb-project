@@ -56,7 +56,18 @@ const EditABookingForm = () => {
     }
 
     const deleteBooking = async () => {
-        let deleteSuccess = await dispatch(thunkDeleteBooking(currentSpotUserBooked.id))
+        let deleteSuccess = await dispatch(thunkDeleteBooking(currentSpotUserBooked.id)).catch(
+            async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    const backendErrors = []
+                    for (let error of Object.values((data.errors))) {
+                        backendErrors.push(error)
+                        setValidationErrors(backendErrors)
+                    }
+                }
+            }
+        );
         if (deleteSuccess) {
             setTimeout(() => {
                 dispatch(thunkGetAllBookingsByCurrentUser())

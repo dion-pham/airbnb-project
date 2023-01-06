@@ -104,11 +104,10 @@ const SpotDetail = () => {
                             <i className="fa-solid fa-star"></i> {avgStarRating} · {targetSpot.numReviews} Reviews
                         </div>
                     </div>
-                    <CreateABookingForm/>
+                    {targetSpot.Owner.id !== sessionUser.id && (<CreateABookingForm/>)}
                     {/* add edit booking form here and conditionally render depending if current spot has booking yet or not */}
+                    {targetSpot.Owner.id === sessionUser.id && (<div className='spot-card-bottom-right-book'>This spot is owned by you. </div>)}
 
-
-                    {/* <div className='spot-card-bottom-right-book'>This spot is currently unavailable. </div> */}
 
                 </div>
             </div>
