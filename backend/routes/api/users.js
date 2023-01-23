@@ -45,7 +45,7 @@ router.post(
         // const profileImageUrl = await singlePublicFileUpload(req.file)
         // change if profileimage not need for user
 
-        const user = await User.signup({ firstName, lastName, email, username, password, profileImageUrl });
+        const user = await User.signup({ firstName, lastName, email, username, password });
 
         const token = await setTokenCookie(res, user);
         user.dataValues.token = token
