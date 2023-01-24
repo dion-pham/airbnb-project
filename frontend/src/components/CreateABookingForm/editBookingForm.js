@@ -82,6 +82,7 @@ const EditABookingForm = () => {
         // if (validationErrors.length) return alert('Cannot delete')
         if (deleteSuccess) {
             // setHasSubmitted(false)
+            return alert('Booking successfully deleted!')
             setTimeout(() => {
                 dispatch(thunkGetAllBookingsByCurrentUser())
             }, 100);

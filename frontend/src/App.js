@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-// import SignupForm from "./components/SignupForm";
-import SignUpFormModal from "./components/SignupFormModal";
 import Navigation from "./components/Navigation";
 import SpotsList from "./components/SpotsList";
 import CreateASpotForm from "./components/CreateASpotForm";
@@ -14,9 +12,11 @@ import CurrentUserBookingsReviews from "./components/CurrentUserBookingsReviews/
 import * as sessionActions from "./store/session";
 
 import { thunkGetAllSpots } from "./store/spots";
-import LoginFormModal from "./components/LoginFormModal";
 import LoginForm from "./components/LoginFormModal/LoginForm";
 import SignupForm from "./components/SignupFormModal/SignUpForm";
+import SearchSplash from "./components/SearchSplash";
+
+
 
 function App() {
   const dispatch = useDispatch();
@@ -54,6 +54,7 @@ function App() {
           <Route exact path="/account" >
             <CurrentUserBookingsReviews component={CurrentUserBookingsReviews} />
           </Route>
+          <Route path={'/search/:destination'} exact component={SearchSplash}/>
         </Switch>
 
       )}

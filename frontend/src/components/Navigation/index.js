@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import LoginFormModal from '../LoginFormModal';
 import SignUpFormModal from '../SignupFormModal';
+import SearchBar from '../SearchBar';
 import './Navigation.css';
 
 function Navigation({ isLoaded }) {
@@ -42,7 +43,8 @@ function Navigation({ isLoaded }) {
                     <img src='https://i.imgur.com/zYlOYUG.png' alt="Spot's image" width="75" height="75"></img>
                 </NavLink>
             </li>
-            <li>  {isLoaded && sessionLinks}</li>
+            <li> <SearchBar /> </li>
+            <li>{isLoaded && sessionLinks} </li>
         </ul>
     );
 }
