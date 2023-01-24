@@ -16,7 +16,6 @@ const CurrentUserBookingsReviews = () => {
     const sessionUser = useSelector((state) => state.session.user)
     const usersSpotList = spotList?.filter(spot => sessionUser?.id === spot.ownerId)
     const reviewsList = useSelector((state) => Object.values(state.reviews.user))
-    console.log('reviewsList', reviewsList)
 
     useEffect(() => {
         dispatch(thunkGetAllReviewsCurrentUser());
@@ -25,7 +24,6 @@ const CurrentUserBookingsReviews = () => {
 
     if (!sessionUser) return <Redirect to="/" />;
 
-    console.log(usersSpotList, 'this is user spot list')
     return (
         <div className='account-wrapper'>
             <h1>Your spots</h1>

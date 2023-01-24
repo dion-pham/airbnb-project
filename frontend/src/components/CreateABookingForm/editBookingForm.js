@@ -44,10 +44,11 @@ const EditABookingForm = () => {
     }, [startDate, endDate, currentDate])
 
 
-
-
     useEffect(() => {
         dispatch(thunkGetAllBookingsByCurrentUser())
+    }, [dispatch])
+
+    useEffect(() => {
         setNights((new Date(endDate) - new Date(startDate)) / (1000 * 3600 * 24))
     }, [dispatch, startDate, endDate])
 
@@ -116,9 +117,9 @@ const EditABookingForm = () => {
         if (edittedBooking) {
             history.push(`/spots/${spotId}`)
             setHasSubmitted(false)
+            dispatch(thunkGetAllBookingsByCurrentUser())
             return alert('Booking successfully updated!')
         }
-        dispatch(thunkGetAllBookingsByCurrentUser())
     }
 
 
@@ -233,9 +234,9 @@ const EditABookingForm = () => {
                     </div>
                 </div>
                 <div>
-                    {currentSpotUserBooked && sessionUserId ? <button className='edit-booking-button' type='submit'>Edit Reservation</button> : null}
+                    {currentSpotUserBooked?.userId == sessionUserId ? <button className='edit-booking-button' type='submit'>Edit Reservation</button> : null}
                 </div>
-            {currentSpotUserBooked && sessionUserId ? <button className='delete-booking-button'
+            {currentSpotUserBooked?.userId == sessionUserId ? <button className='delete-booking-button'
                 onClick={deleteBooking}
             >Delete Reservation</button> : null}
             </form>

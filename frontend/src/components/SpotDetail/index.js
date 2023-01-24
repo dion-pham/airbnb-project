@@ -8,6 +8,7 @@ import SpotReviews from '../SpotReviews';
 import './SpotDetail.css'
 import CreateABookingForm from '../CreateABookingForm';
 import LoginFormModal from '../LoginFormModal';
+import { thunkGetAllBookingsByCurrentUser } from '../../store/bookings';
 
 const SpotDetail = () => {
     const { spotId } = useParams()
@@ -16,6 +17,7 @@ const SpotDetail = () => {
 
     useEffect(() => {
         dispatch(thunkGetSpotById(spotId));
+        dispatch(thunkGetAllBookingsByCurrentUser())
     }, [dispatch, spotId]);
 
     const targetSpot = useSelector(state => state.spots.singleSpot)

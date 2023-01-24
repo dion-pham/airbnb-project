@@ -65,9 +65,7 @@ export const thunkCreateReview = (spotId, payload) => async (dispatch) => {
         body: JSON.stringify(payload)
     })
     if (response.ok) {
-        console.log(response, 'this is response')
         const createdReview = await response.json()
-        console.log(createdReview, 'this is created review')
         dispatch(actionAddReview(createdReview))
         return createdReview
     }
