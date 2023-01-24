@@ -135,14 +135,33 @@ router.post(
             let existingBookingsStart = new Date(individualBooking.startDate).getTime()
             let existingBookingsEnd = new Date(individualBooking.endDate).getTime()
             if ((newStartDate <= existingBookingsStart && newEndDate >= existingBookingsEnd) || (newStartDate >= existingBookingsStart && newEndDate <= existingBookingsEnd)) {
-
+                res.statusCode = 403
+                return res.json({
+                    "message": "Sorry, this spot is already booked for the specified dates",
+                    "statusCode": 403,
+                    "errors": {
+                        "Already booked": "Sorry, this spot is already booked for the specified dates"
+                        // "endDate": "End date conflicts with an existing booking"
+                    }
+                })
+            } else if (newStartDate >= existingBookingsStart && newStartDate <= existingBookingsEnd) {
                 res.statusCode = 403
                 return res.json({
                     "message": "Sorry, this spot is already booked for the specified dates",
                     "statusCode": 403,
                     "errors": {
                         "startDate": "Start date conflicts with an existing booking",
-                        "endDate": "End date conflicts with an existing booking"
+
+                    }
+                })
+            } else if (newEndDate >= existingBookingsStart && newEndDate <= existingBookingsEnd) {
+                res.statusCode = 403
+                return res.json({
+                    "message": "Sorry, this spot is already booked for the specified dates",
+                    "statusCode": 403,
+                    "errors": {
+                        "endDate": "End date conflicts with an existing booking",
+
                     }
                 })
             }

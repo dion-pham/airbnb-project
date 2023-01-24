@@ -12,7 +12,6 @@ const CreateReviewForm = () => {
     const dispatch = useDispatch()
 
     const userId = useSelector(state => state.session.user.id)
-    // console.log(userId)
 
     const [review, setReview] = useState("")
     const [stars, setStars] = useState("")

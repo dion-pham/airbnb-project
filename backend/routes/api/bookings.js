@@ -118,7 +118,7 @@ router.put(
             })
         }
 
-        if ((newStartDate <= existingBookingsStart && newEndDate >= existingBookingsEnd) || (newStartDate >= existingBookingsStart && newEndDate <= existingBookingsEnd)) {
+        if ((newStartDate < existingBookingsStart && newEndDate > existingBookingsEnd) || (newStartDate > existingBookingsStart && newEndDate < existingBookingsEnd)) {
             res.statusCode = 403
             res.json({
                 "message": "Sorry, this spot is already booked for the specified dates",

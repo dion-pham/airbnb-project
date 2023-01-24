@@ -62,7 +62,7 @@ export const thunkEditBooking = (bookingId, payload) => async dispatch => {
         },
         body: JSON.stringify(payload)
     })
-    console.log(response, 'test response')
+
     if (response.ok) {
         const edittedBooking = await response.json()
         dispatch(actionAddBooking(edittedBooking))

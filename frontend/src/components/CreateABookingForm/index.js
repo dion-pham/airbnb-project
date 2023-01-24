@@ -42,9 +42,11 @@ const CreateABookingForm = () => {
         setValidationErrors(errors)
     }, [startDate, endDate])
 
-
     useEffect(() => {
         dispatch(thunkGetAllBookingsByCurrentUser())
+    }, [dispatch])
+
+    useEffect(() => {
         setNights((new Date(endDate) - new Date(startDate)) / (1000 * 3600 * 24))
     }, [dispatch, startDate, endDate])
 
@@ -63,7 +65,6 @@ const CreateABookingForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setHasSubmitted(true)
-        if (validationErrors.length) return alert('Cannot submit')
 
         const payload = {
             spotId: spotId,
@@ -72,60 +73,75 @@ const CreateABookingForm = () => {
             endDate
         }
 
-        let createdBooking = await dispatch(thunkAddBooking(spotId, payload))
+        let createdBooking = await dispatch(thunkAddBooking(spotId, payload)).catch(
+            async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    const backendErrors = []
+                    for (let error of Object.values((data.errors))) {
+                        backendErrors.push(error)
+                        setValidationErrors(backendErrors)
+                    }
+                }
+            }
+        );
+        if (validationErrors.length) return alert('Cannot submit')
         if (createdBooking) {
             history.push(`/spots/${spotId}`)
             setHasSubmitted(false)
+            dispatch(thunkGetAllBookingsByCurrentUser())
+            return alert('Spot successfully booked!')
         }
-        dispatch(thunkGetAllBookingsByCurrentUser())
-        return alert('Spot successfully booked!')
     }
 
     let currentlyBooked;
-    !currentSpotUserBooked ? currentlyBooked =
-        <div className='bookings-dates-container'>
-            {hasSubmitted && validationErrors.length > 0 && (
-                <div>
-                    The following errors were found:
-                    <ul>
-                        {validationErrors.map((error) => (
-                            <li key={error}> <i className='fa fa-exclamation-circle' />  {error}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-            <form onSubmit={handleSubmit} className='dates-form'>
-                <div className='dates-form-inputs'>
-                    <div className='start-date-input'>
-                        <label>
-                            CHECK-IN
-                            <input
-                                type='date'
-                                value={startDate}
-                                onChange={changeStartDate}
-                            />
-                        </label>
+    if (currentSpotUserBooked?.userId !== sessionUserId) {
+        currentlyBooked =
+            <div className='bookings-dates-container'>
+                {hasSubmitted && validationErrors.length > 0 && (
+                    <div>
+                        The following errors were found:
+                        <ul>
+                            {validationErrors.map((error) => (
+                                <li key={error}> <i className='fa fa-exclamation-circle' />  {error}</li>
+                            ))}
+                        </ul>
                     </div>
-                    <div className='end-date-input'>
-                        <label>
-                            CHECK-OUT
-                            <input
-                                type='date'
-                                value={endDate}
-                                onChange={changeEndDate}
-                            />
-                        </label>
+                )}
+                <form onSubmit={handleSubmit} className='dates-form'>
+                    <div className='dates-form-inputs'>
+                        <div className='start-date-input'>
+                            <label>
+                                CHECK-IN
+                                <input
+                                    type='date'
+                                    value={startDate}
+                                    onChange={changeStartDate}
+                                />
+                            </label>
+                        </div>
+                        <div className='end-date-input'>
+                            <label>
+                                CHECK-OUT
+                                <input
+                                    type='date'
+                                    value={endDate}
+                                    onChange={changeEndDate}
+                                />
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <button className='reserve-button' type='submit'>Reserve</button>
-                </div>
-            </form>
-        </div>
-        : currentlyBooked =
-        <div>
-            <EditABookingForm />
-        </div>
+                    <div>
+                        <button className='reserve-button' type='submit'>Reserve</button>
+                    </div>
+                </form>
+            </div>
+    } else if (currentSpotUserBooked?.userId === sessionUserId) {
+        currentlyBooked =
+            <div>
+                <EditABookingForm />
+            </div>
+    }
 
 
     let priceRender;
@@ -210,19 +226,12 @@ const CreateABookingForm = () => {
                 {currentlyBooked}
             </div>
             <div>
-                {!currentSpotUserBooked ? priceRender : null}
+                {currentSpotUserBooked?.userId !== sessionUserId ? priceRender : null}
             </div>
         </div>
     )
 }
 
 
-
-
-
-// after submitting booking, change reserve to update booking??
-// then add update modal
-//  have it so that if no bookings are chosen, conditionally render the example price for 5 nights
-// pull validation errors from the front end?
 
 export default CreateABookingForm

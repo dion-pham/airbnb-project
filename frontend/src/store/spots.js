@@ -93,7 +93,6 @@ export const thunkCreateSpotImage = (spotId, payload) => async (dispatch) => {
     if (response.ok) {
         const createdImage = await response.json()
         dispatch(actionAddImage(spotId, createdImage))
-        console.log(createdImage, 'createdImage')
         return createdImage
     }
 }
